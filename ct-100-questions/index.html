@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CT 시험 100문제</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+:root{
+  --bg:#f0f4f8;--bg2:#fff;--bg3:#f8fafb;--bg4:#e8eef4;
+  --ac:#1a5276;--acd:rgba(26,82,118,.09);
+  --gr:#1e8449;--grd:#e9f7ef;
+  --re:#922b21;--red:#fdf2f1;
+  --ye:#7d6608;--yed:#fef9e7;
+  --tx:#1a1a1a;--tx2:#3a3a3a;--tx3:#8a8680;
+  --bd:#dde3ea;--bd2:#c8d0d9;--r:10px;--rs:6px
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.7;min-height:100vh}
+
+/* HEADER */
+.hd{background:linear-gradient(135deg,#1a3a5c,#1a5276);color:#fff;padding:18px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.hd-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.hd-icon{font-size:22px}
+.hd-title{font-size:17px;font-weight:700}
+.hd-sub{font-size:11px;opacity:.7}
+.score-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.score-box{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:var(--rs);padding:5px 12px;font-size:12px;font-weight:600}
+.score-box span{font-size:16px;font-weight:700;margin-left:4px}
+.prog-wrap{flex:1;min-width:120px;height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#52be80,#1e8449);border-radius:3px;transition:width .3s}
+.ctrl-row{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.ctrl-btn{padding:5px 13px;border-radius:14px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);color:#fff;transition:all .15s;font-family:inherit}
+.ctrl-btn:hover{background:rgba(255,255,255,.3)}
+.ctrl-btn.active{background:#fff;color:var(--ac)}
+
+/* FILTER TABS */
+.filter-wrap{max-width:900px;margin:0 auto;padding:14px 18px 0}
+.filter-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.ftab{padding:5px 14px;border-radius:16px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bd2);background:var(--bg2);color:var(--tx3);transition:all .14s}
+.ftab:hover{border-color:var(--ac);color:var(--ac)}
+.ftab.active{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+
+/* QUESTION CARDS */
+.q-list{max-width:900px;margin:0 auto;padding:0 18px 40px;display:flex;flex-direction:column;gap:12px}
+.qcard{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.05);transition:border-color .15s}
+.qcard:hover{border-color:var(--bd2)}
+.qcard.answered-correct{border-left:4px solid var(--gr)}
+.qcard.answered-wrong{border-left:4px solid var(--re)}
+
+.q-meta{display:flex;align-items:center;gap:7px;margin-bottom:9px;flex-wrap:wrap}
+.q-num{display:inline-block;background:var(--acd);color:var(--ac);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+.q-ch{font-size:10px;color:var(--tx3);background:var(--bg4);padding:2px 8px;border-radius:4px;border:1px solid var(--bd)}
+.q-diff{font-size:10px;padding:2px 7px;border-radius:4px}
+.diff-1{background:#e9f7ef;color:var(--gr);border:1px solid #a9dfbf}
+.diff-2{background:#fef9e7;color:var(--ye);border:1px solid #f9e79f}
+.diff-3{background:#fdf2f1;color:var(--re);border:1px solid #f5b7b1}
+
+.q-text{font-size:13px;font-weight:600;line-height:1.65;margin-bottom:12px}
+
+/* CHOICES */
+.choices{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.choice{display:flex;align-items:flex-start;gap:9px;padding:8px 11px;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bg3);cursor:pointer;transition:all .15s;font-size:13px}
+.choice:hover{border-color:var(--ac);background:var(--acd)}
+.choice.selected{border-color:var(--ac);background:var(--acd)}
+.choice.correct-ans{border-color:var(--gr)!important;background:var(--grd)!important}
+.choice.wrong-ans{border-color:var(--re)!important;background:var(--red)!important}
+.choice.dim{opacity:.4}
+.choice-num{font-size:11px;font-weight:700;color:var(--ac);min-width:16px;font-family:'JetBrains Mono',monospace;padding-top:1px}
+
+/* OX buttons */
+.ox-wrap{display:flex;gap:8px;margin-bottom:10px}
+.ox-btn{width:50px;height:40px;border-radius:var(--rs);font-size:18px;font-weight:700;cursor:pointer;border:1px solid var(--bd);background:var(--bg4);color:var(--tx2);transition:all .12s}
+.ox-btn:hover:not(:disabled){border-color:var(--ac);background:var(--acd)}
+.ox-btn.sel-O,.ox-btn.sel-O:disabled{background:var(--grd);border-color:var(--gr);color:var(--gr)}
+.ox-btn.sel-X,.ox-btn.sel-X:disabled{background:var(--red);border-color:var(--re);color:var(--re)}
+.ox-btn.cor{background:var(--grd)!important;border-color:var(--gr)!important;color:var(--gr)!important}
+.ox-btn.wrn{background:var(--red)!important;border-color:var(--re)!important;color:var(--re)!important}
+.ox-btn.neu{opacity:.3}
+.ox-btn:disabled{cursor:default}
+
+/* EXPLANATION */
+.expl{display:none;padding:9px 13px;border-radius:var(--rs);font-size:12.5px;line-height:1.6;margin-top:4px}
+.expl.show{display:block}
+.expl.correct{border-left:3px solid var(--gr);background:var(--grd);color:#1a3a2a}
+.expl.wrong{border-left:3px solid var(--re);background:var(--red);color:#4a0f0f}
+
+/* BOOKMARK */
+.q-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:8px}
+.bm-btn{padding:3px 10px;font-size:11px;border-radius:10px;cursor:pointer;border:1px solid var(--bd);background:var(--bg3);color:var(--tx3);font-family:inherit;transition:all .12s}
+.bm-btn:hover{border-color:var(--ac);color:var(--ac)}
+.bm-btn.marked{background:var(--yed);border-color:#e0b440;color:var(--ye)}
+
+/* RESULT OVERLAY */
+.result-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
+.result-overlay.show{display:flex}
+.result-box{background:var(--bg2);border-radius:16px;padding:32px 36px;max-width:420px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.3)}
+.result-title{font-size:22px;font-weight:700;margin-bottom:6px}
+.result-score{font-size:48px;font-weight:700;color:var(--ac);line-height:1.2;margin:14px 0}
+.result-pct{font-size:14px;color:var(--tx3)}
+.result-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.rb-item{background:var(--bg4);border-radius:var(--rs);padding:10px;font-size:12px}
+.rb-val{font-size:20px;font-weight:700}
+.result-btns{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.r-btn{padding:8px 20px;border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.r-btn-pri{background:var(--ac);color:#fff;border:none}
+.r-btn-sec{background:var(--bg4);color:var(--tx2);border:1px solid var(--bd2)}
+.r-btn:hover{opacity:.85}
+</style>
+</head>
+<body>
+
+<div class="hd">
+  <div class="hd-row">
+    <div class="hd-icon">📝</div>
+    <div><div class="hd-title">CT 시험 100문제</div>
+    <div class="hd-sub">Ch.8~12 · 영상품질·아티팩트·선량·검사실제</div></div>
+  </div>
+  <div class="score-bar">
+    <div class="score-box">정답 <span id="scoreCorrect">0</span></div>
+    <div class="score-box">오답 <span id="scoreWrong">0</span></div>
+    <div class="score-box">정답률 <span id="scorePct">0</span>%</div>
+    <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
+  <div class="ctrl-row">
+    <button class="ctrl-btn active" onclick="filterCh('all',this)">전체</button>
+    <button class="ctrl-btn" onclick="filterCh('Ch.8',this)">Ch.8 (25)</button>
+    <button class="ctrl-btn" onclick="filterCh('Ch.9',this)">Ch.9 (25)</button>
+    <button class="ctrl-btn" onclick="filterCh('Ch.10-11',this)">Ch.10-11 (20)</button>
+    <button class="ctrl-btn" onclick="filterCh('Ch.12',this)">Ch.12 (30)</button>
+    <button class="ctrl-btn" onclick="filterCh('bookmark',this)">★ 표시만</button>
+    <button class="ctrl-btn" onclick="filterCh('wrong',this)">오답만</button>
+    <button class="ctrl-btn" onclick="showResult()">채점하기</button>
+    <button class="ctrl-btn" onclick="resetAll()">초기화</button>
+  </div>
+</div>
+
+<div class="q-list" id="qList">
+<div class="qcard" id="qcard-0" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q01</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">CT 영상품질 측정함수 중 점 피사체를 영상화했을 때 퍼짐 정도를 나타내는 함수는?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,0)"><span class="choice-num">①</span><span>MTF</span></div>
+<div class="choice" onclick="ansMC(this,1,0)"><span class="choice-num">②</span><span>LSF</span></div>
+<div class="choice" onclick="ansMC(this,2,0)"><span class="choice-num">③</span><span>PSF</span></div>
+<div class="choice" onclick="ansMC(this,3,0)"><span class="choice-num">④</span><span>CTF</span></div>
+<div class="choice" onclick="ansMC(this,4,0)"><span class="choice-num">⑤</span><span>SNR</span></div>
+</div>
+          <div class="expl" id="expl-0"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-0" onclick="toggleBM(0)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-1" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q02</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">MTF(변조전달함수)에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,1)"><span class="choice-num">①</span><span>MTF가 0에 가까울수록 공간분해능이 좋다</span></div>
+<div class="choice" onclick="ansMC(this,1,1)"><span class="choice-num">②</span><span>주파수별 정보 전달 능력을 0~1로 나타낸다</span></div>
+<div class="choice" onclick="ansMC(this,2,1)"><span class="choice-num">③</span><span>MTF 50% 지점이 시스템의 공간분해능 한계이다</span></div>
+<div class="choice" onclick="ansMC(this,3,1)"><span class="choice-num">④</span><span>LSF를 직접 측정하여 얻는다</span></div>
+<div class="choice" onclick="ansMC(this,4,1)"><span class="choice-num">⑤</span><span>저주파에서 MTF는 0에 가깝다</span></div>
+</div>
+          <div class="expl" id="expl-1"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-1" onclick="toggleBM(1)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-2" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q03</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">노이즈(Noise)는 동일한 물질을 스캔했을 때 모든 픽셀의 CT number가 균일하지 않고 분산되는 값으로, 표준편차로 표시한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',2)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',2)">X</button>
+            </div>
+          <div class="expl" id="expl-2"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-2" onclick="toggleBM(2)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-3" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q04</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CT 노이즈 감소 방법으로 옳지 않은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,3)"><span class="choice-num">①</span><span>슬라이스 두께를 두껍게 한다</span></div>
+<div class="choice" onclick="ansMC(this,1,3)"><span class="choice-num">②</span><span>mAs를 증가시킨다</span></div>
+<div class="choice" onclick="ansMC(this,2,3)"><span class="choice-num">③</span><span>픽셀 크기를 크게 한다</span></div>
+<div class="choice" onclick="ansMC(this,3,3)"><span class="choice-num">④</span><span>고해상도(High) 알고리즘을 사용한다</span></div>
+<div class="choice" onclick="ansMC(this,4,3)"><span class="choice-num">⑤</span><span>DFOV를 크게 한다</span></div>
+</div>
+          <div class="expl" id="expl-3"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-3" onclick="toggleBM(3)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-4" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q05</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">mAs를 2배로 증가시키면 노이즈는 약 √2배 감소한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',4)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',4)">X</button>
+            </div>
+          <div class="expl" id="expl-4"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-4" onclick="toggleBM(4)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-5" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q06</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CT 공간분해능을 향상시키는 조건으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,5)"><span class="choice-num">①</span><span>초점 크기를 크게 한다</span></div>
+<div class="choice" onclick="ansMC(this,1,5)"><span class="choice-num">②</span><span>검출기 폭(aperture)을 크게 한다</span></div>
+<div class="choice" onclick="ansMC(this,2,5)"><span class="choice-num">③</span><span>Projection 수를 줄인다</span></div>
+<div class="choice" onclick="ansMC(this,3,5)"><span class="choice-num">④</span><span>픽셀 크기를 작게 한다</span></div>
+<div class="choice" onclick="ansMC(this,4,5)"><span class="choice-num">⑤</span><span>슬라이스 두께를 두껍게 한다</span></div>
+</div>
+          <div class="expl" id="expl-5"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-5" onclick="toggleBM(5)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-6" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q07</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">대조도분해능(contrast resolution)에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,6)"><span class="choice-num">①</span><span>감약차가 큰 인접 구조물을 구분하는 능력이다</span></div>
+<div class="choice" onclick="ansMC(this,1,6)"><span class="choice-num">②</span><span>공간분해능과 같은 의미이다</span></div>
+<div class="choice" onclick="ansMC(this,2,6)"><span class="choice-num">③</span><span>노이즈가 증가하면 대조도분해능이 향상된다</span></div>
+<div class="choice" onclick="ansMC(this,3,6)"><span class="choice-num">④</span><span>저대조도 분해능, 조직분해능이라고도 한다</span></div>
+<div class="choice" onclick="ansMC(this,4,6)"><span class="choice-num">⑤</span><span>픽셀 크기가 작을수록 향상된다</span></div>
+</div>
+          <div class="expl" id="expl-6"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-6" onclick="toggleBM(6)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-7" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q08</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">SNR(신호대잡음비)이 높을수록 영상의 노이즈가 적어 화질이 좋다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',7)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',7)">X</button>
+            </div>
+          <div class="expl" id="expl-7"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-7" onclick="toggleBM(7)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-8" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q09</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">균일도(Uniformity) 측정 방법으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,8)"><span class="choice-num">①</span><span>팬텀의 중앙부 CT number만 측정한다</span></div>
+<div class="choice" onclick="ansMC(this,1,8)"><span class="choice-num">②</span><span>중앙과 3·6·9·12시 방향 5영역의 CT number 차이를 측정한다</span></div>
+<div class="choice" onclick="ansMC(this,2,8)"><span class="choice-num">③</span><span>두 재질의 CT number 비율을 계산한다</span></div>
+<div class="choice" onclick="ansMC(this,3,8)"><span class="choice-num">④</span><span>MTF 소프트웨어를 이용하여 계산한다</span></div>
+<div class="choice" onclick="ansMC(this,4,8)"><span class="choice-num">⑤</span><span>45° 경사판 팬텀을 사용한다</span></div>
+</div>
+          <div class="expl" id="expl-8"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-8" onclick="toggleBM(8)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-9" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q10</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">직선성(linearity) 측정은 각 조직의 CT number가 실제 감약계수에 비례하는지를 평가한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',9)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',9)">X</button>
+            </div>
+          <div class="expl" id="expl-9"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-9" onclick="toggleBM(9)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-10" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q11</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CT 슬라이스 두께 측정에 사용되는 팬텀의 특징은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,10)"><span class="choice-num">①</span><span>수평으로 놓인 금속 판</span></div>
+<div class="choice" onclick="ansMC(this,1,10)"><span class="choice-num">②</span><span>스캔축에 대해 45° 경사진 판</span></div>
+<div class="choice" onclick="ansMC(this,2,10)"><span class="choice-num">③</span><span>구멍이 있는 아크릴 막대</span></div>
+<div class="choice" onclick="ansMC(this,3,10)"><span class="choice-num">④</span><span>동심원 패턴의 팬텀</span></div>
+<div class="choice" onclick="ansMC(this,4,10)"><span class="choice-num">⑤</span><span>이온챔버 삽입 구멍이 있는 팬텀</span></div>
+</div>
+          <div class="expl" id="expl-10"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-10" onclick="toggleBM(10)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-11" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q12</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CT 성능관리 검사기준 8개 항목에 포함되지 않는 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,11)"><span class="choice-num">①</span><span>아티팩트 시험</span></div>
+<div class="choice" onclick="ansMC(this,1,11)"><span class="choice-num">②</span><span>슬라이스 두께 시험</span></div>
+<div class="choice" onclick="ansMC(this,2,11)"><span class="choice-num">③</span><span>관전압 시험</span></div>
+<div class="choice" onclick="ansMC(this,3,11)"><span class="choice-num">④</span><span>환자피폭선량 시험</span></div>
+<div class="choice" onclick="ansMC(this,4,11)"><span class="choice-num">⑤</span><span>MTF 측정 시험</span></div>
+</div>
+          <div class="expl" id="expl-11"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-11" onclick="toggleBM(11)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-12" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q13</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">CT 관전압 허용오차는 ±20% 이내이다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',12)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',12)">X</button>
+            </div>
+          <div class="expl" id="expl-12"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-12" onclick="toggleBM(12)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-13" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q14</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">CT 정기검사 주기로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,13)"><span class="choice-num">①</span><span>서류검사 3년, 정기검사 1년</span></div>
+<div class="choice" onclick="ansMC(this,1,13)"><span class="choice-num">②</span><span>서류검사 6개월, 정기검사 1년</span></div>
+<div class="choice" onclick="ansMC(this,2,13)"><span class="choice-num">③</span><span>서류검사 1년, 정기검사 3년</span></div>
+<div class="choice" onclick="ansMC(this,3,13)"><span class="choice-num">④</span><span>서류검사 1년, 정기검사 1년</span></div>
+<div class="choice" onclick="ansMC(this,4,13)"><span class="choice-num">⑤</span><span>서류검사 3년, 정기검사 3년</span></div>
+</div>
+          <div class="expl" id="expl-13"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-13" onclick="toggleBM(13)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-14" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q15</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">LSF(Line Spread Function)에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,14)"><span class="choice-num">①</span><span>점 피사체의 응답함수이다</span></div>
+<div class="choice" onclick="ansMC(this,1,14)"><span class="choice-num">②</span><span>PSF와 전혀 관계없는 측정법이다</span></div>
+<div class="choice" onclick="ansMC(this,2,14)"><span class="choice-num">③</span><span>선 형태의 피사체를 영상화한 응답함수이다</span></div>
+<div class="choice" onclick="ansMC(this,3,14)"><span class="choice-num">④</span><span>CTF보다 낮은 주파수 정보를 제공한다</span></div>
+<div class="choice" onclick="ansMC(this,4,14)"><span class="choice-num">⑤</span><span>주파수 영역에서 직접 측정한다</span></div>
+</div>
+          <div class="expl" id="expl-14"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-14" onclick="toggleBM(14)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-15" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q16</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">CT 공간분해능은 감약차가 작은 인접 구조물을 구분하는 능력이다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',15)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',15)">X</button>
+            </div>
+          <div class="expl" id="expl-15"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-15" onclick="toggleBM(15)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-16" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q17</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">다음 중 CT 영상의 노이즈를 증가시키는 요인은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,16)"><span class="choice-num">①</span><span>mAs 증가</span></div>
+<div class="choice" onclick="ansMC(this,1,16)"><span class="choice-num">②</span><span>슬라이스 두께 증가</span></div>
+<div class="choice" onclick="ansMC(this,2,16)"><span class="choice-num">③</span><span>Soft 알고리즘 사용</span></div>
+<div class="choice" onclick="ansMC(this,3,16)"><span class="choice-num">④</span><span>환자 체격 증가</span></div>
+<div class="choice" onclick="ansMC(this,4,16)"><span class="choice-num">⑤</span><span>픽셀 크기 증가</span></div>
+</div>
+          <div class="expl" id="expl-16"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-16" onclick="toggleBM(16)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-17" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q18</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">CTF(대조도응답함수)에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,17)"><span class="choice-num">①</span><span>저주파에서 CTF = 0, 고주파에서 CTF = 1이다</span></div>
+<div class="choice" onclick="ansMC(this,1,17)"><span class="choice-num">②</span><span>단위 길이당 슬릿 수의 함수를 그래프로 나타낸다</span></div>
+<div class="choice" onclick="ansMC(this,2,17)"><span class="choice-num">③</span><span>점 피사체를 사용하여 측정한다</span></div>
+<div class="choice" onclick="ansMC(this,3,17)"><span class="choice-num">④</span><span>MTF보다 임상에서 더 많이 사용된다</span></div>
+<div class="choice" onclick="ansMC(this,4,17)"><span class="choice-num">⑤</span><span>SNR과 동일한 개념이다</span></div>
+</div>
+          <div class="expl" id="expl-17"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-17" onclick="toggleBM(17)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-18" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q19</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">대조도분해능은 노이즈가 감소할수록 향상된다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',18)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',18)">X</button>
+            </div>
+          <div class="expl" id="expl-18"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-18" onclick="toggleBM(18)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-19" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q20</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">다음 중 CT 공간분해능 측정방법이 아닌 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,19)"><span class="choice-num">①</span><span>시각적인 측정법 (팬텀 홀 관찰)</span></div>
+<div class="choice" onclick="ansMC(this,1,19)"><span class="choice-num">②</span><span>MTF 계산에 의한 방법</span></div>
+<div class="choice" onclick="ansMC(this,2,19)"><span class="choice-num">③</span><span>노이즈 표준편차 측정</span></div>
+<div class="choice" onclick="ansMC(this,3,19)"><span class="choice-num">④</span><span>텅스텐 와이어를 이용한 측정</span></div>
+<div class="choice" onclick="ansMC(this,4,19)"><span class="choice-num">⑤</span><span>아크릴 핀과 공기 홀 팬텀</span></div>
+</div>
+          <div class="expl" id="expl-19"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-19" onclick="toggleBM(19)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-20" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q21</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">CNR(대조도대잡음비)의 공식으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,20)"><span class="choice-num">①</span><span>두 영역의 CT number 합 / 표준편차</span></div>
+<div class="choice" onclick="ansMC(this,1,20)"><span class="choice-num">②</span><span>두 영역의 CT number 차이 / 노이즈 표준편차</span></div>
+<div class="choice" onclick="ansMC(this,2,20)"><span class="choice-num">③</span><span>관심영역 CT number 평균 / 배경 노이즈</span></div>
+<div class="choice" onclick="ansMC(this,3,20)"><span class="choice-num">④</span><span>최대 CT number / 최소 CT number</span></div>
+<div class="choice" onclick="ansMC(this,4,20)"><span class="choice-num">⑤</span><span>신호 강도 × 노이즈</span></div>
+</div>
+          <div class="expl" id="expl-20"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-20" onclick="toggleBM(20)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-21" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q22</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">CT 대조도 척도(Contrast scale) 측정 시 아크릴 핀과 물의 CT number를 비교한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',21)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',21)">X</button>
+            </div>
+          <div class="expl" id="expl-21"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-21" onclick="toggleBM(21)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-22" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q23</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">고해상도(High) 재구성 알고리즘을 사용했을 때 나타나는 변화로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,22)"><span class="choice-num">①</span><span>공간분해능 감소, 노이즈 감소</span></div>
+<div class="choice" onclick="ansMC(this,1,22)"><span class="choice-num">②</span><span>공간분해능 증가, 노이즈 감소</span></div>
+<div class="choice" onclick="ansMC(this,2,22)"><span class="choice-num">③</span><span>공간분해능 증가, 노이즈 증가</span></div>
+<div class="choice" onclick="ansMC(this,3,22)"><span class="choice-num">④</span><span>공간분해능 감소, 노이즈 증가</span></div>
+<div class="choice" onclick="ansMC(this,4,22)"><span class="choice-num">⑤</span><span>공간분해능과 노이즈 모두 변화 없음</span></div>
+</div>
+          <div class="expl" id="expl-22"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-22" onclick="toggleBM(22)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-23" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q24</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">CT 성능관리에서 인력기준으로 상근 방사선사와 방사선과 의사가 필요하다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',23)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',23)">X</button>
+            </div>
+          <div class="expl" id="expl-23"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-23" onclick="toggleBM(23)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-24" data-ch="Ch.8" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q25</span>
+            <span class="q-ch">Ch.8</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">물팬텀을 이용한 CT 노이즈 측정방법으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,24)"><span class="choice-num">①</span><span>팬텀 외부 표면의 CT number를 측정한다</span></div>
+<div class="choice" onclick="ansMC(this,1,24)"><span class="choice-num">②</span><span>5개 이상의 재질이 포함된 팬텀을 사용한다</span></div>
+<div class="choice" onclick="ansMC(this,2,24)"><span class="choice-num">③</span><span>팬텀 중앙부 ROI에서 CT number 표준편차를 측정한다</span></div>
+<div class="choice" onclick="ansMC(this,3,24)"><span class="choice-num">④</span><span>가장 낮은 CT number와 가장 높은 CT number의 차이를 계산한다</span></div>
+<div class="choice" onclick="ansMC(this,4,24)"><span class="choice-num">⑤</span><span>MTF 소프트웨어를 이용하여 분석한다</span></div>
+</div>
+          <div class="expl" id="expl-24"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-24" onclick="toggleBM(24)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-25" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q26</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Ring artifact의 주요 원인으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,25)"><span class="choice-num">①</span><span>높은 pitch 사용</span></div>
+<div class="choice" onclick="ansMC(this,1,25)"><span class="choice-num">②</span><span>환자 움직임</span></div>
+<div class="choice" onclick="ansMC(this,2,25)"><span class="choice-num">③</span><span>검출소자의 기능이상 또는 calibration 오류</span></div>
+<div class="choice" onclick="ansMC(this,3,25)"><span class="choice-num">④</span><span>부분체적효과</span></div>
+<div class="choice" onclick="ansMC(this,4,25)"><span class="choice-num">⑤</span><span>광자량 부족</span></div>
+</div>
+          <div class="expl" id="expl-25"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-25" onclick="toggleBM(25)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-26" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q27</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Star shape artifact는 체내 고밀도 물질(바륨, 금속)에 의해 발생한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',26)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',26)">X</button>
+            </div>
+          <div class="expl" id="expl-26"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-26" onclick="toggleBM(26)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-27" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q28</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">선속경화(Beam hardening) artifact의 발생 원리로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,27)"><span class="choice-num">①</span><span>하나의 복셀 내 감약계수 차이가 큰 두 조직이 혼재한다</span></div>
+<div class="choice" onclick="ansMC(this,1,27)"><span class="choice-num">②</span><span>다색 X선 중 저에너지가 우선 흡수되어 평균에너지가 증가한다</span></div>
+<div class="choice" onclick="ansMC(this,2,27)"><span class="choice-num">③</span><span>검출기에 도달하는 광자수가 부족하다</span></div>
+<div class="choice" onclick="ansMC(this,3,27)"><span class="choice-num">④</span><span>나선형 스캔의 보간 처리 오류로 발생한다</span></div>
+<div class="choice" onclick="ansMC(this,4,27)"><span class="choice-num">⑤</span><span>환자의 움직임으로 인해 데이터가 불일치한다</span></div>
+</div>
+          <div class="expl" id="expl-27"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-27" onclick="toggleBM(27)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-28" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q29</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">부분체적효과(Partial volume effect)는 슬라이스 두께를 증가시켜 해결한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',28)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',28)">X</button>
+            </div>
+          <div class="expl" id="expl-28"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-28" onclick="toggleBM(28)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-29" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q30</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Streak artifact의 원인으로 옳지 않은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,29)"><span class="choice-num">①</span><span>광자량 부족</span></div>
+<div class="choice" onclick="ansMC(this,1,29)"><span class="choice-num">②</span><span>체내 금속물질</span></div>
+<div class="choice" onclick="ansMC(this,2,29)"><span class="choice-num">③</span><span>환자 움직임</span></div>
+<div class="choice" onclick="ansMC(this,3,29)"><span class="choice-num">④</span><span>검출기 오류</span></div>
+<div class="choice" onclick="ansMC(this,4,29)"><span class="choice-num">⑤</span><span>검출소자 calibration 저하</span></div>
+</div>
+          <div class="expl" id="expl-29"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-29" onclick="toggleBM(29)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-30" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q31</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">부분체적효과 아티팩트는 두개저부나 척추-디스크 경계에서 자주 발생한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',30)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',30)">X</button>
+            </div>
+          <div class="expl" id="expl-30"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-30" onclick="toggleBM(30)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-31" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q32</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Helical artifact가 주로 발생하는 조건은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,31)"><span class="choice-num">①</span><span>낮은 pitch 사용</span></div>
+<div class="choice" onclick="ansMC(this,1,31)"><span class="choice-num">②</span><span>느린 회전속도</span></div>
+<div class="choice" onclick="ansMC(this,2,31)"><span class="choice-num">③</span><span>높은 pitch와 선형 보간 오류</span></div>
+<div class="choice" onclick="ansMC(this,3,31)"><span class="choice-num">④</span><span>두꺼운 슬라이스</span></div>
+<div class="choice" onclick="ansMC(this,4,31)"><span class="choice-num">⑤</span><span>낮은 관전압</span></div>
+</div>
+          <div class="expl" id="expl-31"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-31" onclick="toggleBM(31)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-32" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q33</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">3D 재구성 영상에서 발생하는 Stair step artifact의 원인으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,32)"><span class="choice-num">①</span><span>낮은 pitch</span></div>
+<div class="choice" onclick="ansMC(this,1,32)"><span class="choice-num">②</span><span>빠른 회전속도</span></div>
+<div class="choice" onclick="ansMC(this,2,32)"><span class="choice-num">③</span><span>두꺼운 슬라이스 또는 환자 움직임</span></div>
+<div class="choice" onclick="ansMC(this,3,32)"><span class="choice-num">④</span><span>부족한 광자량</span></div>
+<div class="choice" onclick="ansMC(this,4,32)"><span class="choice-num">⑤</span><span>금속 이물질</span></div>
+</div>
+          <div class="expl" id="expl-32"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-32" onclick="toggleBM(32)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-33" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q34</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Out of field artifact는 복부 CT 촬영 시 환자가 팔을 내린 채로 검사할 때 발생할 수 있다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',33)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',33)">X</button>
+            </div>
+          <div class="expl" id="expl-33"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-33" onclick="toggleBM(33)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-34" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q35</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Cone beam effect에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,34)"><span class="choice-num">①</span><span>SDCT에서 MDCT보다 더 두드러지게 나타난다</span></div>
+<div class="choice" onclick="ansMC(this,1,34)"><span class="choice-num">②</span><span>iso center에 가까울수록 위치 차이가 커진다</span></div>
+<div class="choice" onclick="ansMC(this,2,34)"><span class="choice-num">③</span><span>iso center에서 거리가 멀수록 0°와 180° 위치 차이 발생</span></div>
+<div class="choice" onclick="ansMC(this,3,34)"><span class="choice-num">④</span><span>낮은 pitch에서만 발생한다</span></div>
+<div class="choice" onclick="ansMC(this,4,34)"><span class="choice-num">⑤</span><span>환자 움직임에 의한 아티팩트이다</span></div>
+</div>
+          <div class="expl" id="expl-34"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-34" onclick="toggleBM(34)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-35" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q36</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Moving artifact는 주로 저대조도 경계에서 두드러지게 나타난다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',35)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',35)">X</button>
+            </div>
+          <div class="expl" id="expl-35"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-35" onclick="toggleBM(35)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-36" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q37</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Z축 overbeaming 현상에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,36)"><span class="choice-num">①</span><span>SDCT에서 주로 발생한다</span></div>
+<div class="choice" onclick="ansMC(this,1,36)"><span class="choice-num">②</span><span>Z축 선량분포가 균일하게 나타난다</span></div>
+<div class="choice" onclick="ansMC(this,2,36)"><span class="choice-num">③</span><span>MDCT에서 4슬라이스 이상 시 Z축 선량분포가 불균일하다</span></div>
+<div class="choice" onclick="ansMC(this,3,36)"><span class="choice-num">④</span><span>슬라이스 두께와 무관하다</span></div>
+<div class="choice" onclick="ansMC(this,4,36)"><span class="choice-num">⑤</span><span>선속경화의 일종이다</span></div>
+</div>
+          <div class="expl" id="expl-36"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-36" onclick="toggleBM(36)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-37" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q38</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">Aliasing artifact(Undersampling artifact)의 원인으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,37)"><span class="choice-num">①</span><span>환자의 과도한 움직임</span></div>
+<div class="choice" onclick="ansMC(this,1,37)"><span class="choice-num">②</span><span>MDCT 회전당 프로젝션 수 부족</span></div>
+<div class="choice" onclick="ansMC(this,2,37)"><span class="choice-num">③</span><span>검출소자 calibration 오류</span></div>
+<div class="choice" onclick="ansMC(this,3,37)"><span class="choice-num">④</span><span>높은 pitch 사용</span></div>
+<div class="choice" onclick="ansMC(this,4,37)"><span class="choice-num">⑤</span><span>슬라이스 두께 과다</span></div>
+</div>
+          <div class="expl" id="expl-37"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-37" onclick="toggleBM(37)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-38" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q39</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">금속 제거 알고리즘(MAR)으로 금속 아티팩트를 완전히 제거할 수 있다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',38)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',38)">X</button>
+            </div>
+          <div class="expl" id="expl-38"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-38" onclick="toggleBM(38)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-39" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q40</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Shading artifact의 원인으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,39)"><span class="choice-num">①</span><span>환자 움직임</span></div>
+<div class="choice" onclick="ansMC(this,1,39)"><span class="choice-num">②</span><span>체내 고밀도 금속물질</span></div>
+<div class="choice" onclick="ansMC(this,2,39)"><span class="choice-num">③</span><span>나선형 스캔에서 보간 처리 오류</span></div>
+<div class="choice" onclick="ansMC(this,3,39)"><span class="choice-num">④</span><span>검출소자 기능이상</span></div>
+<div class="choice" onclick="ansMC(this,4,39)"><span class="choice-num">⑤</span><span>광자량 부족</span></div>
+</div>
+          <div class="expl" id="expl-39"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-39" onclick="toggleBM(39)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-40" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q41</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">산란선은 검출기에서 실제보다 높은 감약값을 측정하게 한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',40)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',40)">X</button>
+            </div>
+          <div class="expl" id="expl-40"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-40" onclick="toggleBM(40)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-41" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q42</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">Edge gradient effect(Air-contrast interface artifact)가 발생하는 주요 조건은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,41)"><span class="choice-num">①</span><span>동일한 밀도의 두 물질 경계</span></div>
+<div class="choice" onclick="ansMC(this,1,41)"><span class="choice-num">②</span><span>낮은 감약계수 물질 내부</span></div>
+<div class="choice" onclick="ansMC(this,2,41)"><span class="choice-num">③</span><span>고밀도와 저밀도 물질의 경계면</span></div>
+<div class="choice" onclick="ansMC(this,3,41)"><span class="choice-num">④</span><span>높은 pitch 사용</span></div>
+<div class="choice" onclick="ansMC(this,4,41)"><span class="choice-num">⑤</span><span>환자 움직임</span></div>
+</div>
+          <div class="expl" id="expl-41"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-41" onclick="toggleBM(41)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-42" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q43</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Zebra artifact에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,42)"><span class="choice-num">①</span><span>환자 움직임에 의해 발생한다</span></div>
+<div class="choice" onclick="ansMC(this,1,42)"><span class="choice-num">②</span><span>VRT나 MIP 기법 3D 영상에서 낮은 신호영역의 노이즈 효과이다</span></div>
+<div class="choice" onclick="ansMC(this,2,42)"><span class="choice-num">③</span><span>링 모양으로 나타난다</span></div>
+<div class="choice" onclick="ansMC(this,3,42)"><span class="choice-num">④</span><span>선속경화의 일종이다</span></div>
+<div class="choice" onclick="ansMC(this,4,42)"><span class="choice-num">⑤</span><span>SDCT에서만 나타난다</span></div>
+</div>
+          <div class="expl" id="expl-42"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-42" onclick="toggleBM(42)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-43" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q44</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Off-center positioning artifact는 환자가 이소센터(iso center)를 벗어나 위치했을 때 발생한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',43)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',43)">X</button>
+            </div>
+          <div class="expl" id="expl-43"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-43" onclick="toggleBM(43)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-44" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q45</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Helical artifact 감소 방법으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,44)"><span class="choice-num">①</span><span>pitch를 높인다</span></div>
+<div class="choice" onclick="ansMC(this,1,44)"><span class="choice-num">②</span><span>회전속도를 낮춘다</span></div>
+<div class="choice" onclick="ansMC(this,2,44)"><span class="choice-num">③</span><span>pitch를 낮추거나 개선된 보간 알고리즘 사용</span></div>
+<div class="choice" onclick="ansMC(this,3,44)"><span class="choice-num">④</span><span>슬라이스 두께를 늘린다</span></div>
+<div class="choice" onclick="ansMC(this,4,44)"><span class="choice-num">⑤</span><span>mAs를 줄인다</span></div>
+</div>
+          <div class="expl" id="expl-44"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-44" onclick="toggleBM(44)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-45" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q46</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Ring artifact는 스캔 중심 주위에 동심원 형태로 나타난다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',45)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',45)">X</button>
+            </div>
+          <div class="expl" id="expl-45"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-45" onclick="toggleBM(45)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-46" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q47</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">다음 CT 아티팩트 중 물리적 요인에 의한 것이 아닌 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,46)"><span class="choice-num">①</span><span>선속경화 아티팩트</span></div>
+<div class="choice" onclick="ansMC(this,1,46)"><span class="choice-num">②</span><span>부분체적효과 아티팩트</span></div>
+<div class="choice" onclick="ansMC(this,2,46)"><span class="choice-num">③</span><span>광자량 부족 아티팩트</span></div>
+<div class="choice" onclick="ansMC(this,3,46)"><span class="choice-num">④</span><span>Ring artifact</span></div>
+<div class="choice" onclick="ansMC(this,4,46)"><span class="choice-num">⑤</span><span>Edge gradient effect</span></div>
+</div>
+          <div class="expl" id="expl-46"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-46" onclick="toggleBM(46)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-47" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q48</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">체내 금속 이물질에 의한 아티팩트의 형태로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,47)"><span class="choice-num">①</span><span>동심원(Ring)</span></div>
+<div class="choice" onclick="ansMC(this,1,47)"><span class="choice-num">②</span><span>Shading</span></div>
+<div class="choice" onclick="ansMC(this,2,47)"><span class="choice-num">③</span><span>줄무늬(Streak) + 별모양(Star)</span></div>
+<div class="choice" onclick="ansMC(this,3,47)"><span class="choice-num">④</span><span>Stair step</span></div>
+<div class="choice" onclick="ansMC(this,4,47)"><span class="choice-num">⑤</span><span>Zebra</span></div>
+</div>
+          <div class="expl" id="expl-47"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-47" onclick="toggleBM(47)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-48" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q49</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">부분체적효과는 복셀 내에 두 개 이상의 다른 조직이 포함될 때 그 평균값이 CT number로 표시되는 현상이다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',48)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',48)">X</button>
+            </div>
+          <div class="expl" id="expl-48"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-48" onclick="toggleBM(48)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-49" data-ch="Ch.9" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q50</span>
+            <span class="q-ch">Ch.9</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">다음 중 Helical CT에서 발생하는 아티팩트가 아닌 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,49)"><span class="choice-num">①</span><span>Helical artifact (windmill)</span></div>
+<div class="choice" onclick="ansMC(this,1,49)"><span class="choice-num">②</span><span>Shading artifact</span></div>
+<div class="choice" onclick="ansMC(this,2,49)"><span class="choice-num">③</span><span>Stair step artifact</span></div>
+<div class="choice" onclick="ansMC(this,3,49)"><span class="choice-num">④</span><span>Ring artifact</span></div>
+<div class="choice" onclick="ansMC(this,4,49)"><span class="choice-num">⑤</span><span>Zebra artifact</span></div>
+</div>
+          <div class="expl" id="expl-49"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-49" onclick="toggleBM(49)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-50" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q51</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">유효선량(Effective dose)의 SI 단위는?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,50)"><span class="choice-num">①</span><span>Gray (Gy)</span></div>
+<div class="choice" onclick="ansMC(this,1,50)"><span class="choice-num">②</span><span>Sievert (Sv)</span></div>
+<div class="choice" onclick="ansMC(this,2,50)"><span class="choice-num">③</span><span>Roentgen (R)</span></div>
+<div class="choice" onclick="ansMC(this,3,50)"><span class="choice-num">④</span><span>Becquerel (Bq)</span></div>
+<div class="choice" onclick="ansMC(this,4,50)"><span class="choice-num">⑤</span><span>Curie (Ci)</span></div>
+</div>
+          <div class="expl" id="expl-50"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-50" onclick="toggleBM(50)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-51" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q52</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">CT는 회전 스캔 방식으로 인해 일반촬영과 달리 피사체 전체에 균일한 선량분포를 보인다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',51)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',51)">X</button>
+            </div>
+          <div class="expl" id="expl-51"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-51" onclick="toggleBM(51)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-52" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q53</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CTDIw(weighted CTDI)의 계산 공식으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,52)"><span class="choice-num">①</span><span>1/2 × 중앙 + 1/2 × 주변</span></div>
+<div class="choice" onclick="ansMC(this,1,52)"><span class="choice-num">②</span><span>2/3 × 중앙 + 1/3 × 주변</span></div>
+<div class="choice" onclick="ansMC(this,2,52)"><span class="choice-num">③</span><span>1/3 × 중앙 + 2/3 × 주변</span></div>
+<div class="choice" onclick="ansMC(this,3,52)"><span class="choice-num">④</span><span>1/4 × 중앙 + 3/4 × 주변</span></div>
+<div class="choice" onclick="ansMC(this,4,52)"><span class="choice-num">⑤</span><span>중앙 + 주변의 평균</span></div>
+</div>
+          <div class="expl" id="expl-52"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-52" onclick="toggleBM(52)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-53" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q54</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">두부용 CTDI 측정 팬텀의 직경은 32cm이다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',53)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',53)">X</button>
+            </div>
+          <div class="expl" id="expl-53"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-53" onclick="toggleBM(53)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-54" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q55</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">DLP(Dose Length Product)의 단위로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,54)"><span class="choice-num">①</span><span>mGy</span></div>
+<div class="choice" onclick="ansMC(this,1,54)"><span class="choice-num">②</span><span>mSv</span></div>
+<div class="choice" onclick="ansMC(this,2,54)"><span class="choice-num">③</span><span>mGy·cm</span></div>
+<div class="choice" onclick="ansMC(this,3,54)"><span class="choice-num">④</span><span>mGy/cm</span></div>
+<div class="choice" onclick="ansMC(this,4,54)"><span class="choice-num">⑤</span><span>Gy·s</span></div>
+</div>
+          <div class="expl" id="expl-54"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-54" onclick="toggleBM(54)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-55" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q56</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">pitch를 2배로 증가시키면 CTDIvol는 어떻게 변하는가?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,55)"><span class="choice-num">①</span><span>2배 증가</span></div>
+<div class="choice" onclick="ansMC(this,1,55)"><span class="choice-num">②</span><span>1/2로 감소</span></div>
+<div class="choice" onclick="ansMC(this,2,55)"><span class="choice-num">③</span><span>변화 없음</span></div>
+<div class="choice" onclick="ansMC(this,3,55)"><span class="choice-num">④</span><span>4배 증가</span></div>
+<div class="choice" onclick="ansMC(this,4,55)"><span class="choice-num">⑤</span><span>√2배 증가</span></div>
+</div>
+          <div class="expl" id="expl-55"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-55" onclick="toggleBM(55)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-56" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q57</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">흡수선량의 단위는 Gray(Gy)이며, 1Gy = 1J/kg이다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',56)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',56)">X</button>
+            </div>
+          <div class="expl" id="expl-56"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-56" onclick="toggleBM(56)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-57" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q58</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">CTDI 측정을 위한 Ion chamber dosimetry용 팬텀 구조로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,57)"><span class="choice-num">①</span><span>아크릴 구형 팬텀, 중앙에 1개 구멍</span></div>
+<div class="choice" onclick="ansMC(this,1,57)"><span class="choice-num">②</span><span>아크릴 원통형, 중앙과 상하좌우 주변 5개 구멍</span></div>
+<div class="choice" onclick="ansMC(this,2,57)"><span class="choice-num">③</span><span>납 원통형, 중앙에 이온챔버 삽입</span></div>
+<div class="choice" onclick="ansMC(this,3,57)"><span class="choice-num">④</span><span>물로 채워진 원통형 팬텀</span></div>
+<div class="choice" onclick="ansMC(this,4,57)"><span class="choice-num">⑤</span><span>두개 TLD 삽입용 인체모형</span></div>
+</div>
+          <div class="expl" id="expl-57"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-57" onclick="toggleBM(57)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-58" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q59</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CT 선량 영향인자에서 관전압(kV)과 선량의 관계로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,58)"><span class="choice-num">①</span><span>kV↑ → 선량↓ (에너지 낭비)</span></div>
+<div class="choice" onclick="ansMC(this,1,58)"><span class="choice-num">②</span><span>kV↑ → 선량↑ (광자에너지 및 투과력↑)</span></div>
+<div class="choice" onclick="ansMC(this,2,58)"><span class="choice-num">③</span><span>kV는 선량에 영향을 미치지 않는다</span></div>
+<div class="choice" onclick="ansMC(this,3,58)"><span class="choice-num">④</span><span>kV↑ → 노이즈만 증가한다</span></div>
+<div class="choice" onclick="ansMC(this,4,58)"><span class="choice-num">⑤</span><span>kV와 선량은 반비례 관계이다</span></div>
+</div>
+          <div class="expl" id="expl-58"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-58" onclick="toggleBM(58)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-59" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q60</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">유효선량은 각 조직/장기의 등가선량에 조직가중치를 곱한 합산값이다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',59)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',59)">X</button>
+            </div>
+          <div class="expl" id="expl-59"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-59" onclick="toggleBM(59)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-60" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q61</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">방사능의 단위로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,60)"><span class="choice-num">①</span><span>Sievert (Sv)</span></div>
+<div class="choice" onclick="ansMC(this,1,60)"><span class="choice-num">②</span><span>Gray (Gy)</span></div>
+<div class="choice" onclick="ansMC(this,2,60)"><span class="choice-num">③</span><span>Becquerel (Bq)</span></div>
+<div class="choice" onclick="ansMC(this,3,60)"><span class="choice-num">④</span><span>Roentgen (R)</span></div>
+<div class="choice" onclick="ansMC(this,4,60)"><span class="choice-num">⑤</span><span>Coulomb/kg (C/kg)</span></div>
+</div>
+          <div class="expl" id="expl-60"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-60" onclick="toggleBM(60)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-61" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q62</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">MSAD(Multiple Scan Average Dose)에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,61)"><span class="choice-num">①</span><span>단일 슬라이스 스캔의 선량 지표이다</span></div>
+<div class="choice" onclick="ansMC(this,1,61)"><span class="choice-num">②</span><span>인접 슬라이스 간 산란선 중복 없이 계산한다</span></div>
+<div class="choice" onclick="ansMC(this,2,61)"><span class="choice-num">③</span><span>다중 슬라이스 스캔 시 인접 슬라이스의 선량 중첩을 고려한 실제 검사 선량이다</span></div>
+<div class="choice" onclick="ansMC(this,3,61)"><span class="choice-num">④</span><span>CTDIvol과 동일한 개념이다</span></div>
+<div class="choice" onclick="ansMC(this,4,61)"><span class="choice-num">⑤</span><span>스캔 범위에 무관하게 계산된다</span></div>
+</div>
+          <div class="expl" id="expl-61"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-61" onclick="toggleBM(61)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-62" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q63</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Bowtie filter(beam shaping filter)의 역할로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,62)"><span class="choice-num">①</span><span>모든 방향에 동일한 강도로 X선 조사</span></div>
+<div class="choice" onclick="ansMC(this,1,62)"><span class="choice-num">②</span><span>피사체 주변부에 더 많은 X선 조사하여 선량 균일화</span></div>
+<div class="choice" onclick="ansMC(this,2,62)"><span class="choice-num">③</span><span>피사체 중앙부에 더 많은 X선 조사하여 균일화</span></div>
+<div class="choice" onclick="ansMC(this,3,62)"><span class="choice-num">④</span><span>피폭선량을 전체적으로 증가</span></div>
+<div class="choice" onclick="ansMC(this,4,62)"><span class="choice-num">⑤</span><span>고에너지 X선만 선택적으로 통과</span></div>
+</div>
+          <div class="expl" id="expl-62"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-62" onclick="toggleBM(62)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-63" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q64</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">자동노출제어(AEC)는 환자의 크기와 무관하게 일정한 mAs를 사용한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',63)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',63)">X</button>
+            </div>
+          <div class="expl" id="expl-63"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-63" onclick="toggleBM(63)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-64" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q65</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CT 피폭선량 감소 방법으로 옳지 않은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,64)"><span class="choice-num">①</span><span>필요 이상 슬라이스 수 감소</span></div>
+<div class="choice" onclick="ansMC(this,1,64)"><span class="choice-num">②</span><span>짧은 스캔 시간</span></div>
+<div class="choice" onclick="ansMC(this,2,64)"><span class="choice-num">③</span><span>반복 노출 감소</span></div>
+<div class="choice" onclick="ansMC(this,3,64)"><span class="choice-num">④</span><span>pitch 감소</span></div>
+<div class="choice" onclick="ansMC(this,4,64)"><span class="choice-num">⑤</span><span>방어기구 사용</span></div>
+</div>
+          <div class="expl" id="expl-64"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-64" onclick="toggleBM(64)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-65" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q66</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">조사선량(Exposure dose)의 SI 단위는 C/kg이다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',65)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',65)">X</button>
+            </div>
+          <div class="expl" id="expl-65"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-65" onclick="toggleBM(65)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-66" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q67</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">CT에서 관전류(mA)를 일정하게 유지할 때 스캔 시간을 2배로 늘리면 선량은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,66)"><span class="choice-num">①</span><span>변화 없음</span></div>
+<div class="choice" onclick="ansMC(this,1,66)"><span class="choice-num">②</span><span>1/2로 감소</span></div>
+<div class="choice" onclick="ansMC(this,2,66)"><span class="choice-num">③</span><span>2배 증가</span></div>
+<div class="choice" onclick="ansMC(this,3,66)"><span class="choice-num">④</span><span>4배 증가</span></div>
+<div class="choice" onclick="ansMC(this,4,66)"><span class="choice-num">⑤</span><span>√2배 증가</span></div>
+</div>
+          <div class="expl" id="expl-66"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-66" onclick="toggleBM(66)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-67" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q68</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">TLD 측정용 인체모형 팬텀(anthropomorphic phantom)의 주요 용도는?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,67)"><span class="choice-num">①</span><span>CT 장치 기하학적 교정</span></div>
+<div class="choice" onclick="ansMC(this,1,67)"><span class="choice-num">②</span><span>공간분해능 측정</span></div>
+<div class="choice" onclick="ansMC(this,2,67)"><span class="choice-num">③</span><span>방사선 치료 및 진단 영역에서 장기별 흡수선량 측정</span></div>
+<div class="choice" onclick="ansMC(this,3,67)"><span class="choice-num">④</span><span>균일도 측정</span></div>
+<div class="choice" onclick="ansMC(this,4,67)"><span class="choice-num">⑤</span><span>슬라이스 두께 보정</span></div>
+</div>
+          <div class="expl" id="expl-67"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-67" onclick="toggleBM(67)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-68" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q69</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">등가선량(Equivalent dose)은 흡수선량과 방사선 가중치의 곱이다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',68)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',68)">X</button>
+            </div>
+          <div class="expl" id="expl-68"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-68" onclick="toggleBM(68)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-69" data-ch="Ch.10-11" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q70</span>
+            <span class="q-ch">Ch.10-11</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">CT 검사 후 유효선량 추정에 활용되는 값으로 가장 적합한 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,69)"><span class="choice-num">①</span><span>CTDI in air</span></div>
+<div class="choice" onclick="ansMC(this,1,69)"><span class="choice-num">②</span><span>CTDIw</span></div>
+<div class="choice" onclick="ansMC(this,2,69)"><span class="choice-num">③</span><span>DLP와 변환계수(k-factor)의 곱</span></div>
+<div class="choice" onclick="ansMC(this,3,69)"><span class="choice-num">④</span><span>mAs 총량</span></div>
+<div class="choice" onclick="ansMC(this,4,69)"><span class="choice-num">⑤</span><span>관전압(kV)</span></div>
+</div>
+          <div class="expl" id="expl-69"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-69" onclick="toggleBM(69)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-70" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q71</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">CT 검사 시 조영제 사용을 위한 IV route 굵기로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,70)"><span class="choice-num">①</span><span>22G</span></div>
+<div class="choice" onclick="ansMC(this,1,70)"><span class="choice-num">②</span><span>20G</span></div>
+<div class="choice" onclick="ansMC(this,2,70)"><span class="choice-num">③</span><span>18G</span></div>
+<div class="choice" onclick="ansMC(this,3,70)"><span class="choice-num">④</span><span>16G</span></div>
+<div class="choice" onclick="ansMC(this,4,70)"><span class="choice-num">⑤</span><span>24G</span></div>
+</div>
+          <div class="expl" id="expl-70"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-70" onclick="toggleBM(70)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-71" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q72</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">조영제 사용 CT 검사 시 6시간 이상 금식이 필요하다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',71)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',71)">X</button>
+            </div>
+          <div class="expl" id="expl-71"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-71" onclick="toggleBM(71)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-72" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q73</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Brain CT에서 급성 뇌경색만 평가할 때 적합한 촬영 방법은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,72)"><span class="choice-num">①</span><span>Pre contrast만 시행</span></div>
+<div class="choice" onclick="ansMC(this,1,72)"><span class="choice-num">②</span><span>Post contrast만 시행</span></div>
+<div class="choice" onclick="ansMC(this,2,72)"><span class="choice-num">③</span><span>Pre + Post contrast 모두 시행</span></div>
+<div class="choice" onclick="ansMC(this,3,72)"><span class="choice-num">④</span><span>조영제 없이 MRI 병행</span></div>
+<div class="choice" onclick="ansMC(this,4,72)"><span class="choice-num">⑤</span><span>Dynamic CT 시행</span></div>
+</div>
+          <div class="expl" id="expl-72"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-72" onclick="toggleBM(72)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-73" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q74</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Brain routine CT scout는 lateral projection으로 두개골 전체가 포함되도록 촬영한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',73)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',73)">X</button>
+            </div>
+          <div class="expl" id="expl-73"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-73" onclick="toggleBM(73)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-74" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q75</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">급성 뇌출혈(ICH)의 CT 소견으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,74)"><span class="choice-num">①</span><span>저밀도(hypodense)로 나타난다</span></div>
+<div class="choice" onclick="ansMC(this,1,74)"><span class="choice-num">②</span><span>등밀도(isodense)로 나타난다</span></div>
+<div class="choice" onclick="ansMC(this,2,74)"><span class="choice-num">③</span><span>고밀도(hyperdense)로 나타난다</span></div>
+<div class="choice" onclick="ansMC(this,3,74)"><span class="choice-num">④</span><span>CT에서 관찰할 수 없다</span></div>
+<div class="choice" onclick="ansMC(this,4,74)"><span class="choice-num">⑤</span><span>조영제를 사용해야만 보인다</span></div>
+</div>
+          <div class="expl" id="expl-74"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-74" onclick="toggleBM(74)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-75" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q76</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">흉부 CT에서 폐실질 관찰을 위한 WW/WL 설정으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,75)"><span class="choice-num">①</span><span>WW 350 / WL 40</span></div>
+<div class="choice" onclick="ansMC(this,1,75)"><span class="choice-num">②</span><span>WW 1500 / WL -600</span></div>
+<div class="choice" onclick="ansMC(this,2,75)"><span class="choice-num">③</span><span>WW 1500 / WL 300</span></div>
+<div class="choice" onclick="ansMC(this,3,75)"><span class="choice-num">④</span><span>WW 80 / WL 40</span></div>
+<div class="choice" onclick="ansMC(this,4,75)"><span class="choice-num">⑤</span><span>WW 2000 / WL 500</span></div>
+</div>
+          <div class="expl" id="expl-75"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-75" onclick="toggleBM(75)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-76" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q77</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Low dose CT는 조영제를 사용하지 않으며 폐암 선별검사에 주로 사용된다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',76)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',76)">X</button>
+            </div>
+          <div class="expl" id="expl-76"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-76" onclick="toggleBM(76)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-77" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q78</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">Auto bolus tracking 기법에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,77)"><span class="choice-num">①</span><span>조영제 용량을 결정하기 위한 방법이다</span></div>
+<div class="choice" onclick="ansMC(this,1,77)"><span class="choice-num">②</span><span>관심 혈관의 CT값이 일정 threshold에 도달하면 자동으로 스캔을 시작한다</span></div>
+<div class="choice" onclick="ansMC(this,2,77)"><span class="choice-num">③</span><span>심전도를 이용하여 심장 박동에 동조한다</span></div>
+<div class="choice" onclick="ansMC(this,3,77)"><span class="choice-num">④</span><span>조영제 없이 혈관을 평가하는 기법이다</span></div>
+<div class="choice" onclick="ansMC(this,4,77)"><span class="choice-num">⑤</span><span>HR lung CT에서 주로 사용한다</span></div>
+</div>
+          <div class="expl" id="expl-77"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-77" onclick="toggleBM(77)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-78" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q79</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">HR lung CT는 기관지 확장증과 폐 섬유화증 진단에 사용된다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',78)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',78)">X</button>
+            </div>
+          <div class="expl" id="expl-78"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-78" onclick="toggleBM(78)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-79" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q80</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">복부 Routine CT에서 Portal phase 지연시간으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,79)"><span class="choice-num">①</span><span>20초</span></div>
+<div class="choice" onclick="ansMC(this,1,79)"><span class="choice-num">②</span><span>40초</span></div>
+<div class="choice" onclick="ansMC(this,2,79)"><span class="choice-num">③</span><span>70초</span></div>
+<div class="choice" onclick="ansMC(this,3,79)"><span class="choice-num">④</span><span>120초</span></div>
+<div class="choice" onclick="ansMC(this,4,79)"><span class="choice-num">⑤</span><span>5분</span></div>
+</div>
+          <div class="expl" id="expl-79"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-79" onclick="toggleBM(79)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-80" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q81</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">간세포암(HCC) CT 진단에서 가장 특징적인 소견은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,80)"><span class="choice-num">①</span><span>문맥기에 저밀도로 나타난다</span></div>
+<div class="choice" onclick="ansMC(this,1,80)"><span class="choice-num">②</span><span>조영증강이 전혀 없다</span></div>
+<div class="choice" onclick="ansMC(this,2,80)"><span class="choice-num">③</span><span>동맥기에 고밀도(hypervascular)로 나타난다</span></div>
+<div class="choice" onclick="ansMC(this,3,80)"><span class="choice-num">④</span><span>지연기에 급격히 증강된다</span></div>
+<div class="choice" onclick="ansMC(this,4,80)"><span class="choice-num">⑤</span><span>균일한 저밀도로 낭종과 구별이 어렵다</span></div>
+</div>
+          <div class="expl" id="expl-80"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-80" onclick="toggleBM(80)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-81" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q82</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">간 낭종(Cyst)의 CT값은 약 0HU이며 조영증강이 없다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',81)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',81)">X</button>
+            </div>
+          <div class="expl" id="expl-81"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-81" onclick="toggleBM(81)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-82" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q83</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">뇌 정위 CT(Brain stereotactic CT)의 목적으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,82)"><span class="choice-num">①</span><span>폐질환 선별</span></div>
+<div class="choice" onclick="ansMC(this,1,82)"><span class="choice-num">②</span><span>두개내 병변의 수술 위치잡이</span></div>
+<div class="choice" onclick="ansMC(this,2,82)"><span class="choice-num">③</span><span>심장 구조 평가</span></div>
+<div class="choice" onclick="ansMC(this,3,82)"><span class="choice-num">④</span><span>척수강 내 조영제 분포 확인</span></div>
+<div class="choice" onclick="ansMC(this,4,82)"><span class="choice-num">⑤</span><span>체지방 분포 측정</span></div>
+</div>
+          <div class="expl" id="expl-82"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-82" onclick="toggleBM(82)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-83" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q84</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Cardiac CT는 심전도 동조화(EKG gating)가 필요하다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',83)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',83)">X</button>
+            </div>
+          <div class="expl" id="expl-83"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-83" onclick="toggleBM(83)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-84" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q85</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CT myelography의 목적으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,84)"><span class="choice-num">①</span><span>뇌종양 조영증강 평가</span></div>
+<div class="choice" onclick="ansMC(this,1,84)"><span class="choice-num">②</span><span>척수강 내 조영제 주입 후 디스크 탈출증 진단</span></div>
+<div class="choice" onclick="ansMC(this,2,84)"><span class="choice-num">③</span><span>복강 내 종양 위치 확인</span></div>
+<div class="choice" onclick="ansMC(this,3,84)"><span class="choice-num">④</span><span>골밀도 측정</span></div>
+<div class="choice" onclick="ansMC(this,4,84)"><span class="choice-num">⑤</span><span>혈관 3D 재구성</span></div>
+</div>
+          <div class="expl" id="expl-84"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-84" onclick="toggleBM(84)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-85" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q86</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">CT 가상내시경 검사에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,85)"><span class="choice-num">①</span><span>실제 내시경을 삽입하여 시행한다</span></div>
+<div class="choice" onclick="ansMC(this,1,85)"><span class="choice-num">②</span><span>방사선 없이 MRI로 재구성한다</span></div>
+<div class="choice" onclick="ansMC(this,2,85)"><span class="choice-num">③</span><span>CT로 얻은 데이터를 3D 재구성하여 내강을 영상화한다</span></div>
+<div class="choice" onclick="ansMC(this,3,85)"><span class="choice-num">④</span><span>조영제 없이는 시행 불가하다</span></div>
+<div class="choice" onclick="ansMC(this,4,85)"><span class="choice-num">⑤</span><span>심전도 동조화가 필요하다</span></div>
+</div>
+          <div class="expl" id="expl-85"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-85" onclick="toggleBM(85)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-86" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q87</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">뇌지주막하 출혈(SAH)의 CT 소견으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,86)"><span class="choice-num">①</span><span>측뇌실 내 저밀도</span></div>
+<div class="choice" onclick="ansMC(this,1,86)"><span class="choice-num">②</span><span>뇌교 주변 고밀도</span></div>
+<div class="choice" onclick="ansMC(this,2,86)"><span class="choice-num">③</span><span>뇌조(cistern) 내 고밀도</span></div>
+<div class="choice" onclick="ansMC(this,3,86)"><span class="choice-num">④</span><span>뇌실질 내 균일 저밀도</span></div>
+<div class="choice" onclick="ansMC(this,4,86)"><span class="choice-num">⑤</span><span>볼록렌즈형 고밀도</span></div>
+</div>
+          <div class="expl" id="expl-86"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-86" onclick="toggleBM(86)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-87" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q88</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">경막외출혈(EDH)은 CT에서 볼록렌즈형 고밀도로 나타난다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',87)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',87)">X</button>
+            </div>
+          <div class="expl" id="expl-87"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-87" onclick="toggleBM(87)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-88" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q89</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CT Perfusion에서 평가하는 파라미터가 아닌 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,88)"><span class="choice-num">①</span><span>CBV(뇌혈액량)</span></div>
+<div class="choice" onclick="ansMC(this,1,88)"><span class="choice-num">②</span><span>CBF(뇌혈류량)</span></div>
+<div class="choice" onclick="ansMC(this,2,88)"><span class="choice-num">③</span><span>MTT(평균통과시간)</span></div>
+<div class="choice" onclick="ansMC(this,3,88)"><span class="choice-num">④</span><span>TTP(peak 도달시간)</span></div>
+<div class="choice" onclick="ansMC(this,4,88)"><span class="choice-num">⑤</span><span>BMD(골밀도)</span></div>
+</div>
+          <div class="expl" id="expl-88"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-88" onclick="toggleBM(88)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-89" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q90</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">Cisternography(뇌조조영술)의 적응증으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,89)"><span class="choice-num">①</span><span>뇌종양 병기 결정</span></div>
+<div class="choice" onclick="ansMC(this,1,89)"><span class="choice-num">②</span><span>외상 후 뇌척수액(CSF) 누출 확인</span></div>
+<div class="choice" onclick="ansMC(this,2,89)"><span class="choice-num">③</span><span>골밀도 측정</span></div>
+<div class="choice" onclick="ansMC(this,3,89)"><span class="choice-num">④</span><span>심장 관상동맥 평가</span></div>
+<div class="choice" onclick="ansMC(this,4,89)"><span class="choice-num">⑤</span><span>폐암 선별검사</span></div>
+</div>
+          <div class="expl" id="expl-89"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-89" onclick="toggleBM(89)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-90" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q91</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">방사선 치료계획 CT는 종양 위치에 방사선이 집중되도록 치료를 계획하기 위해 시행한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',90)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',90)">X</button>
+            </div>
+          <div class="expl" id="expl-90"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-90" onclick="toggleBM(90)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-91" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q92</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">경막하출혈(SDH)의 CT 소견으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,91)"><span class="choice-num">①</span><span>볼록렌즈형 고밀도</span></div>
+<div class="choice" onclick="ansMC(this,1,91)"><span class="choice-num">②</span><span>뇌조 내 고밀도</span></div>
+<div class="choice" onclick="ansMC(this,2,91)"><span class="choice-num">③</span><span>초승달형(crescent) 고밀도 또는 저밀도</span></div>
+<div class="choice" onclick="ansMC(this,3,91)"><span class="choice-num">④</span><span>뇌실 내 출혈</span></div>
+<div class="choice" onclick="ansMC(this,4,91)"><span class="choice-num">⑤</span><span>뇌실질 내 국소 저밀도</span></div>
+</div>
+          <div class="expl" id="expl-91"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-91" onclick="toggleBM(91)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-92" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q93</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">HR lung CT(고해상도 폐 CT)에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,92)"><span class="choice-num">①</span><span>조영제를 반드시 사용한다</span></div>
+<div class="choice" onclick="ansMC(this,1,92)"><span class="choice-num">②</span><span>연속 스캔 방식으로 촬영한다</span></div>
+<div class="choice" onclick="ansMC(this,2,92)"><span class="choice-num">③</span><span>슬라이스 두께 1-2mm의 간헐적 스캔을 한다</span></div>
+<div class="choice" onclick="ansMC(this,3,92)"><span class="choice-num">④</span><span>흡기 시에는 촬영하지 않는다</span></div>
+<div class="choice" onclick="ansMC(this,4,92)"><span class="choice-num">⑤</span><span>저선량(40mAs)이 표준이다</span></div>
+</div>
+          <div class="expl" id="expl-92"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-92" onclick="toggleBM(92)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-93" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q94</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">Fat CT는 체지방 분석과 비만도 측정을 위해 내장지방과 피하지방을 정량적으로 분석한다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',93)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',93)">X</button>
+            </div>
+          <div class="expl" id="expl-93"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-93" onclick="toggleBM(93)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-94" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q95</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">흉부 CT에서 조영제 급속주입 시 아티팩트가 발생하기 쉬운 부위는?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,94)"><span class="choice-num">①</span><span>대동맥 하행부</span></div>
+<div class="choice" onclick="ansMC(this,1,94)"><span class="choice-num">②</span><span>폐동맥</span></div>
+<div class="choice" onclick="ansMC(this,2,94)"><span class="choice-num">③</span><span>쇄골하정맥과 상대정맥</span></div>
+<div class="choice" onclick="ansMC(this,3,94)"><span class="choice-num">④</span><span>폐정맥</span></div>
+<div class="choice" onclick="ansMC(this,4,94)"><span class="choice-num">⑤</span><span>기관지</span></div>
+</div>
+          <div class="expl" id="expl-94"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-94" onclick="toggleBM(94)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-95" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q96</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">뇌 Brain CT에서 사용하는 주요 재구성 알고리즘은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,95)"><span class="choice-num">①</span><span>Bone 알고리즘</span></div>
+<div class="choice" onclick="ansMC(this,1,95)"><span class="choice-num">②</span><span>Lung 알고리즘</span></div>
+<div class="choice" onclick="ansMC(this,2,95)"><span class="choice-num">③</span><span>Standard 알고리즘</span></div>
+<div class="choice" onclick="ansMC(this,3,95)"><span class="choice-num">④</span><span>Soft tissue 알고리즘</span></div>
+<div class="choice" onclick="ansMC(this,4,95)"><span class="choice-num">⑤</span><span>Ultra high 알고리즘</span></div>
+</div>
+          <div class="expl" id="expl-95"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-95" onclick="toggleBM(95)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-96" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q97</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">간 혈관종(Hemangioma)은 동맥기에 전체가 균일하게 조영증강된다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',96)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',96)">X</button>
+            </div>
+          <div class="expl" id="expl-96"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-96" onclick="toggleBM(96)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-97" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q98</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">CT scanography의 주요 적응증으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,97)"><span class="choice-num">①</span><span>뇌경색 진단</span></div>
+<div class="choice" onclick="ansMC(this,1,97)"><span class="choice-num">②</span><span>소아 양측 하지 길이 비교 측정</span></div>
+<div class="choice" onclick="ansMC(this,2,97)"><span class="choice-num">③</span><span>심장 관상동맥 평가</span></div>
+<div class="choice" onclick="ansMC(this,3,97)"><span class="choice-num">④</span><span>폐암 선별</span></div>
+<div class="choice" onclick="ansMC(this,4,97)"><span class="choice-num">⑤</span><span>간 종양 평가</span></div>
+</div>
+          <div class="expl" id="expl-97"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-97" onclick="toggleBM(97)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-98" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q99</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-3">심화</span>
+          </div>
+          <div class="q-text">Cardiac CT의 전향적 동조화(prospective gating)에 대한 설명으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,98)"><span class="choice-num">①</span><span>R-R interval 전체에서 연속 스캔한다</span></div>
+<div class="choice" onclick="ansMC(this,1,98)"><span class="choice-num">②</span><span>R-wave로부터 일정 시간에만 스캔하여 선량을 절약한다</span></div>
+<div class="choice" onclick="ansMC(this,2,98)"><span class="choice-num">③</span><span>심전도 정보 없이 촬영한다</span></div>
+<div class="choice" onclick="ansMC(this,3,98)"><span class="choice-num">④</span><span>이완기만 촬영한다</span></div>
+<div class="choice" onclick="ansMC(this,4,98)"><span class="choice-num">⑤</span><span>호흡에 동기화하여 촬영한다</span></div>
+</div>
+          <div class="expl" id="expl-98"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-98" onclick="toggleBM(98)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-99" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q100</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-2">중급</span>
+          </div>
+          <div class="q-text">뇌경색과 뇌출혈의 CT 감별점으로 옳은 것은?</div>
+          <div class="choices"><div class="choice" onclick="ansMC(this,0,99)"><span class="choice-num">①</span><span>뇌경색: 고밀도, 뇌출혈: 저밀도</span></div>
+<div class="choice" onclick="ansMC(this,1,99)"><span class="choice-num">②</span><span>뇌경색: 저밀도(발병 24시간 후), 뇌출혈: 고밀도</span></div>
+<div class="choice" onclick="ansMC(this,2,99)"><span class="choice-num">③</span><span>둘 다 고밀도로 나타난다</span></div>
+<div class="choice" onclick="ansMC(this,3,99)"><span class="choice-num">④</span><span>CT로는 감별이 불가하다</span></div>
+<div class="choice" onclick="ansMC(this,4,99)"><span class="choice-num">⑤</span><span>뇌경색은 조영제를 써야 보인다</span></div>
+</div>
+          <div class="expl" id="expl-99"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-99" onclick="toggleBM(99)">☆ 표시</button>
+          </div>
+        </div>
+<div class="qcard" id="qcard-100" data-ch="Ch.12" data-done="0">
+          <div class="q-meta">
+            <span class="q-num">Q101</span>
+            <span class="q-ch">Ch.12</span>
+            <span class="q-diff diff-1">기본</span>
+          </div>
+          <div class="q-text">복부 CT에서 낭종의 CT값이 0HU에 가깝고 조영증강이 없으면 단순 낭종을 강하게 의심할 수 있다.</div>
+          <div class="ox-wrap">
+              <button class="ox-btn" onclick="ansOX(this,'O',100)">O</button>
+              <button class="ox-btn" onclick="ansOX(this,'X',100)">X</button>
+            </div>
+          <div class="expl" id="expl-100"></div>
+          <div class="q-actions">
+            <button class="bm-btn" id="bm-100" onclick="toggleBM(100)">☆ 표시</button>
+          </div>
+        </div>
+
+</div>
+
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-box">
+    <div class="result-title">🎯 채점 결과</div>
+    <div class="result-score" id="rScore">0/100</div>
+    <div class="result-pct" id="rPct">정답률: 0%</div>
+    <div class="result-breakdown">
+      <div class="rb-item"><div class="rb-val" id="rC" style="color:var(--gr)">0</div>정답</div>
+      <div class="rb-item"><div class="rb-val" id="rW" style="color:var(--re)">0</div>오답</div>
+      <div class="rb-item"><div class="rb-val" id="rS">0</div>풀지 않음</div>
+      <div class="rb-item"><div class="rb-val" id="rBM">0</div>★ 표시</div>
+    </div>
+    <div class="result-btns">
+      <button class="r-btn r-btn-sec" onclick="filterCh('wrong',null);closeResult()">오답 보기</button>
+      <button class="r-btn r-btn-pri" onclick="closeResult()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = [{"type": "mc", "answer": 2, "expl": "PSF(Point Spread Function)\ub294 \uc810 \ud655\uc0b0\ud568\uc218\ub85c, \ucca0\uc0ac \uac19\uc740 \uc810 \ud53c\uc0ac\uccb4\ub97c \uc601\uc0c1\ud654\ud588\uc744 \ub54c \uc2e4\uc81c \uc810\uc73c\ub85c \uc7ac\ud604\uc2dc\ud0a4\uc9c0 \ubabb\ud558\ub294 \ud37c\uc9d0 \uc815\ub3c4\ub97c \ub098\ud0c0\ub0c5\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "mc", "answer": 1, "expl": "MTF\ub294 \uac01 \uacf5\uac04\uc8fc\ud30c\uc218\uc5d0\uc11c \uc2dc\uc2a4\ud15c\uc774 \uc5bc\ub9c8\ub098 \uc815\ubcf4\ub97c \uc804\ub2ec\ud558\ub294\uc9c0 0~1\ub85c \ud45c\ud604\ud569\ub2c8\ub2e4. MTF 10% \uc9c0\uc810\uc774 \uacf5\uac04\ubd84\ud574\ub2a5 \ud55c\uacc4\uc774\uba70, \uc774\uc0c1\uc801\uc778 \uc2dc\uc2a4\ud15c\uc740 \uc804 \uc8fc\ud30c\uc218\uc5d0\uc11c MTF=1\uc785\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ub178\uc774\uc988 = \ub3d9\uc77c\ubb3c\uc9c8 \uc2a4\uce94 \uc2dc \ud53d\uc140\ubcc4 CT number \ud45c\uc900\ud3b8\ucc28. \ubb3c\ud32c\ud140\uc73c\ub85c \uce21\uc815\ud569\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "mc", "answer": 3, "expl": "\uace0\ud574\uc0c1\ub3c4(High) \uc54c\uace0\ub9ac\uc998\uc740 \uacf5\uac04\ubd84\ud574\ub2a5\uc740 \ub192\uc774\uc9c0\ub9cc \ub178\uc774\uc988\uac00 \uc99d\uac00\ud569\ub2c8\ub2e4. \ub178\uc774\uc988 \uac10\uc18c\uc5d0\ub294 Soft \uc54c\uace0\ub9ac\uc998\uc744 \uc0ac\uc6a9\ud569\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ub178\uc774\uc988 \u221d 1/\u221a(\uad11\uc790\uc218) \u221d 1/\u221a(mAs). mAs 2\ubc30 \u2192 \uad11\uc790\uc218 2\ubc30 \u2192 \ub178\uc774\uc988 1/\u221a2 \u2248 0.71\ubc30 \uac10\uc18c.", "ch": "Ch.8"}, {"type": "mc", "answer": 3, "expl": "\ud53d\uc140 \ud06c\uae30\uac00 \uc791\uc744\uc218\ub85d \ub354 \uc138\ubc00\ud55c \uad6c\uc870 \ud45c\ud604\uc774 \uac00\ub2a5\ud558\uc5ec \uacf5\uac04\ubd84\ud574\ub2a5\uc774 \ud5a5\uc0c1\ub429\ub2c8\ub2e4. \ucd08\uc810 \ud06c\uae30\u00b7\uac80\ucd9c\uae30 \ud3ed\uc740 \uc791\uc744\uc218\ub85d, Projection \uc218\ub294 \ub9ce\uc744\uc218\ub85d \uc720\ub9ac\ud569\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "mc", "answer": 3, "expl": "\ub300\uc870\ub3c4\ubd84\ud574\ub2a5 = \uc870\uc9c1\ubd84\ud574\ub2a5 = \uc800\ub300\uc870\ub3c4 \ubd84\ud574\ub2a5. \uac10\uc57d\ucc28\uac00 \uc791\uc740 \uad6c\uc870\ubb3c \uad6c\ubd84 \ub2a5\ub825\uc774\uba70, \ub178\uc774\uc988\uac00 \uc99d\uac00\ud558\uba74 \uc624\ud788\ub824 \uc800\ud558\ub429\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "ox", "answer": "O", "expl": "\u2705 SNR = \uad00\uc2ec\uc601\uc5ed \ud3c9\uade0 \uc2e0\ud638 / \ub178\uc774\uc988(\ud45c\uc900\ud3b8\ucc28). SNR\u2191 = \uc2e0\ud638 \ub300\ube44 \ub178\uc774\uc988\uac00 \uc801\uc740 \uc0c1\ud0dc.", "ch": "Ch.8"}, {"type": "mc", "answer": 1, "expl": "\uade0\uc77c\ub3c4: \ubb3c\ud32c\ud140\uc758 \uc911\uc559\ubd80\uc640 \uc8fc\ubcc0\ubd80(3\u00b76\u00b79\u00b712\uc2dc) 5\uc601\uc5ed\uc5d0\uc11c CT number\ub97c \uce21\uc815\ud558\uc5ec \ucc28\uc774\ub97c \ud655\uc778\ud569\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "ox", "answer": "O", "expl": "\u2705 \uc9c1\uc120\uc131: \uc7a5\uce58\uac00 \uac01 \ubb3c\uc9c8\uc758 CT number\ub97c \uc2e4\uc81c \uac10\uc57d\uacc4\uc218\uc5d0 \ube44\ub840\ud558\uc5ec \uc81c\ub300\ub85c \ud45c\ud604\ud558\ub294\uc9c0 \ud655\uc778.", "ch": "Ch.8"}, {"type": "mc", "answer": 1, "expl": "\uc2ac\ub77c\uc774\uc2a4 \ub450\uaed8 \uce21\uc815: \uc2a4\uce94\ucd95\uc5d0 45\u00b0 \uacbd\uc0ac\uc9c4 \ud310\uc774 \uc124\uce58\ub41c \ud32c\ud140\uc744 \uc0ac\uc6a9\ud558\uc5ec FWHM(\ubc18\uce58\ud3ed)\uc73c\ub85c \uce21\uc815\ud569\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "mc", "answer": 4, "expl": "8\uac1c \ud56d\ubaa9: \uc544\ud2f0\ud329\ud2b8\u00b7\uc2ac\ub77c\uc774\uc2a4\ub450\uaed8\u00b7\uad00\uc804\uc555\u00b7\ud658\uc790\ud53c\ud3ed\uc120\ub7c9\u00b7mAs\u00b7CT number\uc9c1\uc120\uc131\u00b7\ub178\uc774\uc988\u00b7\uace0\ub300\uc870\ub3c4\ubd84\ud574\ub2a5 \uc2dc\ud5d8. MTF\ub294 \ubcc4\ub3c4 \uc131\ub2a5 \ud3c9\uac00\uc5d0 \uc0ac\uc6a9\ub429\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "ox", "answer": "X", "expl": "\u274c \uad00\uc804\uc555 \ud5c8\uc6a9\uc624\ucc28: \u00b15% \uc774\ub0b4. \u00b120%\ub294 mA(\uad00\uc804\ub958) \ud5c8\uc6a9\uc624\ucc28\uc785\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "mc", "answer": 2, "expl": "\uc11c\ub958\uac80\uc0ac: 1\ub144 \uc8fc\uae30 / \uc815\uae30\uac80\uc0ac: 3\ub144 \uc8fc\uae30. (\uad6d\ubbfc\uac74\uac15\ubcf4\ud5d8 \uc7ac\uc815\uac74\uc804\ud654 \ud2b9\ubcc4\ubc95, 2002)", "ch": "Ch.8"}, {"type": "mc", "answer": 2, "expl": "LSF(\uc120 \ud655\uc0b0\ud568\uc218): \uc120 \ub610\ub294 \uc120 \ud615\ud0dc\uc758 \ud2c8\uc774 \uc788\ub294 \ud53c\uc0ac\uccb4\ub97c \uc601\uc0c1\ud654\ud558\uc5ec \uc5bb\ub294 \uc751\ub2f5\ud568\uc218. PSF\uc758 \ub2e8\uba74\uc73c\ub85c\ub3c4 \uc5bb\uc744 \uc218 \uc788\uc2b5\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "ox", "answer": "X", "expl": "\u274c \uacf5\uac04\ubd84\ud574\ub2a5: \uac10\uc57d\ucc28\uac00 <b>\ud070</b> \uc778\uc811 \uc18c\uad6c\uc870\ubb3c\uc744 \uad6c\ubd84. \uac10\uc57d\ucc28\uac00 \uc791\uc740 \uac83\uc740 \ub300\uc870\ub3c4\ubd84\ud574\ub2a5(\uc800\ub300\uc870\ub3c4\ubd84\ud574\ub2a5).", "ch": "Ch.8"}, {"type": "mc", "answer": 3, "expl": "\ud658\uc790 \uccb4\uaca9(\ub450\uaed8)\uc774 \uc99d\uac00\ud558\uba74 X\uc120 \uac10\uc57d\uc774 \uc99d\uac00\ud558\uc5ec \uac80\ucd9c\uae30\uc5d0 \ub3c4\ub2ec\ud558\ub294 \uad11\uc790\uc218\uac00 \uac10\uc18c \u2192 \ub178\uc774\uc988 \uc99d\uac00.", "ch": "Ch.8"}, {"type": "mc", "answer": 1, "expl": "CTF: \ub2e8\uc704 \uae38\uc774\ub2f9 \uc2ac\ub9bf(slit) \uc218\uc758 \ud568\uc218. \uc800\uc8fc\ud30c\uc5d0\uc11c CTF \u2248 1, \uace0\uc8fc\ud30c\uc5d0\uc11c CTF \u2248 0 (\uc804\ub2ec \ubd88\uac00).", "ch": "Ch.8"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ub300\uc870\ub3c4\ubd84\ud574\ub2a5\uc758 \ucd5c\ub300 \uc601\ud5a5\uc778\uc790\ub294 \ub178\uc774\uc988. \ub178\uc774\uc988\u2193 \u2192 \ub300\uc870\ub3c4\ubd84\ud574\ub2a5\u2191.", "ch": "Ch.8"}, {"type": "mc", "answer": 2, "expl": "\ub178\uc774\uc988 \ud45c\uc900\ud3b8\ucc28 \uce21\uc815\uc740 \ub178\uc774\uc988 \ud3c9\uac00 \ubc29\ubc95\uc785\ub2c8\ub2e4. \uacf5\uac04\ubd84\ud574\ub2a5 \uce21\uc815: \uc2dc\uac01\uc801(\ud640 \ud32c\ud140), \uacc4\uc0b0\ubc95(MTF), \ud145\uc2a4\ud150 \uc640\uc774\uc5b4 \ub4f1.", "ch": "Ch.8"}, {"type": "mc", "answer": 1, "expl": "CNR = (\ub450 \uc601\uc5ed CT number \ud3c9\uade0 \ucc28\uc774) / (\ubc30\uacbd \ub178\uc774\uc988 \ud45c\uc900\ud3b8\ucc28). \uc870\uc9c1 \uad6c\ubd84 \ub2a5\ub825\uc744 \ub098\ud0c0\ub0c5\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ub300\uc870\ub3c4 \ucc99\ub3c4 \uce21\uc815: \uc544\ud06c\ub9b4\ud540 vs \ubb3c, \ub610\ub294 \ubb3c vs \uacf5\uae30\uc758 CT number \ube44\uad50.", "ch": "Ch.8"}, {"type": "mc", "answer": 2, "expl": "High(\uace0\ud574\uc0c1\ub3c4) \uc54c\uace0\ub9ac\uc998: \uacf5\uac04\ubd84\ud574\ub2a5\u2191, \ub178\uc774\uc988\u2191. Soft \uc54c\uace0\ub9ac\uc998: \uacf5\uac04\ubd84\ud574\ub2a5\u2193, \ub178\uc774\uc988\u2193. \uc11c\ub85c \ud2b8\ub808\uc774\ub4dc\uc624\ud504 \uad00\uacc4.", "ch": "Ch.8"}, {"type": "ox", "answer": "O", "expl": "\u2705 \uc778\ub825\uac80\uc0ac \uae30\uc900: \uc0c1\uadfc \ubc29\uc0ac\uc120\uc0ac\uc640 \ubc29\uc0ac\uc120\uacfc \uc758\uc0ac \ud544\uc694.", "ch": "Ch.8"}, {"type": "mc", "answer": 2, "expl": "\ub178\uc774\uc988 \uce21\uc815: \ubb3c\ud32c\ud140 \uc911\uc559\ubd80\uc5d0\uc11c \ud2b9\uc815 \uac1c\uc218 \uc774\uc0c1\uc758 \ud53d\uc140\uc744 \ud3ec\ud568\ud558\ub294 ROI\ub97c \uc124\uc815\ud558\uace0 CT number\uc758 \ud45c\uc900\ud3b8\ucc28\ub85c \ub098\ud0c0\ub0c5\ub2c8\ub2e4.", "ch": "Ch.8"}, {"type": "mc", "answer": 2, "expl": "Ring artifact: \uac80\ucd9c\uc18c\uc790 \uae30\ub2a5\uc774\uc0c1, \uc811\ucd09\ubd88\ub7c9, calibration \uc800\ud558 \ub4f1\uc73c\ub85c \ubc1c\uc0dd. \uc2a4\uce94 \uc911\uc2ec \uc8fc\uc704\uc5d0 \ub3d9\uc2ec\uc6d0 \ud615\ud0dc\ub85c \ub098\ud0c0\ub0a9\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "ox", "answer": "O", "expl": "\u2705 Star shape artifact: \uccb4\ub0b4 \ubc14\ub968, \uae08\uc18d \ub4f1 \uace0\ub18d\ub3c4 \ubb3c\uc9c8\uc5d0 \uc758\ud574 \ubcc4 \ubaa8\uc591 \ubc29\uc0ac\uc120 \ud615\ud0dc\ub85c \ubc1c\uc0dd.", "ch": "Ch.9"}, {"type": "mc", "answer": 1, "expl": "\uc120\uc18d\uacbd\ud654: \ub2e4\uc0c9(\ub2e4\uc5d0\ub108\uc9c0) X\uc120\uc774 \ud761\uc218\uccb4 \ud1b5\uacfc \uc2dc \uc800\uc5d0\ub108\uc9c0 X\uc120\uc774 \uc6b0\uc120 \ud761\uc218 \u2192 \ud3c9\uade0\uc5d0\ub108\uc9c0 \uc99d\uac00 \u2192 \ud53c\uc0ac\uccb4 \uc911\uc2ec\ubd80 CT\uac12\uc774 \ub0ae\uac8c \uce21\uc815\ub428(cupping artifact).", "ch": "Ch.9"}, {"type": "ox", "answer": "X", "expl": "\u274c \uc2ac\ub77c\uc774\uc2a4 \ub450\uaed8\ub97c <b>\uac10\uc18c</b>\uc2dc\ucf1c\uc57c \ud574\uacb0. \ub450\uaed8 \uc99d\uac00 \uc2dc \uc624\ud788\ub824 \ub354 \ub9ce\uc740 \uc870\uc9c1\uc774 \ud63c\uc7ac\ud558\uc5ec \ubd80\ubd84\uccb4\uc801\ud6a8\uacfc\u2191.", "ch": "Ch.9"}, {"type": "mc", "answer": 4, "expl": "\uac80\ucd9c\uc18c\uc790 calibration \uc800\ud558\ub294 Ring artifact\uc758 \uc6d0\uc778\uc785\ub2c8\ub2e4. Streak: \uad11\uc790\ub7c9 \ubd80\uc871, \uae08\uc18d, \ud658\uc790 \uc6c0\uc9c1\uc784, \uac80\ucd9c\uae30 DAS \uc624\ub958.", "ch": "Ch.9"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ub450\uac1c\uc800\ubd80\ub294 \ubf08\uc640 \uc5f0\ubd80\uc870\uc9c1\uc758 \uac10\uc57d\uacc4\uc218 \ucc28\uc774\uac00 \ucee4\uc11c \ubd80\ubd84\uccb4\uc801\ud6a8\uacfc\uac00 \uc798 \ubc1c\uc0dd\ud558\ub294 \ubd80\uc704\uc785\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "mc", "answer": 2, "expl": "Helical artifact: \ub192\uc740 pitch\uc5d0\uc11c \uc120\ud615\ubcf4\uac04(interpolation) \uc624\ub958\ub85c \ubc1c\uc0dd. Windmill \ubaa8\uc591, Shading\uc73c\ub85c \ub098\ud0c0\ub0a8.", "ch": "Ch.9"}, {"type": "mc", "answer": 2, "expl": "Stair step artifact: \ub450\uaebc\uc6b4 \uc2ac\ub77c\uc774\uc2a4 \uc0ac\uc6a9\uc774\ub098 \ud658\uc790 \uc6c0\uc9c1\uc784 \uc2dc 3D \uc7ac\uad6c\uc131\uc5d0\uc11c \uacc4\ub2e8 \ubaa8\uc591\uc73c\ub85c \ub098\ud0c0\ub0a9\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ud314\uc774 X\uc120\uc18d FOV \ubc16\uc5d0 \uc704\uce58\ud558\uba74 \ub370\uc774\ud130 \ubd80\uc871\uc73c\ub85c Streak artifact\uac00 \ubc1c\uc0dd\ud569\ub2c8\ub2e4. \ud314\uc744 \uba38\ub9ac \uc704\ub85c \uc62c\ub824\uc57c \ud568.", "ch": "Ch.9"}, {"type": "mc", "answer": 2, "expl": "Cone beam effect: iso center\uc5d0\uc11c \uac70\ub9ac\uac00 \uba40\uc5b4\uc9c8\uc218\ub85d 0\u00b0\uc640 180\u00b0 \uc704\uce58 \ucc28\uc774 \ubc1c\uc0dd. SDCT\ubcf4\ub2e4 MDCT(4\uc2ac\ub77c\uc774\uc2a4 \uc774\uc0c1)\uc5d0\uc11c \ub450\ub4dc\ub7ec\uc9d0.", "ch": "Ch.9"}, {"type": "ox", "answer": "X", "expl": "\u274c Moving artifact\ub294 <b>\uace0\ub300\uc870\ub3c4</b> \uacbd\uacc4(\uc608: \ubf08-\uc5f0\ubd80\uc870\uc9c1, \ud3d0-\ud608\uad00)\uc5d0\uc11c \ub450\ub4dc\ub7ec\uc9d1\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "mc", "answer": 2, "expl": "Z\ucd95 overbeaming: MDCT\uc5d0\uc11c 4\uc2ac\ub77c\uc774\uc2a4 \uc774\uc0c1 \uc2dc Z\ucd95 \ubc29\ud5a5\uc758 \uc120\ub7c9\ubd84\ud3ec\uac00 \ubd88\uade0\uc77c\ud574\uc9c0\ub294 \ud604\uc0c1.", "ch": "Ch.9"}, {"type": "mc", "answer": 1, "expl": "Aliasing artifact: MDCT \ud68c\uc804\ub2f9 \ud504\ub85c\uc81d\uc158 \uc218\uac00 \ubd80\uc871(undersampling)\ud558\uc5ec \ubc1c\uc0dd. \uace0\uc8fc\ud30c \uc815\ubcf4\uac00 \uc65c\uace1\ub428.", "ch": "Ch.9"}, {"type": "ox", "answer": "X", "expl": "\u274c MAR\uc740 \uae08\uc18d \uc544\ud2f0\ud329\ud2b8\ub97c <b>\uac10\uc18c</b>\uc2dc\ud0ac \uc218 \uc788\uc9c0\ub9cc \uc644\uc804 \uc81c\uac70\ub294 \ubd88\uac00\ub2a5\ud569\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "mc", "answer": 2, "expl": "Shading artifact: \ub098\uc120\ud615(Helical) \uc2a4\uce94\uc5d0\uc11c \ubcf4\uac04 \ucc98\ub9ac \uc624\ub958\ub098 \ub370\uc774\ud130 \uc77c\uad00\uc131 \uc800\ud558\ub85c \ubc1c\uc0dd\ud558\ub294 \uc74c\uc601 \ubd88\uade0\uc77c.", "ch": "Ch.9"}, {"type": "ox", "answer": "X", "expl": "\u274c \uc0b0\ub780\uc120\uc774 \uac80\ucd9c\uae30\uc5d0 \ub3c4\ub2ec\ud558\uba74 \uc2e4\uc81c\ubcf4\ub2e4 <b>\ub0ae\uc740</b> \uac10\uc57d\uacc4\uc218\uac00 \uce21\uc815\ub429\ub2c8\ub2e4 (\ud53c\uc0ac\uccb4\uac00 \ub354 \ud22c\uba85\ud574 \ubcf4\uc784).", "ch": "Ch.9"}, {"type": "mc", "answer": 2, "expl": "Edge gradient effect: \uace0\ubc00\ub3c4\uc640 \uc800\ubc00\ub3c4 \ubb3c\uc9c8\uc758 \uacbd\uacc4\uba74(\uacf5\uae30-\uc870\uc601\uc81c \uacbd\uacc4)\uc5d0\uc11c \uae09\uaca9\ud55c \uac10\uc57d \ubcc0\ud654\ub85c \ubc1c\uc0dd\ud569\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "mc", "answer": 1, "expl": "Zebra artifact: VRT\ub098 MIP \uae30\ubc95\uc758 3D \uc601\uc0c1\uc5d0\uc11c \ub0ae\uc740 \uc2e0\ud638\uc601\uc5ed\uc758 \ub178\uc774\uc988 \ud6a8\uacfc\uc5d0 \uc758\ud574 \uc904\ubb34\ub2ac \ubaa8\uc591\uc73c\ub85c \ub098\ud0c0\ub0a9\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "ox", "answer": "O", "expl": "\u2705 \uc774\uc18c\uc13c\ud130 \ubc97\uc5b4\ub09c \uc704\uce58 \u2192 \ubd88\uade0\uc77c \uac10\uc57d \u2192 Shading \uc544\ud2f0\ud329\ud2b8 \ubc1c\uc0dd.", "ch": "Ch.9"}, {"type": "mc", "answer": 2, "expl": "Helical artifact \uac10\uc18c: pitch\ub97c \ub0ae\ucd94\uac70\ub098 360\u00b0 \uc120\ud615\ubcf4\uac04 \ub300\uc2e0 \uac1c\uc120\ub41c \ubcf4\uac04\ubc95 \uc0ac\uc6a9. pitch\u2193 \uc2dc \ud53c\ud3ed\uc120\ub7c9\u2191\uc740 \ub2e8\uc810.", "ch": "Ch.9"}, {"type": "ox", "answer": "O", "expl": "\u2705 Ring artifact: \uac80\ucd9c\uc18c\uc790 \uae30\ub2a5\uc774\uc0c1\uc73c\ub85c \ud2b9\uc815 \uc6d0 \ubc29\ud5a5\uc758 \ub370\uc774\ud130 \uc624\ub958 \u2192 \ub3d9\uc2ec\uc6d0 \ud615\ud0dc.", "ch": "Ch.9"}, {"type": "mc", "answer": 3, "expl": "Ring artifact\ub294 \uc7a5\uce58 \uacb0\ud568(\uac80\ucd9c\uc18c\uc790 \uae30\ub2a5\uc774\uc0c1, calibration \uc624\ub958)\uc5d0 \uc758\ud55c \uc544\ud2f0\ud329\ud2b8. \ub098\uba38\uc9c0\ub294 \ubb3c\ub9ac\uc801 \uc694\uc778(X\uc120\uc758 \ubb3c\ub9ac\uc801 \ud2b9\uc131)\uc5d0 \uc758\ud55c \uac83\uc785\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "mc", "answer": 2, "expl": "\uccb4\ub0b4 \uae08\uc18d: Streak + Star shape \ubcf5\ud569 \uc544\ud2f0\ud329\ud2b8. \uace0\ubc00\ub3c4 \ubb3c\uc9c8\uc5d0\uc11c \ub2e4\ubc29\ud5a5\uc73c\ub85c \uc904\ubb34\ub2ac\uc640 \ubcc4 \ubaa8\uc591\uc774 \ud568\uaed8 \ub098\ud0c0\ub0a9\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ubd80\ubd84\uccb4\uc801\ud6a8\uacfc: \ud558\ub098\uc758 \ubcf5\uc140\uc5d0 \uac10\uc57d\uacc4\uc218\uac00 \ub2e4\ub978 \uc870\uc9c1\uc774 \ud63c\uc7ac \u2192 \uc2e4\uc81c\uc640 \ub2e4\ub978 \ud3c9\uade0 CT number \uacc4\uc0b0.", "ch": "Ch.9"}, {"type": "mc", "answer": 3, "expl": "Ring artifact\ub294 \uac80\ucd9c\uc18c\uc790 \uae30\ub2a5\uc774\uc0c1\uc5d0 \uc758\ud55c \uac83\uc73c\ub85c Helical \uc2a4\uce94\uacfc \ubb34\uad00\ud569\ub2c8\ub2e4. \ub098\uba38\uc9c0\ub294 \ubaa8\ub450 Helical/\ub098\uc120\ud615 \uc2a4\uce94\uc5d0\uc11c \ubc1c\uc0dd\ud558\uac70\ub098 \uc545\ud654\ub429\ub2c8\ub2e4.", "ch": "Ch.9"}, {"type": "mc", "answer": 1, "expl": "\uc720\ud6a8\uc120\ub7c9 \ub2e8\uc704: Sievert (Sv), \uc784\uc0c1\uc5d0\uc11c mSv \uc0ac\uc6a9. \uac01 \uc870\uc9c1\uc758 \ub4f1\uac00\uc120\ub7c9 \u00d7 \uc870\uc9c1\uac00\uc911\uce58\uc758 \ud569.", "ch": "Ch.10-11"}, {"type": "ox", "answer": "O", "expl": "\u2705 CT: 360\u00b0 \ud68c\uc804 \uc2a4\uce94 \u2192 \uc804\uccb4\uc801\uc73c\ub85c \uade0\uc77c\ud55c \uc120\ub7c9. \uc77c\ubc18\ucd2c\uc601: \uc785\uc0ac\ubd80 > \ucd9c\uc0ac\ubd80 (\uc9c0\uc218\ud568\uc218\uc801 \uac10\uc18c).", "ch": "Ch.10-11"}, {"type": "mc", "answer": 2, "expl": "CTDIw = 1/3 \u00d7 CTDI(\uc911\uc559) + 2/3 \u00d7 CTDI(\uc8fc\ubcc0). \ud32c\ud140 \ub0b4 \uc120\ub7c9 \ubd88\uade0\uc77c\uc131\uc744 \ubc18\uc601\ud55c \uac00\uc911 \ud3c9\uade0\uac12.", "ch": "Ch.10-11"}, {"type": "ox", "answer": "X", "expl": "\u274c \ub450\ubd80\uc6a9: <b>16cm</b>, \uccb4\ubd80\uc6a9: <b>32cm</b>. \uc544\ud06c\ub9b4 \uc6d0\ud1b5\ud615 \ud32c\ud140.", "ch": "Ch.10-11"}, {"type": "mc", "answer": 2, "expl": "DLP = CTDIvol \u00d7 \uc2a4\uce94 \uae38\uc774(cm). \ub2e8\uc704: mGy\u00b7cm. \uc804\uccb4 \uac80\uc0ac\uc758 \ucd1d \uc120\ub7c9 \uc9c0\ud45c.", "ch": "Ch.10-11"}, {"type": "mc", "answer": 1, "expl": "CTDIvol = CTDIw / pitch. pitch 2\ubc30 \u2192 CTDIvol 1/2\ub85c \uac10\uc18c \u2192 \ud53c\ud3ed\uc120\ub7c9 \uac10\uc18c. (\ubc18\ube44\ub840 \uad00\uacc4)", "ch": "Ch.10-11"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ud761\uc218\uc120\ub7c9: Gy (Gray). 1Gy = 1J/kg. \ubc29\uc0ac\uc120\uc744 \ubc1b\uc740 \uc591\uc744 \ud45c\ud604.", "ch": "Ch.10-11"}, {"type": "mc", "answer": 1, "expl": "\uc774\uc628\ucc54\ubc84 \ud32c\ud140: \uc544\ud06c\ub9b4 \uc6d0\ud1b5\ud615. \uc911\uc559 + 12\u00b73\u00b76\u00b79\uc2dc \ubc29\ud5a5 \ud45c\uba74\uc5d0\uc11c 1cm \uae4a\uc774\uc5d0 \uc774\uc628\ucc54\ubc84 \uc0bd\uc785 \uad6c\uba4d \ucd1d 5\uac1c.", "ch": "Ch.10-11"}, {"type": "mc", "answer": 1, "expl": "kV\u2191 \u2192 \uad11\uc790\uc5d0\ub108\uc9c0\u2191, \ud22c\uacfc\ub825\u2191, \uc120\ub7c9\u2191. kV\ub97c \ub0ae\ucd94\uba74 \ud53c\ud3ed\uc120\ub7c9 \uac10\uc18c (\ub2e8, \ub178\uc774\uc988\u2191 \ud2b8\ub808\uc774\ub4dc\uc624\ud504).", "ch": "Ch.10-11"}, {"type": "ox", "answer": "O", "expl": "\u2705 \uc720\ud6a8\uc120\ub7c9 E = \u03a3(wT \u00d7 HT). wT: \uc870\uc9c1\uac00\uc911\uce58, HT: \ub4f1\uac00\uc120\ub7c9. \uc804\uc2e0 \ubc29\uc0ac\uc120 \uc704\ud5d8\ub3c4\ub97c \ud558\ub098\uc758 \uac12\uc73c\ub85c \ud45c\ud604.", "ch": "Ch.10-11"}, {"type": "mc", "answer": 2, "expl": "\ubc29\uc0ac\ub2a5: Bq(\ubca0\ud06c\ub810) = \ucd08\ub2f9 \ubd95\uad34\uc218. \uacfc\uac70 \ub2e8\uc704\ub294 Ci(\ud050\ub9ac). Sv\ub294 \ub4f1\uac00\uc120\ub7c9/\uc720\ud6a8\uc120\ub7c9, Gy\ub294 \ud761\uc218\uc120\ub7c9.", "ch": "Ch.10-11"}, {"type": "mc", "answer": 2, "expl": "MSAD: Multiple slice \uc2a4\uce94 \uc2dc \uc778\uc811 \uc2ac\ub77c\uc774\uc2a4\uc5d0\uc11c \uc0b0\ub780\uc120 \uc911\ubcf5\uc774 \ubc1c\uc0dd\ud558\uc5ec \ud658\uc790\uac00 \uc2e4\uc81c \ubc1b\ub294 \uc120\ub7c9. \uc2e4\uc81c \uc784\uc0c1 \uc120\ub7c9\uc5d0 \ub354 \uac00\uae4c\uc6c0.", "ch": "Ch.10-11"}, {"type": "mc", "answer": 1, "expl": "Bowtie filter: \uc6d0\ud1b5\ud615 \ud53c\uc0ac\uccb4\uc758 \uc8fc\ubcc0\ubd80(\ub450\uaed8 \uc587\uc740 \uacf3)\uc5d0 X\uc120\uc774 \ub354 \ub9ce\uc774 \uc870\uc0ac\ub418\ub3c4\ub85d \ud558\uc5ec \uac80\ucd9c\uae30 \ub3c4\ub2ec \uac15\ub3c4\ub97c \uade0\uc77c\ud654. \uc120\ub7c9 \ucd5c\uc801\ud654.", "ch": "Ch.10-11"}, {"type": "ox", "answer": "X", "expl": "\u274c AEC: \ud658\uc790 \ud06c\uae30\uc640 \ubd80\uc704\uc5d0 \ub530\ub77c mAs\ub97c <b>\uc790\ub3d9 \uc870\uc808</b>\ud558\uc5ec \uc801\uc808\ud55c \ud654\uc9c8\uacfc \ucd5c\uc18c \uc120\ub7c9\uc744 \uc720\uc9c0\ud569\ub2c8\ub2e4.", "ch": "Ch.10-11"}, {"type": "mc", "answer": 3, "expl": "pitch \uac10\uc18c \u2192 CTDIvol = CTDIw/pitch\uc5d0\uc11c pitch\u2193 \u2192 CTDIvol\u2191 \u2192 \uc120\ub7c9\u2191. \ud53c\ud3ed \uac10\uc18c \ubc29\ubc95\uc774 \uc544\ub2d9\ub2c8\ub2e4.", "ch": "Ch.10-11"}, {"type": "ox", "answer": "O", "expl": "\u2705 \uc870\uc0ac\uc120\ub7c9: C/kg (\ucfe8\ub871/\ud0ac\ub85c\uadf8\ub7a8). \uacf5\uae30 \ub2e8\uc704\uc9c8\ub7c9\ub2f9 \uc774\uc628\ud654\ub418\ub294 \uc804\ud558\ub7c9. \uacfc\uac70 \ub2e8\uc704\ub294 R(Roentgen).", "ch": "Ch.10-11"}, {"type": "mc", "answer": 2, "expl": "mAs = mA \u00d7 \uc2dc\uac04. \uc2a4\uce94\uc2dc\uac04 2\ubc30 \u2192 mAs 2\ubc30 \u2192 \uc120\ub7c9 2\ubc30 \uc99d\uac00. (mA \uc77c\uc815 \uc2dc \uc2dc\uac04\uc5d0 \ube44\ub840)", "ch": "Ch.10-11"}, {"type": "mc", "answer": 2, "expl": "\uc778\uccb4\ubaa8\ud615 \ud32c\ud140: \uac74\uc870\uc2dc\ud0a8 \ubf08, \uae30\ub3c4, \ud3d0 \ub4f1\uc73c\ub85c \uad6c\uc131. \ubc29\uc0ac\uc120 \uce58\ub8cc\u00b7\uc9c4\ub2e8\uc5d0\uc11c \uc7a5\uae30\ubcc4 \uc2e4\uc81c \ud761\uc218\uc120\ub7c9 \uce21\uc815\uc5d0 \uc0ac\uc6a9.", "ch": "Ch.10-11"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ub4f1\uac00\uc120\ub7c9 = \ud761\uc218\uc120\ub7c9(Gy) \u00d7 \ubc29\uc0ac\uc120 \uac00\uc911\uce58(wR). X\uc120\uc758 wR=1\uc774\ubbc0\ub85c X\uc120 \ucd2c\uc601\uc5d0\uc11c \ub4f1\uac00\uc120\ub7c9 \uc218\uce58=\ud761\uc218\uc120\ub7c9.", "ch": "Ch.10-11"}, {"type": "mc", "answer": 2, "expl": "\uc720\ud6a8\uc120\ub7c9 \u2248 DLP \u00d7 k-factor (\ubcc0\ud658\uacc4\uc218). DLP\ub294 CTDIvol \u00d7 \uc2a4\uce94\uae38\uc774. k-factor\ub294 \uac80\uc0ac \ubd80\uc704\uc5d0 \ub530\ub77c \ub2e4\ub984(\ub450\ubd80, \ud749\ubd80, \ubcf5\ubd80 \ub4f1).", "ch": "Ch.10-11"}, {"type": "mc", "answer": 2, "expl": "\uc870\uc601\uc81c \uae09\uc18d \uc8fc\uc785\uc744 \uc704\ud574 18G \uc815\ub9e5\ub85c\ub97c \ud655\ubcf4\ud569\ub2c8\ub2e4. \uad75\uc740 \uac8c\uc774\uc9c0\uc77c\uc218\ub85d \uc22b\uc790\uac00 \uc791\uc2b5\ub2c8\ub2e4.", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 \uc870\uc601\uc81c \ubd80\uc791\uc6a9(\uad6c\uc5ed, \uad6c\ud1a0) \ubc0f \ud761\uc778 \ubc29\uc9c0\ub97c \uc704\ud574 \uac80\uc0ac 6\uc2dc\uac04 \uc804\ubd80\ud130 \uae08\uc2dd\ud569\ub2c8\ub2e4.", "ch": "Ch.12"}, {"type": "mc", "answer": 0, "expl": "\uae09\uc131 \ub1cc\uacbd\uc0c9: Pre contrast\ub9cc \uc2dc\ud589. \ucd9c\ud608 \ubc30\uc81c\uc640 \ucd08\uae30 \ub1cc\uacbd\uc0c9\uc758 \uc800\ubc00\ub3c4 \ud655\uc778. (\ub2e8, 24\uc2dc\uac04 \ub0b4\uc5d0\ub294 \uc548 \ubcf4\uc77c \uc218\ub3c4 \uc788\uc74c)", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 Brain CT Scout: Lateral projection, \ub450\uac1c\uace8 \uc804\uccb4 \ud3ec\ud568, 80kV/20mA\ub85c \ucd2c\uc601.", "ch": "Ch.12"}, {"type": "mc", "answer": 2, "expl": "\uae09\uc131 \ub1cc\ucd9c\ud608: \ud608\uc561\uc758 \ud5e4\ubaa8\uae00\ub85c\ube48 \ub2e8\ubc31\uc774 \uace0\ubc00\ub3c4(hyperdense, \ud770\uc0c9)\ub85c \ub098\ud0c0\ub0a8. CT \uc9c4\ub2e8\uc758 \ud575\uc2ec \uc18c\uacac.", "ch": "Ch.12"}, {"type": "mc", "answer": 1, "expl": "\ud3d0 \uc2e4\uc9c8(Lung setting): WW 1500 / WL -600 (\uacf5\uae30 ~-1000HU, \ud3d0 ~-700HU \ud45c\ud604). \uc885\uaca9\ub3d9: WW 350 / WL 40.", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 Low dose CT: \uc57d 40mAs\uc758 \ub0ae\uc740 \uc120\ub7c9, \uc870\uc601\uc81c \ubbf8\uc0ac\uc6a9. \ud761\uc5f0\uc790 \ud3d0\uc554 \uc120\ubcc4\uac80\uc0ac\uc5d0 \ud65c\uc6a9.", "ch": "Ch.12"}, {"type": "mc", "answer": 1, "expl": "Auto bolus tracking: ROI\ub97c \uad00\uc2ec \ud608\uad00\uc5d0 \uc124\uc815 \u2192 \uc870\uc601\uc81c \ub3c4\ub2ec \uc2dc CT\uac12\uc774 threshold \ucd08\uacfc \u2192 \uc790\ub3d9 \uc2a4\uce94 \uc2dc\uc791. \ucd5c\uc801 \uc870\uc601\uc99d\uac15 \ud0c0\uc774\ubc0d \ud3ec\ucc29.", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 HR(High Resolution) lung CT: \uae30\uad00\uc9c0\uc5fc, \uae30\uad00\uc9c0\ud655\uc7a5\uc99d, \ud3d0\uc12c\uc720\ud654\uc99d \ub4f1 \ud3d0 \ubbf8\uc138 \uad6c\uc870 \ud3c9\uac00.", "ch": "Ch.12"}, {"type": "mc", "answer": 2, "expl": "\ubcf5\ubd80 routine CT Portal phase: \uc870\uc601\uc81c \uc8fc\uc785 \ud6c4 \uc57d 70\ucd08 \uc9c0\uc5f0. \uac04 \ubb38\ub9e5\uacc4 \ucda9\ub9cc, \uac04\uc2e4\uc9c8 \ucd5c\ub300 \uc870\uc601\uc99d\uac15.", "ch": "Ch.12"}, {"type": "mc", "answer": 2, "expl": "HCC(\uac04\uc138\ud3ec\uc554): \ub3d9\ub9e5\uae30(arterial phase)\uc5d0 \uace0\ubc00\ub3c4 \u2192 \ubb38\ub9e5\uae30\uc5d0 \uc138\ucc99(washout) \u2192 \uc9c0\uc5f0\uae30\uc5d0 \uc800\ubc00\ub3c4. \uc804\ud615\uc801\uc778 HCC \ud328\ud134.", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ub0ad\uc885: \uc21c\uc218\ud55c \uc561\uccb4 \ub0b4\uc6a9\ubb3c \u2192 CT\uac12 \u2248 0HU(\ubb3c\uacfc \ub3d9\uc77c), \uc870\uc601\uc99d\uac15 \uc5c6\uc74c, \uacbd\uacc4 \uba85\ud655.", "ch": "Ch.12"}, {"type": "mc", "answer": 1, "expl": "\ub1cc \uc815\uc704 CT: \ub450\uac1c\ub0b4 \ucd9c\ud608 \ub4f1\uc5d0\uc11c \uc678\uacfc\uc801 \uc218\uc220\uc744 \uc704\ud55c \uc815\ud655\ud55c \uc704\uce58\uc7a1\uc774(stereotactic localization) \ubaa9\uc801.", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 Cardiac CT: \uc2ec\uc7a5 \ubc15\ub3d9\uc73c\ub85c \uc778\ud55c \uc6c0\uc9c1\uc784 \uc544\ud2f0\ud329\ud2b8 \uc81c\uac70\ub97c \uc704\ud574 EKG gating \ud544\uc218.", "ch": "Ch.12"}, {"type": "mc", "answer": 1, "expl": "CT myelography: \uc77c\ubc18 \ucc99\uc218\uac15 \uc870\uc601\uc220\uc5d0\uc11c \uc798 \uc548 \ubcf4\uc774\ub294 \ub514\uc2a4\ud06c \ud0c8\ucd9c\uc99d \uc9c4\ub2e8\uc744 \uc704\ud574 \ucc99\uc218\uac15 \ub0b4 \uc870\uc601\uc81c \uc8fc\uc785 \ud6c4 CT \ucd2c\uc601.", "ch": "Ch.12"}, {"type": "mc", "answer": 2, "expl": "CT \uac00\uc0c1\ub0b4\uc2dc\uacbd: CT \ud68d\ub4dd \ub370\uc774\ud130\ub97c 3D \uc18c\ud504\ud2b8\uc6e8\uc5b4\ub85c \uc7ac\uad6c\uc131\ud558\uc5ec \ub0b4\uc2dc\uacbd \uc2dc\ubbac\ub808\uc774\uc158. \uc2dd\ub3c4\u00b7\uc704\u00b7\ub300\uc7a5\u00b7\uae30\uad00\u00b7\ud608\uad00\u00b7\ubc29\uad11\uc5d0 \uc801\uc6a9.", "ch": "Ch.12"}, {"type": "mc", "answer": 2, "expl": "SAH(\uc9c0\uc8fc\ub9c9\ud558 \ucd9c\ud608): \ub1cc\uc870(cistern) \ub0b4 \uace0\ubc00\ub3c4. \uc2e4\ube44\uc6b0\uc2a4\uc5f4, \uae30\uc800\uc870 \ub4f1\uc5d0 \ud608\uc561\uc774 \ucc28\uc11c \uace0\ubc00\ub3c4\ub85c \ub098\ud0c0\ub0a8.", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 EDH(\uacbd\ub9c9\uc678\ucd9c\ud608): \ub1cc\ub9c9\ub3d9\ub9e5 \ud30c\uc5f4 \u2192 \ub450\uac1c\uace8-\uacbd\ub9c9 \uc0ac\uc774 \ud608\uc885 \u2192 \ubcfc\ub85d\ub80c\uc988(biconvex)\ud615 \uace0\ubc00\ub3c4.", "ch": "Ch.12"}, {"type": "mc", "answer": 4, "expl": "CT Perfusion: CBV, CBF, MTT, TTP \uce21\uc815\uc73c\ub85c \ub1cc\ud608\ub958\u00b7\ud608\uad00 \uc0c1\ud0dc \ud3c9\uac00. BMD\ub294 \uace8\ubc00\ub3c4 \uce21\uc815\uc73c\ub85c \ubcc4\uac1c \uac80\uc0ac.", "ch": "Ch.12"}, {"type": "mc", "answer": 1, "expl": "Cisternography: \uc678\uc0c1\uc774\ub098 \uc218\uc220 \ud6c4\uc720\uc99d\uc73c\ub85c CSF\uac00 \ucf54\ub098 \uadc0\ub85c \uc0c8\ub294\uc9c0 \ud655\uc778\ud558\uae30 \uc704\ud574 \uc218\uc870\uc5d0 \uc870\uc601\uc81c \uc8fc\uc785 \ud6c4 CT \ucd2c\uc601.", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ubc29\uc0ac\uc120 \uce58\ub8cc\uacc4\ud68d CT: \uc885\uc591 \uc704\uce58 \uc815\ud655 \ud30c\uc545 \u2192 \ubc29\uc0ac\uc120\uc774 \uc885\uc591\uc5d0 \uc9d1\uc911\ub418\ub3c4\ub85d \uacc4\ud68d. \uce74\ud14c\ud0c0, \ub0a9 \ub9c8\ucee4 \uc0ac\uc6a9.", "ch": "Ch.12"}, {"type": "mc", "answer": 2, "expl": "SDH(\uacbd\ub9c9\ud558\ucd9c\ud608): \ub1cc \ud45c\uba74\uc744 \ub530\ub77c \ucd08\uc2b9\ub2ec\ud615(crescent shape). \uae09\uc131: \uace0\ubc00\ub3c4, \ub9cc\uc131: \uc800\ubc00\ub3c4.", "ch": "Ch.12"}, {"type": "mc", "answer": 2, "expl": "HR lung CT: \uc2ac\ub77c\uc774\uc2a4 \ub450\uaed8 1-2mm \uac04\ud5d0\uc801 \uc2a4\uce94, \uc870\uc601\uc81c \ubbf8\uc0ac\uc6a9, \ud761\uae30 \uc0c1\ud0dc\uc5d0\uc11c \ucd2c\uc601. \ud3d0\uc758 \ubbf8\uc138 \uad6c\uc870 \uad00\ucc30.", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 Fat CT: \uc9c0\ubc29\uc758 CT\uac12(-100 ~ -50HU)\uc744 \uc774\uc6a9\ud558\uc5ec \ub0b4\uc7a5\uc9c0\ubc29 \uba74\uc801\uacfc \ud53c\ud558\uc9c0\ubc29 \uba74\uc801\uc744 \uce21\uc815.", "ch": "Ch.12"}, {"type": "mc", "answer": 2, "expl": "\uc870\uc601\uc81c \uae09\uc18d\uc8fc\uc785 \u2192 \uc1c4\uace8\ud558\uc815\ub9e5(subclavian vein)\uacfc \uc0c1\ub300\uc815\ub9e5(SVC)\uc5d0 \uace0\ub18d\ub3c4 \uc870\uc601\uc81c \uc9d1\uc911 \u2192 Streak artifact \ubc1c\uc0dd.", "ch": "Ch.12"}, {"type": "mc", "answer": 2, "expl": "Brain CT \uae30\ubcf8: Standard \uc54c\uace0\ub9ac\uc998. \ub450\uac1c\uace8 \uace8\uc808 \ud3c9\uac00 \uc2dc Bone(\uace0\ud574\uc0c1\ub3c4) \uc54c\uace0\ub9ac\uc998 \ucd94\uac00.", "ch": "Ch.12"}, {"type": "ox", "answer": "X", "expl": "\u274c \ud608\uad00\uc885: <b>\ub9d0\ucd08\ubd80\ud130</b> \uacb0\uc808\ud615 \uc870\uc601\uc99d\uac15 \u2192 \uc9c0\uc5f0\uae30\uc5d0 \ub4f1\ubc00\ub3c4\ub85c \ucc44\uc6cc\uc9d0(fill-in pattern). \uc804\uccb4 \uade0\uc77c \uc99d\uac15\uc774 \uc544\ub2d8.", "ch": "Ch.12"}, {"type": "mc", "answer": 1, "expl": "CT scanography: CT \uae38\uc774 \uce21\uc815 \uae30\ub2a5\uc744 \uc774\uc6a9\ud558\uc5ec \uc18c\uc544\uc758 \ube44\uc815\uc0c1\uc801\uc778 \uc591\uce21 \ub2e4\ub9ac \uae38\uc774 \ucc28\uc774\ub97c \ube44\uad50\ud569\ub2c8\ub2e4.", "ch": "Ch.12"}, {"type": "mc", "answer": 1, "expl": "\uc804\ud5a5\uc801 \ub3d9\uc870\ud654: R-wave\ub85c\ubd80\ud130 \uc0ac\uc6a9\uc790 \uc9c0\uc815 \uc2dc\uac04(\uc8fc\ub85c \uc218\ucd95\uae30 \ub610\ub294 \uc774\uc644\uae30)\uc5d0\ub9cc X\uc120 \uc870\uc0ac. \ud6c4\ud5a5\uc801\ubcf4\ub2e4 \uc120\ub7c9 \uc801\uc74c.", "ch": "Ch.12"}, {"type": "mc", "answer": 1, "expl": "\ub1cc\ucd9c\ud608: \ud608\uc561 \u2192 \uace0\ubc00\ub3c4(\uae09\uc131). \ub1cc\uacbd\uc0c9: \uc138\ud3ec \ubd80\uc885\u00b7\uad34\uc0ac \u2192 \uc800\ubc00\ub3c4(\ub2e8, 24\uc2dc\uac04 \ub0b4\uc5d0\ub294 \uc815\uc0c1\uc73c\ub85c \ubcf4\uc77c \uc218 \uc788\uc74c).", "ch": "Ch.12"}, {"type": "ox", "answer": "O", "expl": "\u2705 \ub2e8\uc21c \ub0ad\uc885: CT\uac12 \u2248 0HU, \uc870\uc601\uc99d\uac15 \uc5c6\uc74c, \uacbd\uacc4 \uba85\ud655, \uade0\uc77c \uc800\ubc00\ub3c4. \uc9c0\ubc29\uc885(-100HU)\uacfc \uad6c\ubcc4 \uc911\uc694.", "ch": "Ch.12"}];
+const state = {correct:0, wrong:0, bookmarks:new Set(), wrongSet:new Set()};
+
+function ansOX(btn, chosen, idx) {
+  const card = document.getElementById('qcard-'+idx);
+  if (card.dataset.done === '1') return;
+  card.dataset.done = '1';
+  const d = DATA[idx];
+  const ok = chosen === d.answer;
+  const ob = card.querySelectorAll('.ox-btn');
+  ob.forEach(b => b.disabled = true);
+  if (chosen === 'O') {
+    ob[0].classList.add(ok ? 'cor' : 'wrn');
+    ob[1].classList.add('neu');
+  } else {
+    ob[1].classList.add(ok ? 'cor' : 'wrn');
+    ob[0].classList.add('neu');
+  }
+  showExpl(idx, ok, d.expl);
+  updateScore(idx, ok);
+}
+
+function ansMC(el, ci, idx) {
+  const card = document.getElementById('qcard-'+idx);
+  if (card.dataset.done === '1') return;
+  card.dataset.done = '1';
+  const d = DATA[idx];
+  const ok = ci === d.answer;
+  card.querySelectorAll('.choice').forEach((c, i) => {
+    c.style.pointerEvents = 'none';
+    if (i === d.answer) c.classList.add('correct-ans');
+    else if (i === ci && !ok) c.classList.add('wrong-ans');
+    else c.classList.add('dim');
+  });
+  showExpl(idx, ok, d.expl);
+  updateScore(idx, ok);
+}
+
+function showExpl(idx, ok, text) {
+  const el = document.getElementById('expl-'+idx);
+  el.textContent = '';
+  el.innerHTML = text;
+  el.className = 'expl show ' + (ok ? 'correct' : 'wrong');
+  const card = document.getElementById('qcard-'+idx);
+  card.classList.add(ok ? 'answered-correct' : 'answered-wrong');
+}
+
+function updateScore(idx, ok) {
+  if (ok) state.correct++;
+  else { state.wrong++; state.wrongSet.add(idx); }
+  const answered = state.correct + state.wrong;
+  const pct = answered > 0 ? Math.round(state.correct/answered*100) : 0;
+  document.getElementById('scoreCorrect').textContent = state.correct;
+  document.getElementById('scoreWrong').textContent = state.wrong;
+  document.getElementById('scorePct').textContent = pct;
+  document.getElementById('progFill').style.width = (answered/DATA.length*100)+'%';
+}
+
+function toggleBM(idx) {
+  const btn = document.getElementById('bm-'+idx);
+  if (state.bookmarks.has(idx)) {
+    state.bookmarks.delete(idx);
+    btn.textContent = '☆ 표시';
+    btn.classList.remove('marked');
+  } else {
+    state.bookmarks.add(idx);
+    btn.textContent = '★ 표시됨';
+    btn.classList.add('marked');
+  }
+}
+
+function filterCh(ch, el) {
+  document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.qcard').forEach((card, i) => {
+    let show = false;
+    if (ch === 'all') show = true;
+    else if (ch === 'bookmark') show = state.bookmarks.has(i);
+    else if (ch === 'wrong') show = state.wrongSet.has(i);
+    else show = card.dataset.ch === ch;
+    card.style.display = show ? 'block' : 'none';
+  });
+}
+
+function showResult() {
+  const answered = state.correct + state.wrong;
+  const skipped = DATA.length - answered;
+  const pct = answered > 0 ? Math.round(state.correct/answered*100) : 0;
+  document.getElementById('rScore').textContent = state.correct + '/' + DATA.length;
+  document.getElementById('rPct').textContent = '정답률: ' + pct + '%';
+  document.getElementById('rC').textContent = state.correct;
+  document.getElementById('rW').textContent = state.wrong;
+  document.getElementById('rS').textContent = skipped;
+  document.getElementById('rBM').textContent = state.bookmarks.size;
+  document.getElementById('resultOverlay').classList.add('show');
+}
+
+function closeResult() {
+  document.getElementById('resultOverlay').classList.remove('show');
+}
+
+function resetAll() {
+  if (!confirm('모든 답안을 초기화할까요?')) return;
+  state.correct = 0; state.wrong = 0;
+  state.bookmarks.clear(); state.wrongSet.clear();
+  document.querySelectorAll('.qcard').forEach((card, i) => {
+    card.dataset.done = '0';
+    card.style.display = 'block';
+    card.classList.remove('answered-correct','answered-wrong');
+    card.querySelectorAll('.choice').forEach(c => {
+      c.className = 'choice';
+      c.style.pointerEvents = '';
+    });
+    card.querySelectorAll('.ox-btn').forEach(b => {
+      b.disabled = false;
+      b.className = 'ox-btn';
+    });
+    document.getElementById('expl-'+i).className = 'expl';
+    document.getElementById('expl-'+i).textContent = '';
+    const bm = document.getElementById('bm-'+i);
+    bm.textContent = '☆ 표시'; bm.classList.remove('marked');
+  });
+  document.getElementById('scoreCorrect').textContent = '0';
+  document.getElementById('scoreWrong').textContent = '0';
+  document.getElementById('scorePct').textContent = '0';
+  document.getElementById('progFill').style.width = '0%';
+  document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.ctrl-btn')[0].classList.add('active');
+}
+</script>
+</body>
+</html>
