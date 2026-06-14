@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>혈관조영·중재적 방사선 스터디 노트 퀴즈</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root{
+    --bg:#f7f5f0;
+    --card:#ffffff;
+    --choice:#fdfbf5;
+    --choice-hover:#f5f1e5;
+    --text:#1a1a1a;
+    --text2:#3a3a3a;
+    --muted:#8a8680;
+    --accent:#b8361f;
+    --hl:#fff0a8;
+    --correct:#2d6a4f;
+    --correct-bg:#e8f3ed;
+    --wrong:#b52929;
+    --wrong-bg:#fbe9e7;
+    --border:#e5e0d0;
+    --border-strong:#d4cdb8;
+  }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    line-height:1.65;
+    padding:32px 16px 80px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ max-width:760px; margin:0 auto; }
+
+  header{
+    text-align:center;
+    margin-bottom:28px;
+  }
+  header .tag{
+    display:inline-block;
+    background:var(--accent);
+    color:#fff;
+    font-size:12px;
+    letter-spacing:2px;
+    padding:5px 14px;
+    border-radius:3px;
+    margin-bottom:14px;
+  }
+  header h1{
+    font-size:26px;
+    letter-spacing:-0.5px;
+    color:var(--text);
+    margin-bottom:6px;
+  }
+  header p{ color:var(--muted); font-size:14px; }
+
+  /* progress + score bar */
+  .topbar{
+    position:sticky; top:0; z-index:20;
+    background:var(--bg);
+    padding:12px 0 14px;
+    margin-bottom:18px;
+    border-bottom:1px solid var(--border);
+  }
+  .progress-track{
+    height:8px; background:#ece7d8; border-radius:6px; overflow:hidden;
+    border:1px solid var(--border-strong);
+  }
+  .progress-fill{
+    height:100%; width:0%;
+    background:var(--accent);
+    transition:width .35s ease;
+  }
+  .stats{
+    display:flex; justify-content:space-between;
+    font-size:13px; color:var(--text2);
+    margin-top:8px;
+  }
+  .stats b{ color:var(--accent); }
+
+  /* card */
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px 22px 20px;
+    margin-bottom:18px;
+    box-shadow:0 1px 0 rgba(0,0,0,0.02);
+  }
+  .qnum{
+    display:inline-block;
+    color:var(--accent);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:1px;
+    margin-bottom:8px;
+  }
+  .qcat{
+    color:var(--muted);
+    font-size:12px;
+    margin-left:6px;
+    font-weight:400;
+  }
+  .qtext{
+    font-size:17px;
+    font-weight:600;
+    color:var(--text);
+    margin-bottom:16px;
+    word-break:keep-all;
+  }
+  .hl{ background:var(--hl); padding:0 3px; border-radius:2px; }
+
+  .choices{ display:flex; flex-direction:column; gap:9px; }
+  .choice{
+    background:var(--choice);
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:11px 14px;
+    cursor:pointer;
+    font-size:15px;
+    color:var(--text2);
+    transition:background .15s, border-color .15s;
+    display:flex; align-items:flex-start; gap:10px;
+    word-break:keep-all;
+  }
+  .choice:hover{ background:var(--choice-hover); }
+  .choice .mark{
+    flex:0 0 22px; height:22px; line-height:22px;
+    text-align:center; border-radius:50%;
+    border:1px solid var(--border-strong);
+    font-size:12px; color:var(--muted);
+    background:#fff;
+  }
+  .choice.selected{ border-color:var(--accent); }
+  .choice.correct{
+    background:var(--correct-bg);
+    border-color:var(--correct);
+    color:var(--correct);
+    font-weight:600;
+  }
+  .choice.correct .mark{ background:var(--correct); color:#fff; border-color:var(--correct); }
+  .choice.wrong{
+    background:var(--wrong-bg);
+    border-color:var(--wrong);
+    color:var(--wrong);
+    font-weight:600;
+  }
+  .choice.wrong .mark{ background:var(--wrong); color:#fff; border-color:var(--wrong); }
+  .choice.locked{ cursor:default; }
+
+  .explain{
+    margin-top:14px;
+    border-left:3px solid var(--accent);
+    background:#fdfaf3;
+    padding:10px 14px;
+    font-size:14px;
+    color:var(--text2);
+    border-radius:0 6px 6px 0;
+    display:none;
+  }
+  .explain.show{ display:block; }
+  .explain b{ color:var(--accent); }
+
+  /* controls */
+  .controls{
+    display:flex; gap:10px; justify-content:center;
+    margin-top:10px;
+  }
+  button.btn{
+    font-family:inherit;
+    border:1px solid var(--border-strong);
+    background:#fff;
+    color:var(--text2);
+    padding:10px 22px;
+    border-radius:7px;
+    font-size:14px;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  button.btn:hover{ background:var(--choice-hover); }
+  button.btn.primary{
+    background:var(--accent); color:#fff; border-color:var(--accent);
+  }
+  button.btn.primary:hover{ background:#9e2d18; }
+
+  /* result */
+  .result{
+    display:none;
+    background:var(--card);
+    border:2px solid var(--accent);
+    border-radius:12px;
+    padding:30px 24px;
+    text-align:center;
+    margin-bottom:20px;
+  }
+  .result.show{ display:block; }
+  .result h2{ color:var(--accent); font-size:22px; margin-bottom:10px; }
+  .result .score{ font-size:48px; font-weight:800; color:var(--text); margin:6px 0; }
+  .result .score small{ font-size:20px; color:var(--muted); font-weight:500; }
+  .result .msg{ color:var(--text2); font-size:15px; margin:12px 0 20px; }
+
+  .cheat{
+    background:#fffdf6;
+    border:1px dashed var(--border-strong);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-top:8px;
+    text-align:left;
+  }
+  .cheat h3{ color:var(--accent); font-size:15px; margin-bottom:10px; }
+  .cheat ul{ list-style:none; font-size:13.5px; color:var(--text2); }
+  .cheat li{ padding:4px 0; border-bottom:1px dotted var(--border); }
+  .cheat li:last-child{ border:none; }
+  .cheat li b{ color:var(--text); }
+
+  footer{ text-align:center; color:var(--muted); font-size:12px; margin-top:24px; }
+  .hidden{ display:none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="tag">STUDY NOTE · 1분 암기</span>
+    <h1>혈관조영 &amp; 중재적 방사선</h1>
+    <p>정리본을 머릿속에 완전히 새기는 25문항 퀴즈</p>
+  </header>
+
+  <div class="topbar">
+    <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
+    <div class="stats">
+      <span id="progressText">0 / 25 풀이</span>
+      <span>정답 <b id="correctCount">0</b> · 오답 <b id="wrongCount">0</b></span>
+    </div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="controls" id="bottomControls">
+    <button class="btn primary" id="submitBtn">결과 채점하기</button>
+    <button class="btn" id="resetBtn">다시 풀기</button>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <footer>아이보리 종이 · 빈티지 레드 · 형광펜 노랑 — 클래식 스터디 노트</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+  { cat:"치료 매칭", q:"<span class='hl'>뇌동맥류</span>의 대표적 치료법은?",
+    choices:["코일 색전술","흉부 스텐트 그라프트","복부 스텐트 그라프트","IVC 필터 설치"], a:0,
+    e:"뇌동맥자루 → <b>코일 색전술</b>로 자루 내부를 막아 파열을 예방한다." },
+
+  { cat:"치료 매칭", q:"가슴대동맥류(<span class='hl'>TAA</span>)의 치료법은?",
+    choices:["코일 색전술","흉부대동맥 스텐트 그라프트","IVC 필터","혈전용해술"], a:1,
+    e:"TAA → <b>흉부 Stent graft</b>, AAA → 복부 Stent graft." },
+
+  { cat:"치료 매칭", q:"복부대동맥류(<span class='hl'>AAA</span>) 치료 시 스텐트 그라프트의 역할은?",
+    choices:["혈류를 빠르게 통과시킨다","동맥류 내로 혈류 유입을 완전히 차단한다","혈전을 녹인다","동맥류를 절제한다"], a:1,
+    e:"스텐트 그라프트가 <b>동맥류 내 혈류 유입을 차단</b>해 파열을 예방한다." },
+
+  { cat:"폐색전증", q:"폐동맥 색전증의 주된 원인은?",
+    choices:["고혈압","깊은정맥혈전증(DVT)","동맥경화","심방세동"], a:1,
+    e:"<b>DVT</b>의 혈전이 떨어져 폐동맥을 막으면 폐색전증이 발생한다." },
+
+  { cat:"폐색전증", q:"하대정맥(아래대정맥) 필터 설치술의 목적은?",
+    choices:["고혈압 치료","폐색전증 예방","동맥류 차단","혈전 용해"], a:1,
+    e:"DVT → 폐색전증 경로를 막기 위해 <b>IVC filter</b>를 설치한다." },
+
+  { cat:"복부대동맥 조영", q:"복부대동맥 조영술에서 카테터를 위치시키는 척추 높이는?",
+    choices:["T8","T11","L3","L5"], a:1,
+    e:"복부대동맥 조영 → 카테터 끝 <b>T11(등뼈 11번)</b> + Pigtail." },
+
+  { cat:"복부대동맥 조영", q:"복부대동맥 조영술에 사용하는 카테터는?",
+    choices:["5F Pigtail catheter","Simmons catheter","Swan-Ganz catheter","Headhunter"], a:0,
+    e:"복부대동맥(대동맥 본간) → <b>5F Pigtail</b>, 끝은 T11." },
+
+  { cat:"복부대동맥 조영", q:"복부대동맥 조영술에서 관찰되지 <b>않는</b> 혈관은?",
+    choices:["복강동맥","위창자간막동맥(SMA)","콩팥동맥","팔머리동맥"], a:3,
+    e:"복부대동맥에서는 아래가로막동맥·복강동맥·SMA·IMA·콩팥동맥이 보인다. <b>팔머리동맥</b>은 대동맥활 조영에서 관찰." },
+
+  { cat:"뇌혈관 조영", q:"뇌혈관 조영술에 사용하는 카테터가 <b>아닌</b> 것은?",
+    choices:["Simmons","Headhunter(HH)","HN","Pigtail"], a:3,
+    e:"뇌혈관 → <b>Simmons, HN, HH, Headhunter</b>. Pigtail은 대동맥 본간용." },
+
+  { cat:"뇌혈관 조영", q:"척추동맥 조영술에서 관찰되는 대표 혈관은?",
+    choices:["뇌바닥동맥(기저동맥)","온목동맥","빗장밑동맥","위창자간막동맥"], a:0,
+    e:"척추동맥 → <b>뇌바닥동맥(basilar a.)</b>로 이어진다." },
+
+  { cat:"혈전용해", q:"혈전용해술에 사용되는 약품이 <b>아닌</b> 것은?",
+    choices:["Streptokinase(SK)","Urokinase(UK)","tPA","Lipiodol"], a:3,
+    e:"혈전용해 약품: <b>SK, UK, tPA</b>. Lipiodol은 색전물질." },
+
+  { cat:"문맥계", q:"문맥(Portal vein) 형성 경로로 옳은 것은?",
+    choices:["SMV + IMV → 문맥","IMV→지라정맥, 지라정맥+SMV → 문맥","콩팥정맥+SMV → 문맥","지라정맥 단독 → 문맥"], a:1,
+    e:"IMV는 먼저 <b>지라정맥</b>에 합류 → 지라정맥+SMV가 <b>문맥</b>을 형성." },
+
+  { cat:"스텐트그라프트", q:"스텐트 그라프트 시술의 주된 적응증은?",
+    choices:["대동맥자루·대동맥박리","심방세동","폐렴","협심증"], a:0,
+    e:"주 적응증: <b>대동맥자루(동맥류), 대동맥박리</b>." },
+
+  { cat:"복강동맥", q:"복강동맥의 해부학적 분지 위치는?",
+    choices:["콩팥동맥 아래","대동맥이 가로막을 통과한 바로 아래","대동맥 분기부","대동맥활"], a:1,
+    e:"암기 포인트: <b>가로막 관통 직후, 가로막 바로 아래</b> 배대동맥에서 분지." },
+
+  { cat:"복강동맥", q:"복강동맥 조영술에서 관찰되는 3대 혈관은?",
+    choices:["왼위동맥·지라동맥·온간동맥","콩팥동맥·SMA·IMA","빈창자동맥·돌창자동맥·막창자동맥","LAD·LCx·RCA"], a:0,
+    e:"복강동맥 → <b>왼위동맥 + 지라동맥 + 온간동맥</b>." },
+
+  { cat:"복강동맥", q:"복강동맥 조영술의 촬영 특징은?",
+    choices:["호흡 정지 없이 촬영","호흡 정지 후 동맥상~정맥상까지 촬영","동맥상만 촬영","정맥상만 촬영"], a:1,
+    e:"<b>호흡 정지 후 동맥상부터 정맥상까지</b> 연속 촬영." },
+
+  { cat:"SMA / IMA", q:"위창자간막동맥(SMA) 조영술에 사용하는 카테터는?",
+    choices:["5F RHR, RH","Pigtail","Simmons","Swan-Ganz"], a:0,
+    e:"SMA → <b>RHR, RH</b>. (IMA는 RHR, RH, Simmons)" },
+
+  { cat:"SMA / IMA", q:"아래창자간막동맥(IMA) 조영술 카테터로 옳은 것은?",
+    choices:["Pigtail 단독","5F RHR, RH, Simmons","Headhunter","Swan-Ganz"], a:1,
+    e:"IMA → <b>RHR, RH, Simmons</b>. SMA와 달리 Simmons가 추가된다." },
+
+  { cat:"SMA / IMA", q:"아래창자간막동맥(IMA) 조영술에서 관찰되는 혈관은?",
+    choices:["왼잘룩창자동맥·구불잘룩창자동맥·위곧창자동맥","빈창자동맥·돌창자동맥","왼위동맥·지라동맥","콩팥동맥"], a:0,
+    e:"IMA → <b>왼잘룩창자·구불잘룩창자·위곧창자동맥</b>(좌측 대장 영역)." },
+
+  { cat:"지연 영상", q:"복부 혈관 조영에서 지연 영상으로 나타나는 영상은?",
+    choices:["동맥조영상","문맥조영상(Portal vein)","림프조영상","담도조영상"], a:1,
+    e:"조영제가 모세혈관을 지나 정맥으로 모이는 <b>문맥조영상</b>이 지연상으로 나온다." },
+
+  { cat:"대동맥활", q:"대동맥활 조영술에서 관찰되는 혈관은?",
+    choices:["복강동맥·SMA·IMA","팔머리동맥·왼온목동맥·왼빗장밑동맥","콩팥동맥","LAD·LCx"], a:1,
+    e:"대동맥활 3분지: <b>팔머리동맥, 왼온목동맥, 왼빗장밑동맥</b>." },
+
+  { cat:"선천성 심장", q:"VSD + 폐동맥판막 협착으로 발생하는 선천성 심장질환은?",
+    choices:["동맥관열림증(PDA)","팔로네징후(TOF)","심방중격결손(ASD)","대동맥축착"], a:1,
+    e:"<b>팔로네징후(TOF)</b> = VSD + 폐동맥협착 + 대동맥기승 + 우심실비대." },
+
+  { cat:"선천성 심장", q:"심실사이막결손(VSD)의 특징으로 옳은 것은?",
+    choices:["전체 선천성 심장병의 25%, 2세 이전 수술","학동기까지 무증상","성인기 발견이 대부분","수술 불가"], a:0,
+    e:"VSD = 가장 흔한 선천성 심장병(<b>약 25%</b>), <b>2세 이전</b> 수술." },
+
+  { cat:"관상동맥", q:"왼쪽관상동맥(좌관상동맥)에서 분지하는 혈관은?",
+    choices:["LAD + LCx","PDA + AV node a.","원뿔가지 + SA node a.","오른심실가지"], a:0,
+    e:"좌관상 → <b>왼앞내림가지(LAD) + 왼휘돌이가지(LCx)</b>." },
+
+  { cat:"심장 카테터/검사", q:"협심증·심근경색이 의심될 때 시행하는 핵심 검사는?",
+    choices:["선택적 관상동맥 조영술","복부대동맥 조영술","뇌혈관 조영술","문맥 조영술"], a:0,
+    e:"허혈성 심장질환 의심 → <b>선택적 관상동맥 조영술</b>." },
+];
+
+let answered = {};      // index -> chosen
+let lockedSubmit = false;
+
+const quizEl = document.getElementById('quiz');
+
+function render(){
+  quizEl.innerHTML = '';
+  QUESTIONS.forEach((item, i)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'q'+i;
+    let choicesHTML = '';
+    item.choices.forEach((c, ci)=>{
+      const letter = String.fromCharCode(65+ci);
+      choicesHTML += `<div class="choice" data-q="${i}" data-c="${ci}">
+        <span class="mark">${letter}</span><span>${c}</span></div>`;
+    });
+    card.innerHTML = `
+      <span class="qnum">Q${String(i+1).padStart(2,'0')}<span class="qcat">· ${item.cat}</span></span>
+      <div class="qtext">${item.q}</div>
+      <div class="choices">${choicesHTML}</div>
+      <div class="explain" id="e${i}"><b>해설.</b> ${item.e}</div>
+    `;
+    quizEl.appendChild(card);
+  });
+
+  document.querySelectorAll('.choice').forEach(ch=>{
+    ch.addEventListener('click', ()=>{
+      if(lockedSubmit) return;
+      const q = +ch.dataset.q, c = +ch.dataset.c;
+      answered[q] = c;
+      document.querySelectorAll(`.choice[data-q="${q}"]`).forEach(x=>x.classList.remove('selected'));
+      ch.classList.add('selected');
+      updateProgress();
+    });
+  });
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = Object.keys(answered).length;
+  const pct = Math.round(done/QUESTIONS.length*100);
+  document.getElementById('bar').style.width = pct+'%';
+  document.getElementById('progressText').textContent = `${done} / ${QUESTIONS.length} 풀이`;
+  if(!lockedSubmit){
+    document.getElementById('correctCount').textContent = '–';
+    document.getElementById('wrongCount').textContent = '–';
+  }
+}
+
+function grade(){
+  lockedSubmit = true;
+  let correct = 0;
+  QUESTIONS.forEach((item, i)=>{
+    const chosen = answered[i];
+    document.getElementById('e'+i).classList.add('show');
+    document.querySelectorAll(`.choice[data-q="${i}"]`).forEach(ch=>{
+      ch.classList.add('locked');
+      const c = +ch.dataset.c;
+      if(c === item.a) ch.classList.add('correct');
+      if(chosen !== undefined && c === chosen && chosen !== item.a) ch.classList.add('wrong');
+    });
+    if(chosen === item.a) correct++;
+  });
+  const wrong = QUESTIONS.length - correct;
+  document.getElementById('correctCount').textContent = correct;
+  document.getElementById('wrongCount').textContent = wrong;
+  showResult(correct);
+}
+
+function showResult(correct){
+  const total = QUESTIONS.length;
+  const pct = Math.round(correct/total*100);
+  let msg;
+  if(pct===100) msg = "완벽합니다! 정리본이 머릿속에 완전히 들어왔어요. 🎯";
+  else if(pct>=80) msg = "거의 다 왔습니다. 오답 해설만 한 번 더 보면 끝!";
+  else if(pct>=60) msg = "절반 이상 OK. 빨간 표시 문항을 다시 훑어보세요.";
+  else msg = "괜찮아요. 해설 보며 한 바퀴 더 돌리면 확실히 잡힙니다. 💪";
+
+  const r = document.getElementById('result');
+  r.innerHTML = `
+    <h2>채점 결과</h2>
+    <div class="score">${correct}<small> / ${total} · ${pct}%</small></div>
+    <div class="msg">${msg}</div>
+    <div class="cheat">
+      <h3>🚨 시험 직전 1분 암기</h3>
+      <ul>
+        <li><b>뇌동맥류</b> → 코일 &nbsp;|&nbsp; <b>TAA</b> → 흉부 Stent graft &nbsp;|&nbsp; <b>AAA</b> → 복부 Stent graft</li>
+        <li><b>DVT</b> → 폐색전증 → <b>IVC filter</b></li>
+        <li><b>복부대동맥</b> → T11 + Pigtail</li>
+        <li><b>복강동맥</b> → 왼위 + 지라 + 온간 (가로막 바로 아래 분지)</li>
+        <li><b>SMA</b> → RHR, RH &nbsp;|&nbsp; <b>IMA</b> → RHR, RH, Simmons</li>
+        <li><b>문맥</b> = IMV → Splenic → +SMV → Portal</li>
+        <li><b>VSD</b> = 25%, 2세 전 수술 &nbsp;|&nbsp; <b>TOF</b> = VSD+폐동맥협착+대동맥기승+우심실비대</li>
+        <li><b>좌관상</b> = LAD + LCx</li>
+        <li>협심증/심근경색 = <b>선택적 관상동맥 조영술</b> &nbsp;|&nbsp; PDA = 동맥관 안 닫힘</li>
+        <li>색전물질 = Coil, NBCA, Lipiodol &nbsp;|&nbsp; 심장 혈액채취 = Swan-Ganz, Berman &nbsp;|&nbsp; DSA = VR</li>
+      </ul>
+    </div>
+  `;
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+document.getElementById('submitBtn').addEventListener('click', ()=>{
+  if(lockedSubmit) return;
+  const done = Object.keys(answered).length;
+  if(done < QUESTIONS.length){
+    if(!confirm(`아직 ${QUESTIONS.length-done}문항이 남았어요. 그래도 채점할까요?`)) return;
+  }
+  grade();
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  answered = {};
+  lockedSubmit = false;
+  document.getElementById('result').classList.remove('show');
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+render();
+</script>
+</body>
+</html>
