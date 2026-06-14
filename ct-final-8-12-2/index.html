@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026년 전산화단층촬영학 기말고사 (2회)</title>
+<style>
+:root{
+  --bg:#f7f5f0; --card:#ffffff; --opt:#fdfbf5; --hover:#f5f1e5;
+  --text:#1a1a1a; --sub:#3a3a3a; --muted:#8a8680;
+  --accent:#b8361f; --hl:#fff0a8;
+  --ok:#2d6a4f; --okbg:#e8f3ed; --no:#b52929; --nobg:#fbe9e7;
+  --line:#e5e0d0; --line2:#d4cdb8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  line-height:1.65;padding-bottom:120px}
+.wrap{max-width:880px;margin:0 auto;padding:28px 20px}
+.exam-head{border:2px solid var(--text);border-radius:4px;background:var(--card);
+  padding:0;margin-bottom:26px;overflow:hidden}
+.exam-title{text-align:center;font-size:22px;font-weight:800;letter-spacing:1px;
+  padding:14px 10px;border-bottom:2px solid var(--text)}
+.exam-meta{display:flex;flex-wrap:wrap;gap:6px 28px;padding:12px 18px;font-size:15px;color:var(--sub)}
+.exam-meta b{color:var(--text)}
+.exam-meta .fill{display:inline-block;border-bottom:1px solid var(--line2);min-width:90px}
+.notice{font-size:13px;color:var(--muted);margin:10px 2px 24px;text-align:center}
+.notice .hl{background:var(--hl);padding:1px 5px;border-radius:3px;color:var(--text)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;
+  padding:18px 20px 16px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.qhead{display:flex;gap:10px;align-items:baseline;margin-bottom:10px}
+.qno{flex:0 0 auto;min-width:30px;height:30px;padding:0 4px;border-radius:6px;
+  background:var(--accent);color:#fff;font-weight:700;font-size:15px;
+  display:inline-flex;align-items:center;justify-content:center;line-height:1}
+.qtext{font-size:16.5px;font-weight:600;color:var(--text)}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;gap:9px;align-items:flex-start;background:var(--opt);
+  border:1px solid var(--line);border-radius:7px;padding:9px 12px;cursor:pointer;
+  transition:background .12s,border-color .12s;font-size:15.5px;color:var(--sub)}
+.opt:hover{background:var(--hover)}
+.opt .num{flex:0 0 auto;font-weight:700;color:var(--accent);font-size:16px}
+.opt.sel{background:#f3ece0;border-color:var(--accent);color:var(--text);font-weight:600}
+.opt.sel .num{color:var(--accent)}
+.opt.correct{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.correct .num{color:var(--ok)}
+.opt.wrong{background:var(--nobg);border-color:var(--no);color:var(--no);font-weight:600}
+.opt.wrong .num{color:var(--no)}
+.opt.locked{cursor:default}
+.tag{margin-left:8px;font-size:12.5px;font-weight:700;padding:1px 7px;border-radius:10px;vertical-align:middle}
+.tag.ok{background:var(--ok);color:#fff}
+.tag.no{background:var(--no);color:#fff}
+#result{display:none;margin:22px 0 4px;border:2px solid var(--accent);border-radius:10px;
+  background:var(--card);padding:20px;text-align:center}
+#result.show{display:block}
+#result .score{font-size:34px;font-weight:800;color:var(--accent)}
+#result .sub{color:var(--sub);font-size:15px;margin-top:4px}
+#result .bar{height:12px;background:var(--line);border-radius:8px;margin:14px auto 0;max-width:480px;overflow:hidden}
+#result .bar > i{display:block;height:100%;background:var(--accent)}
+.actions{position:fixed;left:0;right:0;bottom:0;background:rgba(247,245,240,.94);
+  backdrop-filter:blur(6px);border-top:1px solid var(--line2);padding:12px;
+  display:flex;gap:12px;justify-content:center;z-index:20}
+.btn{font-size:16px;font-weight:700;padding:12px 26px;border-radius:8px;border:none;cursor:pointer;
+  font-family:inherit}
+.btn-grade{background:var(--accent);color:#fff}
+.btn-grade:hover{background:#9d2d18}
+.btn-reset{background:#fff;color:var(--accent);border:1.5px solid var(--accent)}
+.btn-reset:hover{background:var(--hover)}
+.progress{align-self:center;font-size:13.5px;color:var(--muted)}
+@media(max-width:520px){.exam-title{font-size:18px}.qtext{font-size:15.5px}.btn{padding:11px 16px;font-size:15px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="exam-head">
+    <div class="exam-title">2026년 전산화단층촬영학 기말고사 (2회)</div>
+    <div class="exam-meta">
+      <span><b>방사선학과</b></span>
+      <span>3학년 1학기</span>
+      <span>학번 : <span class="fill"></span></span>
+      <span>이름 : <span class="fill"></span></span>
+    </div>
+  </div>
+  <div class="notice">※ 총 <b>40문항</b> · 각 문항당 1개의 정답을 선택하세요. 모두 푼 뒤 아래 <span class="hl">채점하기</span> 버튼을 누르면 결과가 표시됩니다. (출제 범위: 8~12장)</div>
+
+  <div id="result">
+    <div class="score" id="scoreText"></div>
+    <div class="sub" id="scoreSub"></div>
+    <div class="bar"><i id="scoreBar"></i></div>
+  </div>
+
+  <div id="quiz"><div class="card" id="card0">
+      <div class="qhead"><span class="qno">1</span><span class="qtext">하나의 선 또는 선 형태의 틈이 있는 피사체를 영상화할 때, 영상에서 하나의 선이나 틈으로 재현시킬 수 있는 능력을 나타내는 함수는?</span></div>
+      <div class="opts"><label class="opt" data-q="0" data-o="0"><span class="num">①</span><span class="otext">PSF(점확산함수)</span></label><label class="opt" data-q="0" data-o="1"><span class="num">②</span><span class="otext">LSF(선확산함수)</span></label><label class="opt" data-q="0" data-o="2"><span class="num">③</span><span class="otext">CTF(대조도응답함수)</span></label><label class="opt" data-q="0" data-o="3"><span class="num">④</span><span class="otext">MTF(변조전달함수)</span></label><label class="opt" data-q="0" data-o="4"><span class="num">⑤</span><span class="otext">CNR(대조도대잡음비)</span></label></div>
+    </div>
+<div class="card" id="card1">
+      <div class="qhead"><span class="qno">2</span><span class="qtext">MTF는 노이즈가 배제된 상태에서 측정하는 반면, 노이즈를 포함한 상태에서의 피사체 검출능을 표현하는 영상품질 지표는?</span></div>
+      <div class="opts"><label class="opt" data-q="1" data-o="0"><span class="num">①</span><span class="otext">SNR(신호대잡음비)</span></label><label class="opt" data-q="1" data-o="1"><span class="num">②</span><span class="otext">MTF(변조전달함수)</span></label><label class="opt" data-q="1" data-o="2"><span class="num">③</span><span class="otext">CNR(대조도대잡음비)</span></label><label class="opt" data-q="1" data-o="3"><span class="num">④</span><span class="otext">PSF(점확산함수)</span></label><label class="opt" data-q="1" data-o="4"><span class="num">⑤</span><span class="otext">CTF(대조도응답함수)</span></label></div>
+    </div>
+<div class="card" id="card2">
+      <div class="qhead"><span class="qno">3</span><span class="qtext">CT 영상 재구성 알고리즘과 노이즈의 관계에 대한 설명으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="2" data-o="0"><span class="num">①</span><span class="otext">고해상도 알고리즘을 사용할수록 노이즈는 감소한다</span></label><label class="opt" data-q="2" data-o="1"><span class="num">②</span><span class="otext">soft 알고리즘이 ultrahigh 알고리즘보다 노이즈가 많다</span></label><label class="opt" data-q="2" data-o="2"><span class="num">③</span><span class="otext">고해상도(ultrahigh) 알고리즘을 사용할수록 노이즈는 증가한다</span></label><label class="opt" data-q="2" data-o="3"><span class="num">④</span><span class="otext">재구성 알고리즘은 노이즈와 무관하다</span></label><label class="opt" data-q="2" data-o="4"><span class="num">⑤</span><span class="otext">standard 알고리즘에서 노이즈가 가장 많이 발생한다</span></label></div>
+    </div>
+<div class="card" id="card3">
+      <div class="qhead"><span class="qno">4</span><span class="qtext">조직분해능 또는 sensitivity라고도 하며, 감약 차이가 작은 인접한 구조물을 구분해내는 시스템의 능력을 나타내는 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="3" data-o="0"><span class="num">①</span><span class="otext">공간분해능</span></label><label class="opt" data-q="3" data-o="1"><span class="num">②</span><span class="otext">시간분해능</span></label><label class="opt" data-q="3" data-o="2"><span class="num">③</span><span class="otext">대조도분해능</span></label><label class="opt" data-q="3" data-o="3"><span class="num">④</span><span class="otext">Z-축 분해능</span></label><label class="opt" data-q="3" data-o="4"><span class="num">⑤</span><span class="otext">동등해상능</span></label></div>
+    </div>
+<div class="card" id="card4">
+      <div class="qhead"><span class="qno">5</span><span class="qtext">국민건강보험 재정건전화 특별법에 따라 보건복지부 장관에게 등록해야 하는 특수의료장비에 해당하지 <b>않는</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="4" data-o="0"><span class="num">①</span><span class="otext">전산화단층촬영장치(CT)</span></label><label class="opt" data-q="4" data-o="1"><span class="num">②</span><span class="otext">자기공명영상촬영장치(MRI)</span></label><label class="opt" data-q="4" data-o="2"><span class="num">③</span><span class="otext">유방촬영장치(Mammography)</span></label><label class="opt" data-q="4" data-o="3"><span class="num">④</span><span class="otext">초음파영상진단장치(Ultrasound)</span></label></div>
+    </div>
+<div class="card" id="card5">
+      <div class="qhead"><span class="qno">6</span><span class="qtext">CT 장치의 성능관리에서 서류검사와 정기검사의 시행 주기로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="5" data-o="0"><span class="num">①</span><span class="otext">서류검사 3년, 정기검사 1년</span></label><label class="opt" data-q="5" data-o="1"><span class="num">②</span><span class="otext">서류검사 1년, 정기검사 3년</span></label><label class="opt" data-q="5" data-o="2"><span class="num">③</span><span class="otext">서류검사 1년, 정기검사 5년</span></label><label class="opt" data-q="5" data-o="3"><span class="num">④</span><span class="otext">서류검사 6개월, 정기검사 2년</span></label><label class="opt" data-q="5" data-o="4"><span class="num">⑤</span><span class="otext">서류검사 2년, 정기검사 4년</span></label></div>
+    </div>
+<div class="card" id="card6">
+      <div class="qhead"><span class="qno">7</span><span class="qtext">CT 장치의 성능관리 검사 중 관전류 및 관전류량(mAs) 시험에서 백분율평균오차의 허용기준으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="6" data-o="0"><span class="num">①</span><span class="otext">지시치에 대하여 ±5% 이내</span></label><label class="opt" data-q="6" data-o="1"><span class="num">②</span><span class="otext">지시치에 대하여 ±10% 이내</span></label><label class="opt" data-q="6" data-o="2"><span class="num">③</span><span class="otext">지시치에 대하여 ±15% 이내</span></label><label class="opt" data-q="6" data-o="3"><span class="num">④</span><span class="otext">지시치에 대하여 ±20% 이내</span></label><label class="opt" data-q="6" data-o="4"><span class="num">⑤</span><span class="otext">지시치에 대하여 ±30% 이내</span></label></div>
+    </div>
+<div class="card" id="card7">
+      <div class="qhead"><span class="qno">8</span><span class="qtext">스캔축에 대해 45° 경사진 판이 설치된 팬텀으로 슬라이스 두께(slice thickness)의 정확도를 평가할 때, 일반적인 평가(허용)기준으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="7" data-o="0"><span class="num">①</span><span class="otext">오차범위 ±0.5mm 이내</span></label><label class="opt" data-q="7" data-o="1"><span class="num">②</span><span class="otext">오차범위 ±1mm 이내</span></label><label class="opt" data-q="7" data-o="2"><span class="num">③</span><span class="otext">오차범위 ±2mm 이내</span></label><label class="opt" data-q="7" data-o="3"><span class="num">④</span><span class="otext">오차범위 ±5mm 이내</span></label><label class="opt" data-q="7" data-o="4"><span class="num">⑤</span><span class="otext">오차범위 ±10mm 이내</span></label></div>
+    </div>
+<div class="card" id="card8">
+      <div class="qhead"><span class="qno">9</span><span class="qtext">Aluminum pin이 grid의 중심과 일치하는지를 확인하는 중심선 정렬(beam alignment) 검사의 평가기준으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="8" data-o="0"><span class="num">①</span><span class="otext">상하 및 좌우 ±1.0mm 이내</span></label><label class="opt" data-q="8" data-o="1"><span class="num">②</span><span class="otext">상하 및 좌우 ±3.0mm 이내</span></label><label class="opt" data-q="8" data-o="2"><span class="num">③</span><span class="otext">상하 및 좌우 ±5.0mm 이내</span></label><label class="opt" data-q="8" data-o="3"><span class="num">④</span><span class="otext">상하 및 좌우 ±10.0mm 이내</span></label><label class="opt" data-q="8" data-o="4"><span class="num">⑤</span><span class="otext">상하 및 좌우 ±0.5mm 이내</span></label></div>
+    </div>
+<div class="card" id="card9">
+      <div class="qhead"><span class="qno">10</span><span class="qtext">나선형 스캔의 보간(interpolation) 처리 오류나 일련의 데이터 채널·view가 정확한 측정값에서 벗어나, CT number의 부정확·영상 대조도 손실·공간적 불균일도를 야기하는 인공물은?</span></div>
+      <div class="opts"><label class="opt" data-q="9" data-o="0"><span class="num">①</span><span class="otext">Ring artifact</span></label><label class="opt" data-q="9" data-o="1"><span class="num">②</span><span class="otext">Streak artifact</span></label><label class="opt" data-q="9" data-o="2"><span class="num">③</span><span class="otext">Star shape artifact</span></label><label class="opt" data-q="9" data-o="3"><span class="num">④</span><span class="otext">Shading artifact</span></label><label class="opt" data-q="9" data-o="4"><span class="num">⑤</span><span class="otext">Stair step artifact</span></label></div>
+    </div>
+<div class="card" id="card10">
+      <div class="qhead"><span class="qno">11</span><span class="qtext">공기-조영제 경계처럼 고밀도와 저밀도 물질 사이의 심한 농도차에 의해 직선형으로 밝고 어두운 음영이 생기는 인공물은?</span></div>
+      <div class="opts"><label class="opt" data-q="10" data-o="0"><span class="num">①</span><span class="otext">Edge gradient effect</span></label><label class="opt" data-q="10" data-o="1"><span class="num">②</span><span class="otext">Ring artifact</span></label><label class="opt" data-q="10" data-o="2"><span class="num">③</span><span class="otext">Beam hardening artifact</span></label><label class="opt" data-q="10" data-o="3"><span class="num">④</span><span class="otext">Zebra artifact</span></label><label class="opt" data-q="10" data-o="4"><span class="num">⑤</span><span class="otext">Partial volume artifact</span></label></div>
+    </div>
+<div class="card" id="card11">
+      <div class="qhead"><span class="qno">12</span><span class="qtext">다음 중 Streak artifact(줄무늬 인공물)의 발생원인으로 옳지 <b>않은</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="11" data-o="0"><span class="num">①</span><span class="otext">광자량(신호) 부족</span></label><label class="opt" data-q="11" data-o="1"><span class="num">②</span><span class="otext">인체 내 금속성 물질</span></label><label class="opt" data-q="11" data-o="2"><span class="num">③</span><span class="otext">환자의 움직임</span></label><label class="opt" data-q="11" data-o="3"><span class="num">④</span><span class="otext">검출기나 DAS의 오류 및 접촉 불량</span></label><label class="opt" data-q="11" data-o="4"><span class="num">⑤</span><span class="otext">검출소자의 calibration 저하로 인한 동심원 발생</span></label></div>
+    </div>
+<div class="card" id="card12">
+      <div class="qhead"><span class="qno">13</span><span class="qtext">나선식(spiral) CT에서 높은 pitch의 사용으로 발생하는 helical artifact의 교정방법으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="12" data-o="0"><span class="num">①</span><span class="otext">pitch를 더 높게 설정한다</span></label><label class="opt" data-q="12" data-o="1"><span class="num">②</span><span class="otext">스캔 시 콜리메이션을 좁게 설정한다</span></label><label class="opt" data-q="12" data-o="2"><span class="num">③</span><span class="otext">슬라이스 두께를 증가시킨다</span></label><label class="opt" data-q="12" data-o="3"><span class="num">④</span><span class="otext">매트릭스 크기를 줄인다</span></label><label class="opt" data-q="12" data-o="4"><span class="num">⑤</span><span class="otext">FOV를 크게 설정한다</span></label></div>
+    </div>
+<div class="card" id="card13">
+      <div class="qhead"><span class="qno">14</span><span class="qtext">SDCT보다 MDCT(4슬라이스 이상)에서 Z축 선량분포가 불균일하여 beam 폭이 2~3mm 정도 넓어지며 더 많은 선량이 요구되는 현상은?</span></div>
+      <div class="opts"><label class="opt" data-q="13" data-o="0"><span class="num">①</span><span class="otext">cupping 현상</span></label><label class="opt" data-q="13" data-o="1"><span class="num">②</span><span class="otext">cone beam effect</span></label><label class="opt" data-q="13" data-o="2"><span class="num">③</span><span class="otext">overbeaming</span></label><label class="opt" data-q="13" data-o="3"><span class="num">④</span><span class="otext">aliasing</span></label><label class="opt" data-q="13" data-o="4"><span class="num">⑤</span><span class="otext">edge gradient effect</span></label></div>
+    </div>
+<div class="card" id="card14">
+      <div class="qhead"><span class="qno">15</span><span class="qtext">VRT나 MIP 기법의 3차원 영상에서 낮은 신호영역의 노이즈 효과에 의해 블라인드형의 횡축 줄무늬로 나타나는 인공물은?</span></div>
+      <div class="opts"><label class="opt" data-q="14" data-o="0"><span class="num">①</span><span class="otext">Stair step artifact</span></label><label class="opt" data-q="14" data-o="1"><span class="num">②</span><span class="otext">Zebra artifact</span></label><label class="opt" data-q="14" data-o="2"><span class="num">③</span><span class="otext">Ring artifact</span></label><label class="opt" data-q="14" data-o="3"><span class="num">④</span><span class="otext">Aliasing artifact</span></label><label class="opt" data-q="14" data-o="4"><span class="num">⑤</span><span class="otext">Shading artifact</span></label></div>
+    </div>
+<div class="card" id="card15">
+      <div class="qhead"><span class="qno">16</span><span class="qtext">체내 고밀도 이물질에 의한 high contrast foreign body artifact의 교정방법으로 옳지 <b>않은</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="15" data-o="0"><span class="num">①</span><span class="otext">교정 소프트웨어를 적용한다</span></label><label class="opt" data-q="15" data-o="1"><span class="num">②</span><span class="otext">두부 CT의 경우 갠트리 각도를 변화시킨다</span></label><label class="opt" data-q="15" data-o="2"><span class="num">③</span><span class="otext">조영제에 의해 발생하는 경우 희석하여 사용한다</span></label><label class="opt" data-q="15" data-o="3"><span class="num">④</span><span class="otext">조영제 사용 시 스캔 방향을 위에서 아래로 시행한다</span></label><label class="opt" data-q="15" data-o="4"><span class="num">⑤</span><span class="otext">조영제 사용 시 스캔 방향을 아래에서 위로 시행한다</span></label></div>
+    </div>
+<div class="card" id="card16">
+      <div class="qhead"><span class="qno">17</span><span class="qtext">부분체적효과(partial volume) 아티팩트의 보정방법으로 옳지 <b>않은</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="16" data-o="0"><span class="num">①</span><span class="otext">슬라이스 두께를 감소시킨다</span></label><label class="opt" data-q="16" data-o="1"><span class="num">②</span><span class="otext">high kVp를 사용한다</span></label><label class="opt" data-q="16" data-o="2"><span class="num">③</span><span class="otext">matrix 수를 증가시킨다</span></label><label class="opt" data-q="16" data-o="3"><span class="num">④</span><span class="otext">슬라이스 두께를 증가시킨다</span></label><label class="opt" data-q="16" data-o="4"><span class="num">⑤</span><span class="otext">display FOV를 줄여 픽셀 크기를 작게 한다</span></label></div>
+    </div>
+<div class="card" id="card17">
+      <div class="qhead"><span class="qno">18</span><span class="qtext">주로 방사선장의 강도를 표현하기 위해 사용되며, 공기의 단위질량당 흡수되는 방사선 에너지(전리량)로 나타내고 단위가 C/kg인 선량은?</span></div>
+      <div class="opts"><label class="opt" data-q="17" data-o="0"><span class="num">①</span><span class="otext">조사선량</span></label><label class="opt" data-q="17" data-o="1"><span class="num">②</span><span class="otext">흡수선량</span></label><label class="opt" data-q="17" data-o="2"><span class="num">③</span><span class="otext">등가선량</span></label><label class="opt" data-q="17" data-o="3"><span class="num">④</span><span class="otext">유효선량</span></label><label class="opt" data-q="17" data-o="4"><span class="num">⑤</span><span class="otext">선량당량</span></label></div>
+    </div>
+<div class="card" id="card18">
+      <div class="qhead"><span class="qno">19</span><span class="qtext">조직의 한 지점에서 흡수선량과 선질계수의 곱으로 나타내며, 생물학적 효과를 고려한 흡수량으로 단위가 Sv(이전 rem)인 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="18" data-o="0"><span class="num">①</span><span class="otext">조사선량</span></label><label class="opt" data-q="18" data-o="1"><span class="num">②</span><span class="otext">흡수선량</span></label><label class="opt" data-q="18" data-o="2"><span class="num">③</span><span class="otext">선량당량</span></label><label class="opt" data-q="18" data-o="3"><span class="num">④</span><span class="otext">조사선량률</span></label><label class="opt" data-q="18" data-o="4"><span class="num">⑤</span><span class="otext">Organ dose</span></label></div>
+    </div>
+<div class="card" id="card19">
+      <div class="qhead"><span class="qno">20</span><span class="qtext">방사성 물질의 붕괴수를 나타내며 단위로 Bq(베크렐)와 Ci(큐리)를 사용하는 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="19" data-o="0"><span class="num">①</span><span class="otext">흡수선량</span></label><label class="opt" data-q="19" data-o="1"><span class="num">②</span><span class="otext">방사능</span></label><label class="opt" data-q="19" data-o="2"><span class="num">③</span><span class="otext">등가선량</span></label><label class="opt" data-q="19" data-o="3"><span class="num">④</span><span class="otext">유효선량</span></label><label class="opt" data-q="19" data-o="4"><span class="num">⑤</span><span class="otext">조사선량</span></label></div>
+    </div>
+<div class="card" id="card20">
+      <div class="qhead"><span class="qno">21</span><span class="qtext">팬텀을 사용하지 않고 회전축에 chamber를 위치시켜 측정하며, 선질(beam quality)을 충분히 반영하지 못하는 CT 선량 측정방법은?</span></div>
+      <div class="opts"><label class="opt" data-q="20" data-o="0"><span class="num">①</span><span class="otext">CTDIw</span></label><label class="opt" data-q="20" data-o="1"><span class="num">②</span><span class="otext">CTDI in air</span></label><label class="opt" data-q="20" data-o="2"><span class="num">③</span><span class="otext">DLP</span></label><label class="opt" data-q="20" data-o="3"><span class="num">④</span><span class="otext">MSAD</span></label><label class="opt" data-q="20" data-o="4"><span class="num">⑤</span><span class="otext">CTDIvol</span></label></div>
+    </div>
+<div class="card" id="card21">
+      <div class="qhead"><span class="qno">22</span><span class="qtext">일반촬영(projection radiography)과 비교한 CT의 선량분포 특성으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="21" data-o="0"><span class="num">①</span><span class="otext">일반촬영은 입사부와 출사부의 선량이 동일하다</span></label><label class="opt" data-q="21" data-o="1"><span class="num">②</span><span class="otext">CT scanning plane의 중앙부 선량은 주변부와 큰 차이가 없다</span></label><label class="opt" data-q="21" data-o="2"><span class="num">③</span><span class="otext">CT는 일반촬영처럼 입사부에서 출사부로 선량이 급격히 감소한다</span></label><label class="opt" data-q="21" data-o="3"><span class="num">④</span><span class="otext">CT 중앙부 선량은 주변부의 약 10배에 달한다</span></label><label class="opt" data-q="21" data-o="4"><span class="num">⑤</span><span class="otext">일반촬영의 선량분포가 CT보다 더 균일하다</span></label></div>
+    </div>
+<div class="card" id="card22">
+      <div class="qhead"><span class="qno">23</span><span class="qtext">MSAD와 관련하여 스캔방법에 따른 환자 피폭선량의 변화로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="22" data-o="0"><span class="num">①</span><span class="otext">슬라이스 두께를 증가시키면 환자가 받는 선량은 감소한다</span></label><label class="opt" data-q="22" data-o="1"><span class="num">②</span><span class="otext">영상 사이의 간격을 넓히면 환자가 받는 선량은 증가한다</span></label><label class="opt" data-q="22" data-o="2"><span class="num">③</span><span class="otext">연속스캔이 중복스캔보다 선량이 많다</span></label><label class="opt" data-q="22" data-o="3"><span class="num">④</span><span class="otext">영상 사이의 간격을 넓히면 환자가 받는 선량은 감소한다</span></label><label class="opt" data-q="22" data-o="4"><span class="num">⑤</span><span class="otext">인접 슬라이스 산란선 중복으로 선량은 0.8배로 감소한다</span></label></div>
+    </div>
+<div class="card" id="card23">
+      <div class="qhead"><span class="qno">24</span><span class="qtext">TLD 측정용 인체모형(anthropomorphic) 팬텀에 대한 설명으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="23" data-o="0"><span class="num">①</span><span class="otext">단일 단면의 아크릴 원통형으로 되어 있다</span></label><label class="opt" data-q="23" data-o="1"><span class="num">②</span><span class="otext">인체의 유효원자번호(7.4)와 유사한 조직 등가물질로 이루어져 있다</span></label><label class="opt" data-q="23" data-o="2"><span class="num">③</span><span class="otext">16cm, 32cm 직경으로만 제작된다</span></label><label class="opt" data-q="23" data-o="3"><span class="num">④</span><span class="otext">ion chamber 삽입 전용으로만 사용된다</span></label><label class="opt" data-q="23" data-o="4"><span class="num">⑤</span><span class="otext">구조상 선량 측정이 불가능하다</span></label></div>
+    </div>
+<div class="card" id="card24">
+      <div class="qhead"><span class="qno">25</span><span class="qtext">다음 중 CT 검사에서 환자 피폭선량을 감소시키는 방법으로 옳지 <b>않은</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="24" data-o="0"><span class="num">①</span><span class="otext">필요 이상의 촬영 슬라이스 수를 줄인다</span></label><label class="opt" data-q="24" data-o="1"><span class="num">②</span><span class="otext">짧은 스캔시간을 사용한다</span></label><label class="opt" data-q="24" data-o="2"><span class="num">③</span><span class="otext">반복 노출을 피한다</span></label><label class="opt" data-q="24" data-o="3"><span class="num">④</span><span class="otext">영상의 질적 저하가 없는 범위에서 빠른 pitch를 사용한다</span></label><label class="opt" data-q="24" data-o="4"><span class="num">⑤</span><span class="otext">가능한 한 느린 pitch로 반복 스캔한다</span></label></div>
+    </div>
+<div class="card" id="card25">
+      <div class="qhead"><span class="qno">26</span><span class="qtext">CT 조영제 사용 시 준수사항으로 옳지 <b>않은</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="25" data-o="0"><span class="num">①</span><span class="otext">6시간 이상 금식한다</span></label><label class="opt" data-q="25" data-o="1"><span class="num">②</span><span class="otext">18G로 IV route를 확보한다</span></label><label class="opt" data-q="25" data-o="2"><span class="num">③</span><span class="otext">조영제 사용 동의서를 확보한다</span></label><label class="opt" data-q="25" data-o="3"><span class="num">④</span><span class="otext">조영제 반응검사(skin test)를 시행한다</span></label><label class="opt" data-q="25" data-o="4"><span class="num">⑤</span><span class="otext">과민반응 과거력과 무관하게 항상 조영제를 사용한다</span></label></div>
+    </div>
+<div class="card" id="card26">
+      <div class="qhead"><span class="qno">27</span><span class="qtext">두경부(Brain) CT 검사 시 조영제 주입방법으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="26" data-o="0"><span class="num">①</span><span class="otext">성인은 hand bolus injection을 사용한다</span></label><label class="opt" data-q="26" data-o="1"><span class="num">②</span><span class="otext">성인은 자동주입기로 2ml/sec, 2ml/kg 주입한다</span></label><label class="opt" data-q="26" data-o="2"><span class="num">③</span><span class="otext">소아는 자동주입기로 5ml/sec 주입한다</span></label><label class="opt" data-q="26" data-o="3"><span class="num">④</span><span class="otext">소아는 금식이 필요 없다</span></label><label class="opt" data-q="26" data-o="4"><span class="num">⑤</span><span class="otext">성인은 진정제 투여 후 검사한다</span></label></div>
+    </div>
+<div class="card" id="card27">
+      <div class="qhead"><span class="qno">28</span><span class="qtext">Brain routine CT에서 pre contrast(조영 전)만 시행하는 경우로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="27" data-o="0"><span class="num">①</span><span class="otext">종양의 발견을 위한 검사</span></label><label class="opt" data-q="27" data-o="1"><span class="num">②</span><span class="otext">동정맥 기형(AVM)</span></label><label class="opt" data-q="27" data-o="2"><span class="num">③</span><span class="otext">급성 뇌출혈 및 뇌실의 크기 평가</span></label><label class="opt" data-q="27" data-o="3"><span class="num">④</span><span class="otext">뇌막염</span></label><label class="opt" data-q="27" data-o="4"><span class="num">⑤</span><span class="otext">두개 내 동맥류 의심</span></label></div>
+    </div>
+<div class="card" id="card28">
+      <div class="qhead"><span class="qno">29</span><span class="qtext">Brain routine CT에서 post contrast(조영 후)만 시행하는 경우로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="28" data-o="0"><span class="num">①</span><span class="otext">급성 외상환자</span></label><label class="opt" data-q="28" data-o="1"><span class="num">②</span><span class="otext">원인을 알 수 없는 두통 및 발작(seizure)</span></label><label class="opt" data-q="28" data-o="2"><span class="num">③</span><span class="otext">급성 뇌출혈</span></label><label class="opt" data-q="28" data-o="3"><span class="num">④</span><span class="otext">뇌실의 크기 평가</span></label><label class="opt" data-q="28" data-o="4"><span class="num">⑤</span><span class="otext">수술 후 기구의 삽입위치 확인</span></label></div>
+    </div>
+<div class="card" id="card29">
+      <div class="qhead"><span class="qno">30</span><span class="qtext">다음 중 두경부(Brain) CT의 스캔 기준선(scan baseline)으로 옳지 <b>않은</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="29" data-o="0"><span class="num">①</span><span class="otext">Orbitomeatal line(OML)</span></label><label class="opt" data-q="29" data-o="1"><span class="num">②</span><span class="otext">Supra orbitomeatal line(SOML)</span></label><label class="opt" data-q="29" data-o="2"><span class="num">③</span><span class="otext">Infra orbitomeatal line(IOML)</span></label><label class="opt" data-q="29" data-o="3"><span class="num">④</span><span class="otext">Interpupillary line(IPL)</span></label></div>
+    </div>
+<div class="card" id="card30">
+      <div class="qhead"><span class="qno">31</span><span class="qtext">두부 CT에서 두개골절 여부 판단이나 종양의 골 전이 확인을 위한 bone window setting(WW/WL)으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="30" data-o="0"><span class="num">①</span><span class="otext">80 / 40</span></label><label class="opt" data-q="30" data-o="1"><span class="num">②</span><span class="otext">350 / 40</span></label><label class="opt" data-q="30" data-o="2"><span class="num">③</span><span class="otext">1000 / 200</span></label><label class="opt" data-q="30" data-o="3"><span class="num">④</span><span class="otext">1500 / -700</span></label><label class="opt" data-q="30" data-o="4"><span class="num">⑤</span><span class="otext">400 / 20</span></label></div>
+    </div>
+<div class="card" id="card31">
+      <div class="qhead"><span class="qno">32</span><span class="qtext">흉부 CT에서 조영제 급속주입 시 쇄골하정맥·상대정맥(SVC) 부위에 발생하는 아티팩트의 예방법으로 옳지 <b>않은</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="31" data-o="0"><span class="num">①</span><span class="otext">조영제 농도를 낮추어 사용한다</span></label><label class="opt" data-q="31" data-o="1"><span class="num">②</span><span class="otext">아래에서 위쪽 방향으로 스캔한다</span></label><label class="opt" data-q="31" data-o="2"><span class="num">③</span><span class="otext">하지정맥을 통해 조영제를 주입한다</span></label><label class="opt" data-q="31" data-o="3"><span class="num">④</span><span class="otext">조영제를 더 빠르고 진하게 주입한다</span></label></div>
+    </div>
+<div class="card" id="card32">
+      <div class="qhead"><span class="qno">33</span><span class="qtext">흉부 CT에서 종격동(mediastinum)을 관찰하기 위한 mediastinal window setting(WW/WL)으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="32" data-o="0"><span class="num">①</span><span class="otext">1500 / -700</span></label><label class="opt" data-q="32" data-o="1"><span class="num">②</span><span class="otext">450 / 30</span></label><label class="opt" data-q="32" data-o="2"><span class="num">③</span><span class="otext">1000 / 200</span></label><label class="opt" data-q="32" data-o="3"><span class="num">④</span><span class="otext">80 / 40</span></label><label class="opt" data-q="32" data-o="4"><span class="num">⑤</span><span class="otext">2000 / 300</span></label></div>
+    </div>
+<div class="card" id="card33">
+      <div class="qhead"><span class="qno">34</span><span class="qtext">폐질환의 screening을 위해 조영제를 사용하지 않고 적은 선량(약 40mAs)으로 진단 가능한 영상을 얻는 검사법은?</span></div>
+      <div class="opts"><label class="opt" data-q="33" data-o="0"><span class="num">①</span><span class="otext">HR lung CT</span></label><label class="opt" data-q="33" data-o="1"><span class="num">②</span><span class="otext">Low dose CT</span></label><label class="opt" data-q="33" data-o="2"><span class="num">③</span><span class="otext">Pulmonary CT angiography</span></label><label class="opt" data-q="33" data-o="3"><span class="num">④</span><span class="otext">Cardiac CT</span></label><label class="opt" data-q="33" data-o="4"><span class="num">⑤</span><span class="otext">CT perfusion</span></label></div>
+    </div>
+<div class="card" id="card34">
+      <div class="qhead"><span class="qno">35</span><span class="qtext">HR lung CT(고해상도 폐 CT)에 대한 설명으로 옳지 <b>않은</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="34" data-o="0"><span class="num">①</span><span class="otext">기관지 확장증, 폐 섬유화증 진단을 위해 시행한다</span></label><label class="opt" data-q="34" data-o="1"><span class="num">②</span><span class="otext">조영제를 사용하지 않는 검사법이다</span></label><label class="opt" data-q="34" data-o="2"><span class="num">③</span><span class="otext">고관전압(140kV)과 얇은 슬라이스 두께를 사용한다</span></label><label class="opt" data-q="34" data-o="3"><span class="num">④</span><span class="otext">고대조도 분해능(bone, ultrahigh) 알고리즘을 사용한다</span></label><label class="opt" data-q="34" data-o="4"><span class="num">⑤</span><span class="otext">저대조도(soft) 알고리즘과 두꺼운 슬라이스를 사용한다</span></label></div>
+    </div>
+<div class="card" id="card35">
+      <div class="qhead"><span class="qno">36</span><span class="qtext">Liver CT의 3 phase helical 검사 시기에 해당하지 <b>않는</b> 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="35" data-o="0"><span class="num">①</span><span class="otext">동맥상(arterial phase)</span></label><label class="opt" data-q="35" data-o="1"><span class="num">②</span><span class="otext">정맥상(venous phase)</span></label><label class="opt" data-q="35" data-o="2"><span class="num">③</span><span class="otext">지연상(late/delayed phase)</span></label><label class="opt" data-q="35" data-o="3"><span class="num">④</span><span class="otext">호흡상(respiratory phase)</span></label></div>
+    </div>
+<div class="card" id="card36">
+      <div class="qhead"><span class="qno">37</span><span class="qtext">Cardiac CT의 심전도 동조화(EKG gating)에 대한 설명으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="36" data-o="0"><span class="num">①</span><span class="otext">전향적 동조화(prospective)는 후향적보다 피폭이 많다</span></label><label class="opt" data-q="36" data-o="1"><span class="num">②</span><span class="otext">후향적 동조화(retrospective)는 피폭이 적고 촬영시간이 짧다</span></label><label class="opt" data-q="36" data-o="2"><span class="num">③</span><span class="otext">전향적 동조화는 R-wave로부터 지정한 시간에만 시행하여 피폭이 적다</span></label><label class="opt" data-q="36" data-o="3"><span class="num">④</span><span class="otext">영상 획득은 심장의 움직임이 가장 큰 수축기에 시행한다</span></label><label class="opt" data-q="36" data-o="4"><span class="num">⑤</span><span class="otext">R-R interval은 T파에서 다음 T파까지의 간격을 말한다</span></label></div>
+    </div>
+<div class="card" id="card37">
+      <div class="qhead"><span class="qno">38</span><span class="qtext">조영제를 사용하여 뇌 혈류·볼륨·time to peak 영상을 color mapping과 함께 보여주며 초기 뇌경색 진단에 이용하는 기능적 영상화 기법은?</span></div>
+      <div class="opts"><label class="opt" data-q="37" data-o="0"><span class="num">①</span><span class="otext">HR lung CT</span></label><label class="opt" data-q="37" data-o="1"><span class="num">②</span><span class="otext">CT perfusion</span></label><label class="opt" data-q="37" data-o="2"><span class="num">③</span><span class="otext">Calcium scoring</span></label><label class="opt" data-q="37" data-o="3"><span class="num">④</span><span class="otext">CT angiography</span></label><label class="opt" data-q="37" data-o="4"><span class="num">⑤</span><span class="otext">Cisternography</span></label></div>
+    </div>
+<div class="card" id="card38">
+      <div class="qhead"><span class="qno">39</span><span class="qtext">Brain perfusion CT 파라미터 사이의 관계식으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="38" data-o="0"><span class="num">①</span><span class="otext">MTT = CBF / CBV</span></label><label class="opt" data-q="38" data-o="1"><span class="num">②</span><span class="otext">MTT = CBV / CBF</span></label><label class="opt" data-q="38" data-o="2"><span class="num">③</span><span class="otext">CBV = MTT / CBF</span></label><label class="opt" data-q="38" data-o="3"><span class="num">④</span><span class="otext">TTP = CBV × CBF</span></label><label class="opt" data-q="38" data-o="4"><span class="num">⑤</span><span class="otext">CBF = MTT × TTP</span></label></div>
+    </div>
+<div class="card" id="card39">
+      <div class="qhead"><span class="qno">40</span><span class="qtext">CT 가상내시경 검사에서 검사 부위별 팽창(조영) 방법으로 옳은 것은?</span></div>
+      <div class="opts"><label class="opt" data-q="39" data-o="0"><span class="num">①</span><span class="otext">위(stomach) - 공기로 팽창</span></label><label class="opt" data-q="39" data-o="1"><span class="num">②</span><span class="otext">대장(colon) - 공기로 팽창</span></label><label class="opt" data-q="39" data-o="2"><span class="num">③</span><span class="otext">혈관(vessel) - 생리식염수 주입</span></label><label class="opt" data-q="39" data-o="3"><span class="num">④</span><span class="otext">방광(bladder) - 황산바륨 주입</span></label><label class="opt" data-q="39" data-o="4"><span class="num">⑤</span><span class="otext">대장(colon) - 황산바륨 주입</span></label></div>
+    </div></div>
+</div>
+
+<div class="actions">
+  <span class="progress" id="prog">0 / 40 선택</span>
+  <button class="btn btn-grade" id="gradeBtn">채점하기</button>
+  <button class="btn btn-reset" id="resetBtn">초기화</button>
+</div>
+
+<script>
+const ANS = [1, 2, 2, 2, 3, 1, 3, 1, 2, 3, 0, 4, 1, 2, 1, 3, 3, 0, 2, 1, 1, 1, 3, 1, 4, 4, 1, 2, 1, 3, 2, 3, 1, 1, 4, 3, 2, 1, 1, 1];
+const TOTAL = ANS.length;
+let picked = new Array(TOTAL).fill(-1);
+let graded = false;
+const quiz = document.getElementById('quiz');
+const prog = document.getElementById('prog');
+const result = document.getElementById('result');
+function updateProg(){
+  const n = picked.filter(x=>x>=0).length;
+  prog.textContent = n + ' / ' + TOTAL + ' 선택';
+}
+quiz.addEventListener('click', e=>{
+  if(graded) return;
+  const opt = e.target.closest('.opt');
+  if(!opt) return;
+  const q = +opt.dataset.q, o = +opt.dataset.o;
+  picked[q] = o;
+  document.querySelectorAll('.opt[data-q="'+q+'"]').forEach(el=>el.classList.remove('sel'));
+  opt.classList.add('sel');
+  updateProg();
+});
+function grade(){
+  graded = true;
+  let score = 0;
+  for(let q=0;q<TOTAL;q++){
+    const opts = document.querySelectorAll('.opt[data-q="'+q+'"]');
+    opts.forEach(el=>{el.classList.add('locked');el.classList.remove('sel');});
+    const correct = ANS[q], chose = picked[q];
+    if(chose===correct) score++;
+    opts[correct].classList.add('correct');
+    if(chose>=0 && chose!==correct){
+      opts[chose].classList.add('wrong');
+      opts[chose].insertAdjacentHTML('beforeend','<span class="tag no">내 답</span>');
+    }
+    opts[correct].insertAdjacentHTML('beforeend','<span class="tag ok">정답</span>');
+  }
+  const pct = Math.round(score/TOTAL*100);
+  document.getElementById('scoreText').textContent = score + ' / ' + TOTAL + '  ('+pct+'점)';
+  let msg = '';
+  if(pct>=90) msg='훌륭합니다! 시험 준비가 잘 되어 있어요.';
+  else if(pct>=70) msg='좋아요. 틀린 문항을 다시 확인해 보세요.';
+  else if(pct>=50) msg='조금 더 복습이 필요합니다.';
+  else msg='8~12장을 다시 정독해 보세요.';
+  document.getElementById('scoreSub').textContent = msg;
+  document.getElementById('scoreBar').style.width = pct+'%';
+  result.classList.add('show');
+  result.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function reset(){
+  graded=false;
+  picked = new Array(TOTAL).fill(-1);
+  document.querySelectorAll('.opt').forEach(el=>{
+    el.classList.remove('sel','correct','wrong','locked');
+    const t=el.querySelector('.tag'); if(t) t.remove();
+  });
+  result.classList.remove('show');
+  updateProg();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('gradeBtn').addEventListener('click', ()=>{
+  if(graded){ reset(); return; }
+  const n = picked.filter(x=>x>=0).length;
+  if(n<TOTAL){
+    if(!confirm('아직 풀지 않은 문항이 '+(TOTAL-n)+'개 있습니다. 그래도 채점할까요?')) return;
+  }
+  grade();
+});
+document.getElementById('resetBtn').addEventListener('click', reset);
+updateProg();
+</script>
+</body>
+</html>
