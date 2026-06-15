@@ -14,3 +14,4 @@ Open the deployed page from the GitHub Pages URL after publishing.
 - Angiography Quiz: https://thingamajigbo.github.io/radiation-exam-notes/angiography-quiz/
 - CT Final 8-12: https://thingamajigbo.github.io/radiation-exam-notes/ct-final-8-12/
 - CT Final 8-12 2nd: https://thingamajigbo.github.io/radiation-exam-notes/ct-final-8-12-2/
+- Radiographic Imaging Final: https://thingamajigbo.github.io/radiation-exam-notes/radiographic-imaging-final/
