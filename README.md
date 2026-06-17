@@ -15,3 +15,5 @@ Open the deployed page from the GitHub Pages URL after publishing.
 - CT Final 8-12: https://thingamajigbo.github.io/radiation-exam-notes/ct-final-8-12/
 - CT Final 8-12 2nd: https://thingamajigbo.github.io/radiation-exam-notes/ct-final-8-12-2/
 - Radiographic Imaging Final: https://thingamajigbo.github.io/radiation-exam-notes/radiographic-imaging-final/
+- Ultrasound Final: https://thingamajigbo.github.io/radiation-exam-notes/ultrasound-final/
+- Ultrasound Notes: https://thingamajigbo.github.io/radiation-exam-notes/ultrasound-notes/

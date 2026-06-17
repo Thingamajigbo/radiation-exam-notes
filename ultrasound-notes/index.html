@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>초음파영상학 시험노트 Ch.7-13</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+:root{--bg:#f7f5f0;--bg2:#fff;--bg3:#fdfbf5;--bg4:#f5f1e8;--ac:#1a5276;--acd:rgba(26,82,118,.09);--gr:#1e8449;--grd:#e9f7ef;--re:#922b21;--red:#fdf2f1;--ye:#7d6608;--yed:#fef9e7;--tx:#1a1a1a;--tx2:#3a3a3a;--tx3:#8a8680;--bd:#e5e0d0;--bd2:#d4cdb8;--r:10px;--rs:6px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.7}
+.hd{background:linear-gradient(135deg,#f0f4f8,#e8edf2);border-bottom:2px solid var(--bd2);padding:14px 20px 0;position:sticky;top:0;z-index:100}
+.ht{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.xi{width:32px;height:32px;background:var(--acd);border:1px solid var(--ac);border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:16px}
+.htt{font-size:16px;font-weight:700}
+.hts{font-size:11px;color:var(--tx3)}
+.tabs{display:flex;gap:2px;overflow-x:auto}
+.tab{padding:7px 14px;border-radius:7px 7px 0 0;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:500;color:var(--tx3);border:1px solid transparent;border-bottom:none;transition:all .18s;background:transparent}
+.tab:hover{color:var(--tx);background:var(--bg4)}
+.tab.active{color:var(--ac);background:var(--bg);border-color:var(--bd2);border-bottom:1px solid var(--bg);font-weight:700}
+.cb{display:inline-block;font-size:10px;background:var(--acd);color:var(--ac);padding:1px 5px;border-radius:3px;margin-left:4px}
+.ct{display:none;max-width:1060px;margin:0 auto;padding:18px 18px 40px}
+.ct.active{display:block}
+.sts{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;background:var(--bg4);border:1px solid var(--bd2);border-radius:var(--r)}
+.st{padding:4px 12px;border-radius:14px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bd2);background:var(--bg2);color:var(--tx2);transition:all .14s}
+.st:hover{border-color:var(--ac);color:var(--ac)}
+.st.active{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+.sp{display:none}
+.sp.active{display:block}
+.sn{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}
+.sb{padding:5px 12px;border-radius:14px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bd2);background:var(--bg3);color:var(--tx2);transition:all .14s}
+.sb:hover,.sb.active{background:var(--acd);border-color:var(--ac);color:var(--ac)}
+.pp{display:none}
+.pp.active{display:block}
+.tw{overflow-x:auto;border-radius:var(--r);border:1px solid var(--bd2);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:var(--bg4);padding:8px 12px;text-align:left;font-weight:600;color:var(--ac);font-size:10px;letter-spacing:.5px;text-transform:uppercase;border-bottom:2px solid var(--bd2);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--bd)}
+tbody tr:hover{background:var(--bg4)}
+tbody td{padding:7px 12px;vertical-align:top}
+tbody td:first-child{color:var(--ac);font-weight:600}
+.num{font-family:'JetBrains Mono',monospace;color:#7a5c00!important;font-weight:600!important}
+.kv{color:var(--gr)!important;font-weight:600!important}
+.ng{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+@media(max-width:560px){.ng{grid-template-columns:1fr}}
+.nc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:12px}
+.nc:hover{border-color:var(--ac)}
+.nl2{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--tx3);margin-bottom:5px}
+.nt2{font-size:13px;font-weight:700;color:var(--ac);margin-bottom:6px}
+.ns{margin-bottom:14px}
+.nth{font-size:13px;font-weight:700;padding:9px 13px;background:var(--bg4);border:1px solid var(--bd2);border-radius:var(--r) var(--r) 0 0;border-bottom:none;display:flex;align-items:center;gap:7px}
+.nb{background:var(--bg2);border:1px solid var(--bd2);border-radius:0 0 var(--r) var(--r);padding:13px}
+ul.ul{list-style:none;padding:0}
+ul.ul li{padding:3px 0 3px 16px;position:relative;font-size:13px;border-bottom:1px solid var(--bd)}
+ul.ul li:last-child{border-bottom:none}
+ul.ul li::before{content:"▸";position:absolute;left:0;color:var(--ac);font-size:10px;top:6px}
+.hl{border-radius:3px;padding:1px 3px;cursor:pointer;transition:all .12s}
+.hy{background:#fff0a8;color:#7a5c00}
+.hb{background:var(--acd);color:var(--ac)}
+.hg{background:rgba(30,132,73,.12);color:var(--gr)}
+.ho{background:rgba(146,43,33,.09);color:var(--re)}
+.hl.hidden{background:var(--bg4)!important;color:transparent!important;border:1px dashed var(--bd2);user-select:none}
+.hl.hidden:hover{color:var(--tx)!important;background:var(--bg3)!important}
+.imp{border-left:3px solid var(--ac);background:var(--acd);padding:8px 12px;border-radius:0 var(--rs) var(--rs) 0;margin:9px 0;font-size:13px}
+.il{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--ac);margin-bottom:2px}
+.tip{border-left:3px solid var(--gr);background:var(--grd);padding:8px 12px;border-radius:0 var(--rs) var(--rs) 0;margin:9px 0;font-size:13px}
+.tl{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gr);margin-bottom:2px}
+.warn{border-left:3px solid var(--re);background:var(--red);padding:8px 12px;border-radius:0 var(--rs) var(--rs) 0;margin:9px 0;font-size:13px}
+.wl{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--re);margin-bottom:2px}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:9px 0}
+@media(max-width:480px){.cg{grid-template-columns:1fr}}
+.cc{background:var(--bg3);border:1px solid var(--bd2);border-radius:var(--rs);padding:10px}
+.ct2{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);margin-bottom:6px}
+.hb2{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--bg4);border:1px solid var(--bd2);border-radius:var(--r);margin-bottom:12px;flex-wrap:wrap}
+.hl-bar-label{font-size:11px;color:var(--tx3);font-weight:500}
+.hd2{width:19px;height:19px;border-radius:4px;cursor:pointer;border:2px solid transparent;transition:all .12s}
+.hd2.active{border-color:var(--tx2);transform:scale(1.15)}
+.hd2.y{background:#fff0a8;border-color:#e0cc60}
+.hd2.b{background:rgba(26,82,118,.18);border-color:rgba(26,82,118,.4)}
+.hd2.g{background:rgba(30,132,73,.18);border-color:rgba(30,132,73,.4)}
+.hd2.o{background:rgba(146,43,33,.18);border-color:rgba(146,43,33,.4)}
+.dv{width:1px;height:15px;background:var(--bd2)}
+.htw{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx3)}
+.tog{width:30px;height:16px;border-radius:8px;background:var(--bd2);border:1px solid var(--bd2);cursor:pointer;position:relative;transition:background .2s}
+.tog.on{background:var(--ac);border-color:var(--ac)}
+.tk{width:10px;height:10px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.tog.on .tk{left:16px}
+.cb2{padding:5px 10px;font-size:11px;font-weight:500;border-radius:var(--rs);cursor:pointer;border:1px solid var(--bd2);background:var(--bg4);color:var(--tx3);transition:all .12s;font-family:inherit}
+.cb2:hover{border-color:var(--ac);color:var(--ac)}
+.fw{display:flex;flex-direction:column;align-items:center;gap:14px}
+.fp{font-size:12px;color:var(--tx3);align-self:flex-start}
+.fo{width:100%;max-width:520px;perspective:1000px}
+.fc{width:100%;min-height:180px;position:relative;transform-style:preserve-3d;transition:transform .42s;cursor:pointer}
+.fc.flipped{transform:rotateY(180deg)}
+.ff,.fb{position:absolute;width:100%;min-height:180px;backface-visibility:hidden;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 18px;text-align:center}
+.ff{background:var(--bg2);border:1px solid var(--bd2)}
+.fb{background:linear-gradient(135deg,#f0f4f8,#e3ecf4);border:2px solid var(--ac);transform:rotateY(180deg)}
+.fl{font-size:10px;letter-spacing:.6px;text-transform:uppercase;color:var(--tx3);margin-bottom:8px}
+.fk{font-size:19px;font-weight:700;color:var(--ac);line-height:1.3;margin-bottom:6px}
+.fh{font-size:11px;color:var(--tx3)}
+.fa{font-size:14px;font-weight:500;color:#1a1a1a;line-height:1.6}
+.fn{display:flex;gap:7px;align-items:center}
+.fnb{width:36px;height:36px;border-radius:50%;border:1px solid var(--bd2);background:var(--bg2);color:var(--tx3);cursor:pointer;font-size:14px;transition:all .12s;font-family:inherit}
+.fnb:hover{border-color:var(--ac);color:var(--ac)}
+.ffb{padding:7px 18px;border-radius:14px;font-size:12px;font-weight:600;background:var(--acd);border:1px solid var(--ac);color:var(--ac);cursor:pointer;font-family:inherit;transition:all .12s}
+.ffb:hover{background:var(--ac);color:#fff}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="hd">
+  <div class="ht">
+    <div class="xi">🩻</div>
+    <div><div class="htt">초음파영상학 시험노트</div><div class="hts">인공음영 · 정도관리 · 생물학적효과 · 복부/표재성/생식기 검사 · Active Recall</div></div>
+  </div>
+  <div class="tabs" id="mainTabs">
+    <div class="tab active" onclick="sT('ch7',this)">Ch.7 인공음영<span class="cb">Artifact</span></div>
+    <div class="tab" onclick="sT('ch8',this)">Ch.8 정도관리<span class="cb">QC</span></div>
+    <div class="tab" onclick="sT('ch9',this)">Ch.9 생물학적효과<span class="cb">Bioeffect</span></div>
+    <div class="tab" onclick="sT('ch10',this)">Ch.10 자세·영상평가<span class="cb">Image</span></div>
+    <div class="tab" onclick="sT('ch11',this)">Ch.11 복부 기초<span class="cb">Abdomen</span></div>
+    <div class="tab" onclick="sT('ch12',this)">Ch.12·13 표재성·생식기<span class="cb">Small Parts</span></div>
+  </div>
+</div>
+
+<!-- ===================== Ch.7 인공음영 ===================== -->
+<div class="ct active" id="content-ch7">
+  <div class="sts">
+    <div class="st active" onclick="sSub('ch7','a',this)">다중반사·혜성꼬리·여운</div>
+    <div class="st" onclick="sSub('ch7','b',this)">굴절·측방음영</div>
+    <div class="st" onclick="sSub('ch7','c',this)">도플러 허상</div>
+    <div class="st" onclick="sSub('ch7','cards',this)">🎴 암기카드</div>
+  </div>
+
+  <div class="sp active" id="ch7-a">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>인공음영</th><th>발생 기전</th><th>주요 발생 부위</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">다중반사 (Multiple reflection)</td><td>평행한 두 반사면 사이를 음파가 왕복</td><td>쓸개 벽, 복수(腹水) 안</td></tr>
+          <tr><td class="kv">혜성꼬리 (Comet tail)</td><td>다중반사의 일종 — 좁은 간격 반사체에서 꼬리처럼 이어짐</td><td>쓸개 안 (담낭벽 등)</td></tr>
+          <tr><td class="kv">여운허상 (Ring down)</td><td>가스 내 미세 진동으로 연속된 띠가 깊게 이어짐</td><td>가스(공기)의 뒤쪽</td></tr>
+        </tbody>
+      </table></div>
+      <div class="imp"><div class="il">💡 표 7-2 핵심</div><b>다중반사·혜성꼬리 → 쓸개</b>, <b>여운허상 → 가스 뒤쪽</b>. 셋 다 "허상 음영이 깊이 방향으로 반복/연장"되는 공통점이 있다.</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🔊 다중반사 / 혜성꼬리</div><div class="nb"><ul class="ul">
+        <li>인공음영(artifact): 실제 구조물이 아닌데 <span class="hl hb">화면에 만들어진 허상</span></li>
+        <li>다중반사: 평행한 강반사면 사이를 음파가 <span class="hl hy">왕복</span> → 등간격 허상이 반복</li>
+        <li>주 발생 부위: <span class="hl hg">쓸개(담낭) 벽, 복수 안</span></li>
+        <li>혜성꼬리: 다중반사의 일종, <span class="hl hy">쓸개 안</span>에서 주로 발생</li>
+      </ul></div></div>
+      <div class="ns"><div class="nth">🔊 여운허상 (Ring down)</div><div class="nb"><ul class="ul">
+        <li>발생: <span class="hl hb">가스(공기)의 뒤쪽</span>에서 나타남</li>
+        <li>가스에 갇힌 액체의 공명 진동 → 깊이 방향으로 연속된 밝은 띠</li>
+        <li>장(腸)관 가스 뒤에서 흔히 관찰</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch7-b">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>허상</th><th>원인</th><th>나타나는 모습</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">굴절 허상</td><td>둥근 구조물(낭종·쓸개 등) 통과 시 음파가 빛처럼 굴절</td><td>구조물 양쪽 테두리</td></tr>
+          <tr><td class="kv">측방음영 (Edge shadow)</td><td>굴절로 인한 가장자리 음향 손실</td><td>둥근 구조물 좌우 가장자리에 가는 음영</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tip"><div class="tl">💡 감별 포인트</div>낭종 좌우 가장자리에서 깊이 방향으로 내려가는 가는 그림자가 보이면 <b>측방음영(굴절 허상)</b>. 후방음향증강과 함께 낭종을 시사한다.</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">↘ 굴절 허상 · 측방음영</div><div class="nb"><ul class="ul">
+        <li>초음파가 <span class="hl hb">둥근 구조물(낭종·쓸개)</span>을 지날 때 빛처럼 굴절</li>
+        <li>가장자리에서 음파가 휘어 손실 → <span class="hl hy">측방음영(Edge shadow)</span></li>
+        <li>구조물 <span class="hl hg">양쪽 테두리</span>에 가는 음영으로 나타남</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch7-c">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>색 도플러 허상</th><th>원인</th><th>특징</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">반접현상 (Aliasing)</td><td>펄스반복주파수(PRF)가 너무 낮음</td><td>고속 혈류가 반대 색으로 접힘</td></tr>
+          <tr><td class="kv">색 플래시 (Color flash)</td><td>장 연동운동·호흡 등 조직 움직임</td><td>색이 화면 전체로 번짐</td></tr>
+          <tr><td class="kv">경면현상 (Mirror image)</td><td>강한 반사체를 경계로 거울처럼 반사</td><td>반대편에 똑같은 허상</td></tr>
+        </tbody>
+      </table></div>
+      <div class="imp"><div class="il">💡 Aliasing 대책</div>PRF(scale)를 높이거나, 도플러 각도·기준선(baseline)을 조정한다. <b>PRF가 낮을 때</b> 반접현상이 생긴다는 점이 핵심.</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🌈 색 도플러 인공음영</div><div class="nb"><ul class="ul">
+        <li>반접현상: <span class="hl hy">PRF가 낮아</span> 빠른 혈류가 반대 색으로 접힘</li>
+        <li>색 플래시: <span class="hl hb">장 연동운동·호흡</span>으로 색이 번지는 현상</li>
+        <li>경면현상: <span class="hl hg">강한 반사체</span>를 경계로 반대편에 허상</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch7-cards">
+    <div class="fw">
+      <div class="fp">카드 <span id="fc-fc7-cur">1</span> / <span id="fc-fc7-tot">0</span></div>
+      <div class="fo"><div class="fc" id="fc-fc7-card" onclick="fcFl('fc7')">
+        <div class="ff"><div class="fl">키워드</div><div class="fk" id="fc-fc7-f"></div><div class="fh">클릭하여 확인</div></div>
+        <div class="fb"><div class="fl">정답</div><div class="fa" id="fc-fc7-b"></div></div>
+      </div></div>
+      <div class="fn"><button class="fnb" onclick="fcPr('fc7')">◀</button><button class="ffb" onclick="fcFl('fc7')">뒤집기</button><button class="fnb" onclick="fcNx('fc7')">▶</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== Ch.8 정도관리 ===================== -->
+<div class="ct" id="content-ch8">
+  <div class="sts">
+    <div class="st active" onclick="sSub('ch8','a',this)">용어의 의미</div>
+    <div class="st" onclick="sSub('ch8','b',this)">정도관리 기준치</div>
+    <div class="st" onclick="sSub('ch8','cards',this)">🎴 암기카드</div>
+  </div>
+
+  <div class="sp active" id="ch8-a">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>용어</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">영상균질성 (Uniformity)</td><td>영상의 앞뒤·좌우 전체가 동일한 휘도로 나타나는지 평가</td></tr>
+          <tr><td class="kv">거리 분해능</td><td>초음파 진행 방향과 나란히 있는 두 점을 분리하는 능력 (축방향 분해능)</td></tr>
+          <tr><td class="kv">측방 분해능</td><td>진행 방향과 수직으로 놓인 두 점을 분리하는 능력</td></tr>
+          <tr><td class="kv">사각구역 (Dead zone)</td><td>탐촉자 표면 바로 아래, 영상화가 안 되는 영역</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">📏 정도관리 용어</div><div class="nb"><ul class="ul">
+        <li>영상균질성: 영상 <span class="hl hb">앞뒤·좌우 전체가 동일한 휘도</span>인지 평가</li>
+        <li>거리 분해능: 초음파 진행 방향과 <span class="hl hy">나란히</span> 있는 두 점을 분리하는 거리</li>
+        <li>측방 분해능: 진행 방향과 <span class="hl hg">수직</span>으로 놓인 두 점을 분리</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch8-b">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>사각구역(Dead zone) 기준</th><th>탐촉자 주파수</th><th>기준치</th></tr></thead>
+        <tbody>
+          <tr><td>저주파</td><td class="num">3.0 MHz 이하</td><td class="num">10.0 mm 이하</td></tr>
+          <tr><td>중간</td><td class="num">3.0 ~ 7.0 MHz</td><td class="num">7.0 mm 이하</td></tr>
+          <tr><td>고주파</td><td class="num">7.0 MHz 이상</td><td class="num">4.0 mm 이하</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tw"><table>
+        <thead><tr><th>거리 정확성</th><th>허용 오차</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">수직거리 정확성</td><td class="num">1.5% 이내 (또는 1.5 mm 이내)</td></tr>
+          <tr><td class="kv">수평거리 정확성</td><td class="num">2% 이내 (또는 2.0 mm 이내)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="imp"><div class="il">💡 암기</div>주파수↑ → 사각구역 기준치↓ (10→7→4 mm). 거리 정확성은 <b>수직 1.5% / 수평 2%</b>로 수평이 더 관대하다.</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">📐 기준치 암기</div><div class="nb"><ul class="ul">
+        <li>사각구역: 3.0MHz↓ <span class="hl hy">10mm</span> / 3~7MHz <span class="hl hy">7mm</span> / 7MHz↑ <span class="hl hy">4mm</span> 이하</li>
+        <li>수직거리 정확성: 오차 <span class="hl hg">1.5%</span> 이내 (또는 1.5mm)</li>
+        <li>수평거리 정확성: 오차 <span class="hl hb">2%</span> 이내 (또는 2.0mm)</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch8-cards">
+    <div class="fw">
+      <div class="fp">카드 <span id="fc-fc8-cur">1</span> / <span id="fc-fc8-tot">0</span></div>
+      <div class="fo"><div class="fc" id="fc-fc8-card" onclick="fcFl('fc8')">
+        <div class="ff"><div class="fl">키워드</div><div class="fk" id="fc-fc8-f"></div><div class="fh">클릭하여 확인</div></div>
+        <div class="fb"><div class="fl">정답</div><div class="fa" id="fc-fc8-b"></div></div>
+      </div></div>
+      <div class="fn"><button class="fnb" onclick="fcPr('fc8')">◀</button><button class="ffb" onclick="fcFl('fc8')">뒤집기</button><button class="fnb" onclick="fcNx('fc8')">▶</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== Ch.9 생물학적 효과 ===================== -->
+<div class="ct" id="content-ch9">
+  <div class="sts">
+    <div class="st active" onclick="sSub('ch9','a',this)">TI · MI · 공동화</div>
+    <div class="st" onclick="sSub('ch9','cards',this)">🎴 암기카드</div>
+  </div>
+
+  <div class="sp active" id="ch9-a">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>지표</th><th>의미</th><th>관련 효과</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">열 지수 (TI)</td><td>초음파 에너지 흡수로 조직 온도를 1℃ 상승시키는 음향 출력의 비율</td><td>열 효과 (Thermal)</td></tr>
+          <tr><td class="kv">기계적 지수 (MI)</td><td>공동화에 의한 기계적 손상 위험도 지표</td><td>공동화 (Cavitation)</td></tr>
+          <tr><td class="kv">공동화 (Cavitation)</td><td>액체 속 가스가 초음파 진동으로 붕괴·진동하는 현상</td><td>기계적 손상</td></tr>
+          <tr><td class="kv">SPTA</td><td>규제(안전 기준)에 주로 적용되는 음향강도 지표</td><td>강도 규제치</td></tr>
+        </tbody>
+      </table></div>
+      <div class="imp"><div class="il">💡 핵심 구분</div><b>TI = 열 효과</b>, <b>MI = 공동화(기계적 효과)</b>. 안전 규제치로는 주로 <b>SPTA</b>가 쓰인다.</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🌡 생물학적 효과 지표</div><div class="nb"><ul class="ul">
+        <li>열 지수(TI): 조직 온도를 <span class="hl hy">1℃ 상승</span>시키는 음향 출력의 비율 → <span class="hl hb">열 효과</span></li>
+        <li>기계적 지수(MI) · 공동화: 액체 속 가스가 진동으로 붕괴 → <span class="hl hg">기계적 손상</span> 위험</li>
+        <li>규제치로는 주로 <span class="hl ho">SPTA</span> 적용</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch9-cards">
+    <div class="fw">
+      <div class="fp">카드 <span id="fc-fc9-cur">1</span> / <span id="fc-fc9-tot">0</span></div>
+      <div class="fo"><div class="fc" id="fc-fc9-card" onclick="fcFl('fc9')">
+        <div class="ff"><div class="fl">키워드</div><div class="fk" id="fc-fc9-f"></div><div class="fh">클릭하여 확인</div></div>
+        <div class="fb"><div class="fl">정답</div><div class="fa" id="fc-fc9-b"></div></div>
+      </div></div>
+      <div class="fn"><button class="fnb" onclick="fcPr('fc9')">◀</button><button class="ffb" onclick="fcFl('fc9')">뒤집기</button><button class="fnb" onclick="fcNx('fc9')">▶</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== Ch.10 자세·영상평가 ===================== -->
+<div class="ct" id="content-ch10">
+  <div class="sts">
+    <div class="st active" onclick="sSub('ch10','a',this)">장기 밝기 순서</div>
+    <div class="st" onclick="sSub('ch10','b',this)">낭성 vs 고형성</div>
+    <div class="st" onclick="sSub('ch10','c',this)">239p 갈비밑주사 영상</div>
+    <div class="st" onclick="sSub('ch10','cards',this)">🎴 암기카드</div>
+  </div>
+
+  <div class="sp active" id="ch10-a">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="imp"><div class="il">🔆 정상 복부장기 에코(밝기) 순서</div>
+        콩팥 굴(renal sinus) > 이자(pancreas) ≥ 간(liver) ≥ 지라(spleen) > 콩팥 겉질(renal cortex) > 콩팥 속질(renal medulla)</div>
+      <div class="tw"><table>
+        <thead><tr><th>순위</th><th>장기</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1 (가장 밝음)</td><td class="kv">콩팥 굴 (renal sinus)</td><td>지방·집합계 → 고에코</td></tr>
+          <tr><td class="num">2</td><td>이자 (pancreas)</td><td>간과 비슷하거나 약간 밝음</td></tr>
+          <tr><td class="num">3</td><td>간 (liver)</td><td>기준 장기</td></tr>
+          <tr><td class="num">4</td><td>지라 (spleen)</td><td>간과 비슷</td></tr>
+          <tr><td class="num">5</td><td>콩팥 겉질 (renal cortex)</td><td>간보다 약간 어두움</td></tr>
+          <tr><td class="num">6 (가장 어두움)</td><td>콩팥 속질 (renal medulla)</td><td>가장 저에코</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🔆 밝기 순서 암기</div><div class="nb"><ul class="ul">
+        <li><span class="hl hy">콩팥굴 > 이자 ≥ 간 ≥ 지라 > 콩팥겉질 > 콩팥속질</span></li>
+        <li>가장 밝은 것은 <span class="hl hb">콩팥 굴(renal sinus)</span>, 가장 어두운 것은 <span class="hl hg">콩팥 속질</span></li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch10-b">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>구분</th><th>낭성 종괴 (Cyst)</th><th>고형성 종괴</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">형태</td><td>원형·타원형, 규칙적</td><td>불규칙</td></tr>
+          <tr><td class="kv">내부 에코</td><td>무에코 (anechoic)</td><td>내부 에코 있음</td></tr>
+          <tr><td class="kv">경계(후벽)</td><td>매끄러움</td><td>불명확할 수 있음</td></tr>
+          <tr><td class="kv">후방</td><td>후방음향증강 (posterior enhancement)</td><td>증강 없음/음영 가능</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tip"><div class="tl">💡 낭종 4대 특징</div>① 원형/타원형 ② 무에코 ③ 매끄러운 후벽 ④ <b>후방음향증강</b> + 측방음영(굴절 허상)</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">⚪ 낭성 종괴 특징</div><div class="nb"><ul class="ul">
+        <li>형태: <span class="hl hb">원형 또는 타원형</span></li>
+        <li>내부: <span class="hl hy">무에코(anechoic)</span> — 검게 보임</li>
+        <li>경계(후벽): <span class="hl hg">매끄러움</span></li>
+        <li>특징적으로 뒤쪽에 <span class="hl ho">후방음향증강(posterior enhancement)</span></li>
+        <li>고형성: 내부 에코 있고 형태 불규칙</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch10-c">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>그림</th><th>주사면</th><th>관찰 내용</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">(b)</td><td>간정맥 단면</td><td>세 개의 간정맥(우·중·좌)이 모여 아래대정맥(IVC)으로 들어감</td></tr>
+          <tr><td class="kv">(c)</td><td>문맥 단면</td><td>우측간문맥이 전구역·후구역으로 분지</td></tr>
+          <tr><td class="kv">(d)</td><td>우엽 + 우측 콩팥</td><td>간 우엽 아래쪽과 오른쪽 콩팥 단면</td></tr>
+        </tbody>
+      </table></div>
+      <div class="imp"><div class="il">💡 239p 갈비밑주사(subcostal)</div>(b) 간정맥 3개 → IVC 합류 / (c) 우측간문맥 전·후구역 분지 / (d) 우엽 + 우측 콩팥. <b>"3개 혈관이 모이면 간정맥, 분지하면 문맥"</b>으로 구분.</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🖼 갈비밑주사 영상 판독</div><div class="nb"><ul class="ul">
+        <li>(b) <span class="hl hb">간정맥</span>: 우·중·좌 3개가 모여 <span class="hl hy">IVC</span>로 합류</li>
+        <li>(c) <span class="hl hg">문맥</span>: 우측간문맥이 전·후구역으로 분지</li>
+        <li>(d) 간 <span class="hl ho">우엽 아래 + 오른쪽 콩팥</span> 단면</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch10-cards">
+    <div class="fw">
+      <div class="fp">카드 <span id="fc-fc10-cur">1</span> / <span id="fc-fc10-tot">0</span></div>
+      <div class="fo"><div class="fc" id="fc-fc10-card" onclick="fcFl('fc10')">
+        <div class="ff"><div class="fl">키워드</div><div class="fk" id="fc-fc10-f"></div><div class="fh">클릭하여 확인</div></div>
+        <div class="fb"><div class="fl">정답</div><div class="fa" id="fc-fc10-b"></div></div>
+      </div></div>
+      <div class="fn"><button class="fnb" onclick="fcPr('fc10')">◀</button><button class="ffb" onclick="fcFl('fc10')">뒤집기</button><button class="fnb" onclick="fcNx('fc10')">▶</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== Ch.11 복부 기초 ===================== -->
+<div class="ct" id="content-ch11">
+  <div class="sts">
+    <div class="st active" onclick="sSub('ch11','a',this)">간 구역·인대 (Couinaud)</div>
+    <div class="st" onclick="sSub('ch11','b',this)">혈관 직경·호흡변화</div>
+    <div class="st" onclick="sSub('ch11','c',this)">췌장 랜드마크</div>
+    <div class="st" onclick="sSub('ch11','d',this)">담낭·담석·지방간</div>
+    <div class="st" onclick="sSub('ch11','cards',this)">🎴 암기카드</div>
+  </div>
+
+  <div class="sp active" id="ch11-a">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>인대</th><th>나누는 경계</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">주엽틈새 (Main lobar fissure)</td><td>오른엽 ↔ 왼엽</td><td>담낭와~IVC 연결선</td></tr>
+          <tr><td class="kv">간원인대 (Ligamentum teres)</td><td>왼엽의 내측 ↔ 외측</td><td>고에코로 보임</td></tr>
+          <tr><td class="kv">정맥관인대 (Ligamentum venosum)</td><td>꼬리엽(S1) ↔ 왼엽(S2)</td><td>꼬리엽 분리</td></tr>
+        </tbody>
+      </table></div>
+      <div class="imp"><div class="il">💡 Couinaud 8구역</div>3개의 <b>간정맥</b>이 간을 수직으로 나누고, <b>문맥</b>이 수평으로 분할 → 총 8개 구역(S1~S8).</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🫀 간엽 구분 인대</div><div class="nb"><ul class="ul">
+        <li>주엽틈새: <span class="hl hb">오른엽과 왼엽</span>을 나눔</li>
+        <li>간원인대: <span class="hl hy">왼엽을 내측·외측</span>으로 나누는 기준(고에코)</li>
+        <li>정맥관인대: <span class="hl hg">꼬리엽(S1)과 왼엽(S2)</span> 분리</li>
+      </ul></div></div>
+      <div class="ns"><div class="nth">🫀 Couinaud 8구역</div><div class="nb"><ul class="ul">
+        <li><span class="hl hy">간정맥 3개</span> → 수직 분할</li>
+        <li><span class="hl hb">문맥</span> → 수평 분할</li>
+        <li>총 <span class="hl hg">8구역(S1~S8)</span></li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch11-b">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>혈관</th><th>정상 직경</th><th>호흡에 따른 변화</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">온쓸개관 (CBD)</td><td class="num">최대 6 mm</td><td>—</td></tr>
+          <tr><td class="kv">문맥 (Portal vein)</td><td class="num">약 11.8 ± 3.5 mm</td><td>변화 거의 없음</td></tr>
+          <tr><td class="kv">간정맥 (Hepatic vein)</td><td>—</td><td>IVC와 직결 → 변화 큼</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tip"><div class="tl">💡 호흡 변화 감별</div>호흡 시 직경이 크게 변하면 <b>간정맥</b>(IVC 직결), 거의 안 변하면 <b>문맥</b>.</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🩸 혈관 직경 & 호흡</div><div class="nb"><ul class="ul">
+        <li>온쓸개관(CBD): 최대 <span class="hl hy">6 mm</span></li>
+        <li>문맥: 약 <span class="hl hb">11.8 ± 3.5 mm</span>, 호흡 변화 거의 없음</li>
+        <li>간정맥: IVC 직결 → 호흡 시 <span class="hl hg">직경 변화 큼</span></li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch11-c">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="imp"><div class="il">🔑 췌장(이자) 랜드마크</div>췌장을 찾는 가장 중요한 해부학적 지표 = <b>지라정맥(Splenic vein)</b> — 췌장 꼬리와 몸통 뒤쪽을 주행한다.</div>
+      <div class="tw"><table>
+        <thead><tr><th>구조</th><th>역할</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">지라정맥 (Splenic vein)</td><td>췌장 몸통·꼬리 뒤를 주행 → 췌장 위치의 표지자</td></tr>
+          <tr><td class="kv">위창자간막정맥 (SMV)</td><td>지라정맥과 합류, 췌장 목 뒤</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🔑 췌장 찾기</div><div class="nb"><ul class="ul">
+        <li>가장 중요한 지표: <span class="hl hy">지라정맥(Splenic vein)</span></li>
+        <li>췌장 <span class="hl hb">꼬리·몸통 뒤쪽</span>을 주행</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch11-d">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>병변</th><th>초음파 특징</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">정상 담낭</td><td>쓸개벽 두께 3.0 mm 이하, 내부 완전 무에코(검게)</td></tr>
+          <tr><td class="kv">담석</td><td>강한 고에코 + 후방음향음영(posterior shadow), 체위 변화 시 이동</td></tr>
+          <tr><td class="kv">지방간</td><td>간 실질 고에코(밝음), 심부 감쇠로 어두움, 간정맥벽·가로막 경계 불분명</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn"><div class="wl">⚠️ 담석 vs 낭종 후방</div>담석 = <b>후방음향음영(검은 그림자)</b> · 낭종 = <b>후방음향증강(밝아짐)</b>. 정반대이므로 혼동 주의!</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🟢 담낭 · 담석 · 지방간</div><div class="nb"><ul class="ul">
+        <li>정상 담낭: 벽 두께 <span class="hl hy">3.0mm 이하</span>, 내부 무에코</li>
+        <li>담석: 강한 고에코 + <span class="hl hb">후방음향음영</span>, 체위 변화 시 <span class="hl hg">이동</span></li>
+        <li>지방간: 간 실질 <span class="hl ho">고에코</span>, 심부 감쇠, 간정맥벽·가로막 경계 불분명</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch11-cards">
+    <div class="fw">
+      <div class="fp">카드 <span id="fc-fc11-cur">1</span> / <span id="fc-fc11-tot">0</span></div>
+      <div class="fo"><div class="fc" id="fc-fc11-card" onclick="fcFl('fc11')">
+        <div class="ff"><div class="fl">키워드</div><div class="fk" id="fc-fc11-f"></div><div class="fh">클릭하여 확인</div></div>
+        <div class="fb"><div class="fl">정답</div><div class="fa" id="fc-fc11-b"></div></div>
+      </div></div>
+      <div class="fn"><button class="fnb" onclick="fcPr('fc11')">◀</button><button class="ffb" onclick="fcFl('fc11')">뒤집기</button><button class="fnb" onclick="fcNx('fc11')">▶</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== Ch.12·13 표재성·생식기 ===================== -->
+<div class="ct" id="content-ch12">
+  <div class="sts">
+    <div class="st active" onclick="sSub('ch12','a',this)">유방</div>
+    <div class="st" onclick="sSub('ch12','b',this)">갑상선</div>
+    <div class="st" onclick="sSub('ch12','c',this)">전립선</div>
+    <div class="st" onclick="sSub('ch12','d',this)">부인과·태령</div>
+    <div class="st" onclick="sSub('ch12','cards',this)">🎴 암기카드</div>
+  </div>
+
+  <div class="sp active" id="ch12-a">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">탐촉자</td><td>주로 7.5 ~ 10 MHz 선형(linear) 프로브</td></tr>
+          <tr><td class="kv">목적</td><td>낭성 ↔ 고형성 종괴 감별</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🎗 유방 초음파</div><div class="nb"><ul class="ul">
+        <li>낭성·고형성 감별 위해 <span class="hl hy">7.5~10 MHz 선형 프로브</span> 사용</li>
+        <li>고주파 → 표재성 장기 고해상도</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch12-b">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>구분</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">주위 지표</td><td>목 중앙의 기관(Trachea), 양옆의 온목동맥(Common carotid artery)</td></tr>
+          <tr><td class="kv">관찰 불가 부위</td><td>공기 찬 기관 내부, 식도 내부, 뼈 뒤쪽</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn"><div class="wl">⚠️ 관찰 불가</div>공기(기관·식도 내부)와 뼈 뒤쪽은 초음파가 통과/반사되어 <b>영상화 불가</b>.</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">🦋 갑상선 초음파</div><div class="nb"><ul class="ul">
+        <li>주위 지표: 목 중앙 <span class="hl hy">기관(Trachea)</span>, 양옆 <span class="hl hb">온목동맥</span></li>
+        <li>관찰 불가: <span class="hl ho">공기(기관·식도 내부), 뼈 뒤쪽</span></li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch12-c">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">주 검사법</td><td>경직장초음파 (TRUS) — 크기·비대증 평가</td></tr>
+          <tr><td class="kv">비대증 소견</td><td>불균질한 저에코</td></tr>
+          <tr><td class="kv">경복부 검사</td><td>방광에 소변을 채워 음향창(window)으로 사용</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">♂ 전립선 초음파</div><div class="nb"><ul class="ul">
+        <li>주로 <span class="hl hy">경직장초음파(TRUS)</span> 시행</li>
+        <li>비대증 시 <span class="hl hb">불균질한 저에코</span></li>
+        <li>경복부 시 <span class="hl hg">방광에 소변</span>을 채워 음향창 확보</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch12-d">
+    <div class="sn"><div class="sb active" onclick="sSec(this)">📋 요약표</div><div class="sb" onclick="sSec(this)">📖 노트</div></div>
+    <div class="pp active">
+      <div class="tw"><table>
+        <thead><tr><th>항목</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td class="kv">부인과 전처치</td><td>경복부 검사 시 방광을 약 300 mL 충만(소변 참기) → 음향창 확보, 장 가스 밀어냄</td></tr>
+          <tr><td class="kv">태령 측정 (초기)</td><td>임신 4~7주: 태낭(G-sac, Gestational sac) 크기로 주수 평가</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tip"><div class="tl">💡 음향창(소닉 윈도우)</div>충만한 방광이 장 가스를 밀어내 자궁·난소를 잘 보이게 한다. 전립선·부인과 모두 <b>방광 충만</b>이 핵심.</div>
+    </div>
+    <div class="pp">
+      <div class="hb2"><span class="hl-bar-label">하이라이트</span>
+        <div class="hd2 y active" onclick="sHL('y',this)"></div><div class="hd2 b" onclick="sHL('b',this)"></div>
+        <div class="hd2 g" onclick="sHL('g',this)"></div><div class="hd2 o" onclick="sHL('o',this)"></div>
+        <div class="dv"></div><button class="cb2" onclick="clrHL()">초기화</button>
+        <div class="htw"><span>가리기</span><div class="tog" onclick="togH()"><div class="tk"></div></div></div></div>
+      <div class="ns"><div class="nth">⚧ 부인과·산과</div><div class="nb"><ul class="ul">
+        <li>부인과 전처치: 방광을 <span class="hl hy">약 300mL 충만</span>시켜 음향창 확보</li>
+        <li>태령(임신 초기 4~7주): <span class="hl hb">태낭(G-sac)</span> 크기로 주수 평가</li>
+      </ul></div></div>
+    </div>
+  </div>
+
+  <div class="sp" id="ch12-cards">
+    <div class="fw">
+      <div class="fp">카드 <span id="fc-fc12-cur">1</span> / <span id="fc-fc12-tot">0</span></div>
+      <div class="fo"><div class="fc" id="fc-fc12-card" onclick="fcFl('fc12')">
+        <div class="ff"><div class="fl">키워드</div><div class="fk" id="fc-fc12-f"></div><div class="fh">클릭하여 확인</div></div>
+        <div class="fb"><div class="fl">정답</div><div class="fa" id="fc-fc12-b"></div></div>
+      </div></div>
+      <div class="fn"><button class="fnb" onclick="fcPr('fc12')">◀</button><button class="ffb" onclick="fcFl('fc12')">뒤집기</button><button class="fnb" onclick="fcNx('fc12')">▶</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function sT(id,el){
+  document.querySelectorAll('.ct').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('#mainTabs .tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('content-'+id).classList.add('active');
+  el.classList.add('active');
+}
+function sSub(ch,sub,el){
+  const ct=document.getElementById('content-'+ch);
+  ct.querySelectorAll('.sp').forEach(p=>p.classList.remove('active'));
+  ct.querySelectorAll('.st').forEach(t=>t.classList.remove('active'));
+  document.getElementById(ch+'-'+sub).classList.add('active');
+  el.classList.add('active');
+}
+function sSec(el){
+  const nav=el.parentElement, sp=nav.parentElement;
+  const pps=sp.querySelectorAll(':scope > .pp');
+  const sbs=nav.querySelectorAll('.sb');
+  const idx=Array.from(sbs).indexOf(el);
+  pps.forEach(p=>p.classList.remove('active'));
+  sbs.forEach(b=>b.classList.remove('active'));
+  if(pps[idx])pps[idx].classList.add('active');
+  el.classList.add('active');
+}
+let _hlc='y';
+function sHL(c,el){_hlc=c;document.querySelectorAll('.hd2').forEach(d=>d.classList.remove('active'));el.classList.add('active');}
+document.addEventListener('mouseup',()=>{
+  const sel=window.getSelection();
+  if(!sel||sel.isCollapsed)return;
+  const range=sel.getRangeAt(0);
+  if(!range.toString().trim())return;
+  let c=range.commonAncestorContainer;
+  while(c&&!c.classList?.contains('nb')){c=c.parentNode;if(!c||c===document.body)return;}
+  const span=document.createElement('span');
+  span.className=`hl h${_hlc} uhl`;
+  try{range.surroundContents(span);sel.removeAllRanges();}catch(e){}
+});
+function clrHL(){document.querySelectorAll('.uhl').forEach(el=>{const p=el.parentNode;while(el.firstChild)p.insertBefore(el.firstChild,el);p.removeChild(el);});}
+let _hm=false;
+function togH(){_hm=!_hm;document.querySelectorAll('.tog').forEach(t=>t.classList.toggle('on',_hm));document.querySelectorAll('.hl').forEach(el=>el.classList.toggle('hidden',_hm));}
+
+const fcD={
+  fc7:[
+    {q:'다중반사·혜성꼬리의 주 발생 부위',a:'쓸개(담낭). 혜성꼬리는 쓸개 안에서 주로 발생'},
+    {q:'여운허상(Ring down)의 발생 부위',a:'가스(공기)의 뒤쪽'},
+    {q:'둥근 구조물 양쪽 테두리에 생기는 굴절 허상',a:'측방음영(Edge shadow)'},
+    {q:'PRF가 낮을 때 생기는 색 도플러 허상',a:'반접현상(Aliasing)'},
+    {q:'강한 반사체 경계 반대편에 똑같이 나타나는 허상',a:'경면현상(Mirror image)'},
+  ],
+  fc8:[
+    {q:'사각구역 기준치 (3.0MHz 이하)',a:'10.0 mm 이하'},
+    {q:'사각구역 기준치 (7.0MHz 이상)',a:'4.0 mm 이하'},
+    {q:'수직거리 정확성 허용 오차',a:'1.5% 이내 (또는 1.5 mm)'},
+    {q:'수평거리 정확성 허용 오차',a:'2% 이내 (또는 2.0 mm)'},
+    {q:'영상 앞뒤좌우가 동일 휘도인지 보는 평가',a:'영상균질성(Uniformity)'},
+  ],
+  fc9:[
+    {q:'열 지수(TI)의 의미',a:'조직 온도를 1℃ 상승시키는 음향 출력의 비율 (열 효과)'},
+    {q:'공동화(Cavitation)와 관련된 지수',a:'기계적 지수(MI)'},
+    {q:'안전 규제치로 주로 쓰이는 강도 지표',a:'SPTA'},
+  ],
+  fc10:[
+    {q:'정상 복부장기 밝기 1위(가장 밝음)',a:'콩팥 굴(renal sinus)'},
+    {q:'정상 복부장기 밝기 순서',a:'콩팥굴 > 이자 ≥ 간 ≥ 지라 > 콩팥겉질 > 콩팥속질'},
+    {q:'낭종의 후방 특징',a:'후방음향증강(posterior enhancement)'},
+    {q:'239p (b) 영상 — 3개 혈관이 IVC로 합류',a:'간정맥'},
+    {q:'239p (c) 영상 — 전·후구역으로 분지',a:'우측 (간)문맥'},
+  ],
+  fc11:[
+    {q:'오른엽과 왼엽을 나누는 인대',a:'주엽틈새(Main lobar fissure)'},
+    {q:'꼬리엽(S1)과 왼엽(S2)을 분리하는 인대',a:'정맥관인대(Ligamentum venosum)'},
+    {q:'온쓸개관(CBD) 정상 최대 직경',a:'6 mm'},
+    {q:'췌장을 찾는 가장 중요한 지표',a:'지라정맥(Splenic vein)'},
+    {q:'담석의 후방 특징',a:'후방음향음영(posterior shadow), 체위 변화 시 이동'},
+    {q:'호흡 시 직경 변화가 거의 없는 혈관',a:'문맥(Portal vein)'},
+  ],
+  fc12:[
+    {q:'유방 초음파에 주로 쓰는 탐촉자',a:'7.5~10 MHz 선형(linear) 프로브'},
+    {q:'갑상선 검사의 주위 지표',a:'기관(Trachea), 온목동맥(Common carotid artery)'},
+    {q:'전립선 검사의 주 방법',a:'경직장초음파(TRUS)'},
+    {q:'부인과 경복부 검사 전처치',a:'방광 약 300mL 충만(소변 참기) → 음향창 확보'},
+    {q:'임신 초기(4~7주) 태령 측정 지표',a:'태낭(G-sac, Gestational sac) 크기'},
+  ],
+};
+const fcS={};
+function _fcI(id){
+  if(!fcS[id])fcS[id]={i:0,fl:false};
+  const tot=document.getElementById('fc-'+id+'-tot');
+  if(tot&&fcD[id])tot.textContent=fcD[id].length;
+  _fcR(id);
+}
+function _fcR(id){
+  const s=fcS[id];if(!s)return;
+  const d=fcD[id];if(!d)return;
+  s.fl=false;
+  const card=document.getElementById('fc-'+id+'-card');
+  if(card)card.classList.remove('flipped');
+  const f=document.getElementById('fc-'+id+'-f');
+  const b=document.getElementById('fc-'+id+'-b');
+  if(f)f.textContent=d[s.i].q;
+  if(b)b.textContent=d[s.i].a;
+  const cur=document.getElementById('fc-'+id+'-cur');
+  if(cur)cur.textContent=s.i+1;
+}
+function fcFl(id){if(!fcS[id])return;fcS[id].fl=!fcS[id].fl;const c=document.getElementById('fc-'+id+'-card');if(c)c.classList.toggle('flipped',fcS[id].fl);}
+function fcNx(id){const d=fcD[id];if(!d)return;fcS[id].i=(fcS[id].i+1)%d.length;_fcR(id);}
+function fcPr(id){const d=fcD[id];if(!d)return;fcS[id].i=(fcS[id].i-1+d.length)%d.length;_fcR(id);}
+['fc7','fc8','fc9','fc10','fc11','fc12'].forEach(id=>_fcI(id));
+</script>
+</body>
+</html>
