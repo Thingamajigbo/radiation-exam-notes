@@ -17,3 +17,4 @@ Open the deployed page from the GitHub Pages URL after publishing.
 - Radiographic Imaging Final: https://thingamajigbo.github.io/radiation-exam-notes/radiographic-imaging-final/
 - Ultrasound Final: https://thingamajigbo.github.io/radiation-exam-notes/ultrasound-final/
 - Ultrasound Notes: https://thingamajigbo.github.io/radiation-exam-notes/ultrasound-notes/
+- Ultrasound Final Text: https://thingamajigbo.github.io/radiation-exam-notes/ultrasound-final-text/
